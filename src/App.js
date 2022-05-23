@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useMemo, Provider} from "react";
+import React, {useEffect, useState, useContext, useMemo, Provider, createContext} from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Container,
         Box,
@@ -19,17 +19,23 @@ import SignIn from "./pages/SignIn";
 import CreateReview from "./pages/CreateReview";
 import Header from "./pages/Header";
 import CreateHotel from "./pages/CreateHotel";
-
-
-
-
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+
+export const UserContext = createContext({
+    user: null,
+    setUser: () => {},
+    isAdmin: false,
+    setIsAdmin: () => {}
+});
 
 let key = 0;
 
 function App() {
-    const [isAuth, setIsAuth] = useState(false); 
-    
+    const [user, setUser] = useState(null);
+    const [isAdmin, setIsAdmin] = useState(true);
+    // const value = useMemo(() => ([ user, setUser ]), [user]);
+    const value = useMemo(() => ({ user, setUser, isAdmin, setIsAdmin }), []);
+    // const isAdminValue = useMemo(() => ({ isAdmin, setIsAdmin }), [isAdmin]);    
     const [imageList, setImageList] = useState([]);
 
     const imageListRef = ref(storage, "images/")
@@ -57,34 +63,18 @@ function App() {
     // console.log(currentUser);
 
     return (
-        <>
-        
+        <UserContext.Provider value={value}>
             <Container>
                 <Router>
-                    <Header isAuth={isAuth} setIsAuth={setIsAuth} />
-                        {/* <nav>
-                            <Link to={"/"}><button>Home</button></Link>
-                            <Link to={"/hotel"}><button>Hotel</button></Link>
-                            {!isAuth && <Link to={"/signin"}><button>Sign In</button></Link>}
-                            {!isAuth && <Link to={"/login"}><button>Log In</button></Link>}
-                            {isAuth && 
-                                <>
-                                    <Link to={"/createreview"}><button>Create A Review</button></Link>
-                                    <button onClick={signUserOut}>Log out</button> */}
-                        
-                                {/* </>
-                            }           
-                        </nav> */}
+                    {/* {console.log(value)} */}
+                    <Header />                        
                     <Routes>
-                        <Route path="/" element={<Home isAuth={isAuth} /> } />
+                        <Route path="/" element={<Home /> } />
                         <Route path="/createhotel" element={<CreateHotel setImageList={setImageList} /> } />
-                        <Route path="/login" element={<LogIn setIsAuth={setIsAuth}/> } />
-                        <Route path="/signin" element={<SignIn setIsAuth={setIsAuth}/> } />
-                        <Route path="/createreview" element={<CreateReview isAuth={isAuth}/> } />
-                    </Routes>
-                    {/* {isAuth && <h3>User logged in: {auth.currentUser.email}</h3>} */}
-                    {/* {console.log(imageList)} */}
-
+                        <Route path="/login" element={<LogIn /> } />
+                        <Route path="/signin" element={<SignIn /> } />
+                        <Route path="/createreview" element={<CreateReview /> } />
+                    </Routes>                    
 
                     <Grid container spacing={2} sx={{ mt: 1}}>
                         {imageList.map((url) => {
@@ -108,31 +98,28 @@ function App() {
                                             </Typography>
                                         </CardContent>
                                         <CardActions>
-                                            {isAuth &&                                                
+                                            {user &&                                                
                                                 <Link to={"/createreview"}><Button size="small" sx={{ mr: 1}}>Add A Review</Button></Link>
                                             }
                                             {/* <Button size="small">Add a reviev</Button> */}
                                             <Button size="small">More info</Button>
                                         </CardActions>
                                     </Card>
-                                </Grid>
-                            // <img src={url} key={key} />                               
+                                </Grid>                                                       
                             )
                         })}
                     </Grid>
-                </Router>
-
-                
-                
-        
+                </Router>      
             </Container>
-
+        </UserContext.Provider>
+              
+            
             
         
-        {/* // <UserContext.Provider value={value}> */}
+        
                       
            
-        </>
+        
         
     );
 }

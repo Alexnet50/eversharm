@@ -2,6 +2,7 @@ import {useEffect, useState, useContext} from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 // import {TextField, Box, FormGroup, Button, Container} from '@mui/material';
 import {auth, db} from "../firebase-config";
+import { UserContext } from '../App';
 // import Home from "./pages/Home";
 // import LogIn from "./pages/LogIn";
 // import CreatePost from "./pages/CreatePost";
@@ -11,8 +12,8 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "fir
 
 
 
-function SignIn({ setIsAuth }) {
-    
+function SignIn() {
+    const {user, setUser} = useContext(UserContext);
     const [registerEmail, setRegisterEmail] = useState('');
     const [registerPassword, setRegisterPassword] = useState('');
     
@@ -52,11 +53,10 @@ function SignIn({ setIsAuth }) {
                 auth, registerEmail, registerPassword
             );
             // localStorage.setItem("email", registerEmail);
-            setIsAuth(true);
+            setUser(registerEmail);
             setRegisterEmail("")
             setRegisterPassword("");
-            navigate("/");
-            console.log(user);
+            navigate("/");            
         } 
         catch (error){
             errorCode = error.code;

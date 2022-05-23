@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../App';
 import { AppBar,
     Toolbar,
     Typography,
@@ -20,48 +21,57 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthState
     const pages = ['Products', 'Pricing', 'Blog'];
     const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-export default function Header({ isAuth, setIsAuth }) {
+export default function Header() {
     const [anchorElNav, setAnchorElNav] = useState(null);
-    const [anchorElUser, setAnchorElUser] = useState(null);
-    const [isAdmin, setIsAdmin] = useState(false);
-    
+    // const [anchorElUser, setAnchorElUser] = useState(null);
+    // const [user, setUser] = useContext(UserContext);
+    const {user, setUser, isAdmin, setIsAdmin} = useContext(UserContext);
+    // const [isAdmin, setIsAdmin] = useContext(UserContext);
+    // const isAdmin = false;
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
-    const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
-    };
+    // const handleOpenUserMenu = (event) => {
+    //     setAnchorElUser(event.currentTarget);
+    // };
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
 
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
+    // const handleCloseUserMenu = () => {
+    //     setAnchorElUser(null);
+    // };
 
     const signUserOut = () => {
         signOut(auth).then(() => {
         //   localStorage.clear();
-            setIsAuth(false);
+            setUser(null);
+            setIsAdmin(false);
         //   window.location.pathname = "/";
         });
     };
 
-    useEffect(() => {        
-        auth.currentUser != null && auth.currentUser.email === "aladdin@ukr.net" ?
-        setIsAdmin(true) :
-        setIsAdmin(false);
-        console.log(isAdmin);
-    }, []); 
+    // useEffect(() => {        
+    //     auth.currentUser != null && auth.currentUser.email === "aladdin@ukr.net" ?
+    //     setIsAdmin(true) :
+    //     setIsAdmin(false);
+    //     console.log(isAdmin);
+    // }, []); 
 
     const linkStyle = {        
         textDecoration: "none",        
     };
 
 
-    return (        
+    return (   
+             
         <AppBar position="static">
+            {/* {console.log(UserContext)} */}
+            {console.log(user)}
+            {console.log(isAdmin)}
+            {console.log(setUser)}
+            {console.log(setIsAdmin)}
             <Container maxWidth="lg">
                 <Toolbar>
                     <Typography
@@ -124,7 +134,7 @@ export default function Header({ isAuth, setIsAuth }) {
                             </MenuItem>
                             
                             <MenuItem>
-                                {!isAuth && 
+                                {!user && 
                                 <>
                                     <Link to={"/signin"} style={linkStyle}>
                                         <Button
@@ -138,7 +148,7 @@ export default function Header({ isAuth, setIsAuth }) {
                             </MenuItem>
                         
                             <MenuItem>
-                                {!isAuth && 
+                                {!user && 
                                 <>
                                     <Link to={"/login"} style={linkStyle}>
                                         <Button
@@ -152,7 +162,7 @@ export default function Header({ isAuth, setIsAuth }) {
                             </MenuItem>
 
                             <MenuItem>
-                                {isAuth && 
+                                {user && !isAdmin && 
                                     <>
                                         <Link to={"/createreview"} style={linkStyle}>
                                             <Button
@@ -165,10 +175,6 @@ export default function Header({ isAuth, setIsAuth }) {
                                 }
                             </MenuItem>
 
-                            <MenuItem>
-                                <Button onClick={signUserOut}>Log out</Button>
-                            </MenuItem>
-                        
                             <MenuItem>                                     
                                 {isAdmin &&
                                     <Link to={"/createhotel"} style={linkStyle}>
@@ -179,7 +185,13 @@ export default function Header({ isAuth, setIsAuth }) {
                                         </Button>
                                     </Link>        
                                 }  
-                            </MenuItem>                        
+                            </MenuItem>    
+
+                            <MenuItem>
+                                {user &&
+                                    <Button onClick={signUserOut}>Log out</Button>
+                                }
+                            </MenuItem>                                      
                         </Menu>
                     </Box>
                     
@@ -211,7 +223,7 @@ export default function Header({ isAuth, setIsAuth }) {
                             </Button>
                         </Link>
 
-                        {!isAuth && 
+                        {!user && 
                             <>
                                 <Link to={"/signin"} style={linkStyle}>
                                     <Button
@@ -224,33 +236,23 @@ export default function Header({ isAuth, setIsAuth }) {
                                 <Link to={"/login"} style={linkStyle}>
                                     <Button
                                         sx={{ color: 'white', display: 'block' }}
+                                        onClick={setUser("aladdin@ukr.net")}
                                     >   
                                         Log In
                                     </Button>
                                 </Link>
                             </>
                         }
-                        {isAuth && 
-                            <>
-                                <Link to={"/createreview"} style={linkStyle}>
-                                    <Button
-                                        sx={{ color: 'white', display: 'block' }}
-                                    >
-                                        Create A Review
-                                    </Button>
-                                </Link>
-
-                                <Button 
-                                    onClick={signUserOut}
+                        {user && !isAdmin &&                            
+                            <Link to={"/createreview"} style={linkStyle}>
+                                <Button
                                     sx={{ color: 'white', display: 'block' }}
                                 >
-                                    Log out
+                                    Create A Review
                                 </Button>
-                                {/* <input type="file" onChange={(event) => setImageUpload(event.target.files[0])} />
-                                <button onClick={uploadImage}>Upload image</button> */}
-                            </>
+                            </Link>
                         }
-
+                        
                         {isAdmin &&
                             <Link to={"/createhotel"} style={linkStyle}>
                                 <Button
@@ -260,6 +262,17 @@ export default function Header({ isAuth, setIsAuth }) {
                                 </Button>
                             </Link>        
                         }
+
+                        {user &&
+                            <Button 
+                                onClick={signUserOut}
+                                sx={{ color: 'white', display: 'block' }}
+                            >
+                                Log out
+                            </Button>                    
+                        }
+
+                        
                         {/* {pages.map((page) => (
                         <Button
                             key={page}
@@ -295,7 +308,7 @@ export default function Header({ isAuth, setIsAuth }) {
                     />
 
                     
-                    {isAuth && 
+                    {user && 
                         <Box edge="end" sx={{ display: { xs: 'none', md: 'block' } }}>
                             <Typography
                                 variant="subtitle2"
@@ -310,7 +323,7 @@ export default function Header({ isAuth, setIsAuth }) {
                             >
                                 Logged as 
                                 <br/>
-                                {auth.currentUser.email}
+                                {user}
                             </Typography>
                         </Box>
                     }             

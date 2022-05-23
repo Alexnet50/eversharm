@@ -3,11 +3,14 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react
 import { signOut } from "firebase/auth";
 import {collection, getDocs, addDoc, updateDoc, deleteDoc, doc} from "firebase/firestore";
 import {auth, db} from "../firebase-config";
+import { UserContext } from '../App';
+import { Button } from "@mui/material";
 
 let key = 0;
-export default function Home({ isAuth }) {
+export default function Home() {
     const [reviews, setReviews] = useState([]);
     const reviewsRef = collection(db, 'reviews');
+    const {user, setUser} = useContext(UserContext);
 
     
     const getReviews = async() => {
@@ -37,8 +40,8 @@ export default function Home({ isAuth }) {
                         <h4>Title: {review.reviewTitle}</h4>
                         <p>Text: {review.reviewText}</p>
                         
-                        {isAuth && review.author.id === auth.currentUser.uid  
-                            && <button onClick={() => deleteHandler(review.id)}>Delete review</button>}
+                        {user && review.author.name === user  
+                            && <Button onClick={() => deleteHandler(review.id)}>Delete review</Button>}
                     </div>
                     
                 )

@@ -1,25 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Routes, Route, useNavigate } from "react-router-dom";
 import {collection, addDoc } from "firebase/firestore";
 import { v4 } from "uuid";
 import { ref, uploadBytes, listAll, getDownloadURL, list } from "firebase/storage";
 import {auth, db, storage} from "../firebase-config";
+import { UserContext } from '../App';
+import { Box, Typography, FormGroup, FormControlLabel,
+     Checkbox, TextField, FormControl, InputLabel, Select,
+     MenuItem, Button, TextareaAutosize
+ } from '@mui/material';
 
-export default function CreateHotel({ isAdmin, setImageList }) {
-    const [reviewTitle, setReviewTitle] = useState("");
-    const [reviewText, setReviewText] = useState("");
+export default function CreateHotel() {
+    const [hotelName, setHotelName] = useState("");
+    const [hotelDescription, setHotelDescription] = useState("");
+    const [stars, setStars] = useState();
+    const [line, setLine] = useState();
+    const [warmPool, setWarmPool] = useState();
+    const [aquapark, setAquapark] = useState();
+    const [kidsClub, setKidsClub] = useState();
     const [imageUpload, setImageUpload] = useState(null);
+    const {isAdmin, setIsAdmin} = useContext(UserContext);
+    const [imageList, setImageList] = useState([]);
 
     const imageListRef = ref(storage, "images/")
 
     const navigate = useNavigate();
-    const reviewsCollectionRef = collection(db, "reviews");
+    const hotelsCollectionRef = collection(db, "hotels");
     
-    const createReview = async () => {
-        await addDoc(reviewsCollectionRef, {
-            reviewTitle, 
-            reviewText, 
-            author: {name: auth.currentUser.email, id: auth.currentUser.uid}
+    const createHotel = async () => {
+        await addDoc(hotelsCollectionRef, {
+            hotelName, 
+            hotelDescription, 
+            stars,
+            line,
+            warmPool,
+            aquapark,
+            kidsClub
         });
         navigate("/"); 
     };
@@ -39,25 +55,80 @@ export default function CreateHotel({ isAdmin, setImageList }) {
     })
 
     return (
-    <div className="createPostPage">
-        <div className="createContainer">
-            <h3>Create A Review</h3>
-            <div className="inputPost">
-                <h5>Title:</h5>
-                <input placeholder='Review title' value={reviewTitle}
-                    onChange={event => setReviewTitle(event.target.value)}/>
-            </div>
-            <div className="inputPost">
-            <h5>Review:</h5>
-                <textarea placeholder='Review text' value={reviewText}
-                    onChange={event => setReviewText(event.target.value)}/>
-            </div>
+    <Box className="createHotelPage">
+        {/* <div className="createContainer"> */}
+            <Typography
+                variant="h5"
+                sx={{
+                    fontWeight: 700
+                }}
+            >
+                Create A New Hotel Page
+            </Typography>
+            
+            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
 
-            <input type="file" onChange={(event) => setImageUpload(event.target.files[0])} />
-            <button onClick={uploadImage}>Upload image</button>
 
-            <button onClick={createReview}>Add a review</button>
-        </div>
-    </div>
+            </FormControl>
+            <TextField placeholder="Hotel name" size="small" value={hotelName}
+                onChange={event => setHotelName(event.target.value)}
+            />
+            <TextField 
+                placeholder="Hotel description" 
+                size="small" 
+                value={hotelDescription}
+                onChange={event => setHotelDescription(event.target.value)}
+                multiline
+                rows={4}
+            />
+            
+            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                <InputLabel>Stars</InputLabel>
+                <Select                    
+                    id="stars"
+                    value={stars}
+                    label="Stars"
+                    onChange={event => setStars(event.target.value)}
+                >
+                    <MenuItem value={2}>2*</MenuItem>
+                    <MenuItem value={3}>3*</MenuItem>
+                    <MenuItem value={4}>4*</MenuItem>
+                    <MenuItem value={5}>5*</MenuItem>
+                </Select>
+            </FormControl>
+
+            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                <InputLabel>Line from the shore</InputLabel>
+                <Select                    
+                    id="line"
+                    sx={{ width: 200}}
+                    value={line}
+                    label="Line"
+                    onChange={event => setLine(event.target.value)}
+                >
+                    <MenuItem value={1}>1-st line</MenuItem>
+                    <MenuItem value={2}>2-nd line</MenuItem>
+                    <MenuItem value={3}>3-rd line or further</MenuItem>                    
+                </Select>
+            </FormControl>
+
+            <FormGroup>
+                <FormControlLabel control={<Checkbox 
+                    onChange={event => setWarmPool(event.target.value)}
+                />} label="Heated swimming pool" />
+                <FormControlLabel control={<Checkbox
+                    onChange={event => setAquapark(event.target.value)}
+                />} label="Aquapark or water slides" />
+                <FormControlLabel control={<Checkbox 
+                    onChange={event => setKidsClub(event.target.value)}
+                />} label="Kids club" />
+            </FormGroup>           
+
+            <TextField type="file" onChange={(event) => setImageUpload(event.target.files[0])} />
+            <Button variant="outlined" onClick={uploadImage}>Upload image</Button>
+
+            <Button variant="outlined" onClick={createHotel}>Create hotel page</Button>
+        {/* </div> */}
+    </Box>
     )
 }

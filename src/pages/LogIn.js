@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import {auth, db} from "../firebase-config";
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+import { UserContext } from '../App';
 import { Button, TextField, Typography } from "@mui/material";
 
 
-function LogIn({ setIsAuth }) {   
+function LogIn() {   
     const [logInEmail, setLogInEmail] = useState('');
     const [logInPassword, setLogInPassword] = useState('')
+    const {user, setUser, isAdmin, setIsAdmin} = useContext(UserContext);
+    // const [isAdmin, setIsAdmin] = useContext(UserContext.isAdminValue);
 
     let errorCode;
     let errorMessage;
@@ -22,17 +25,19 @@ function LogIn({ setIsAuth }) {
     // onAuthStateChanged(auth, (currentUser) => {
     //     if (currentUser) localStorage.setItem("email", currentUser.email);          
     // });
-
+    console.log(setUser)
+    console.log(setIsAdmin)
     const logIn = async () => {
         try {
             const user = await signInWithEmailAndPassword(
                 auth, logInEmail, logInPassword
             );
             // localStorage.setItem("isAuth", true);
-            setIsAuth(true);
+            setUser(logInEmail);
+            if (logInEmail === "aladdin@ukr.net") setIsAdmin(true);
             setLogInEmail("");
             setLogInPassword("");
-            // console.log(user);
+            
             navigate("/");
         } 
         catch (error){
