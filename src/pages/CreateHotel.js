@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from "react-router-dom";
 import {collection, addDoc } from "firebase/firestore";
-import {auth, db} from "../firebase-config";
+import { v4 } from "uuid";
+import { ref, uploadBytes, listAll, getDownloadURL, list } from "firebase/storage";
+import {auth, db, storage} from "../firebase-config";
 
-export default function CreateHotel({ isAdmin }) {
+export default function CreateHotel({ isAdmin, setImageList }) {
     const [reviewTitle, setReviewTitle] = useState("");
     const [reviewText, setReviewText] = useState("");
-    
+    const [imageUpload, setImageUpload] = useState(null);
+
+    const imageListRef = ref(storage, "images/")
 
     const navigate = useNavigate();
     const reviewsCollectionRef = collection(db, "reviews");
@@ -19,6 +23,16 @@ export default function CreateHotel({ isAdmin }) {
         });
         navigate("/"); 
     };
+
+    const uploadImage = () => {
+        if (imageUpload == null) return;
+        const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
+        uploadBytes(imageRef, imageUpload).then((snapshot) => {
+            getDownloadURL(snapshot.ref).then((url) => {
+                setImageList((prev) => [...prev, url])
+            })
+        })
+    }
 
     useEffect(() => {
         !isAdmin && navigate("/");
@@ -38,6 +52,10 @@ export default function CreateHotel({ isAdmin }) {
                 <textarea placeholder='Review text' value={reviewText}
                     onChange={event => setReviewText(event.target.value)}/>
             </div>
+
+            <input type="file" onChange={(event) => setImageUpload(event.target.files[0])} />
+            <button onClick={uploadImage}>Upload image</button>
+
             <button onClick={createReview}>Add a review</button>
         </div>
     </div>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import {auth, db} from "../firebase-config";
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+import { Button, TextField, Typography } from "@mui/material";
 
 
 function LogIn({ setIsAuth }) {   
@@ -53,13 +54,13 @@ function LogIn({ setIsAuth }) {
         <div className="logIn">            
             
             <div>
-                <h3>Log In</h3>
-                <input placeholder="Enter an email" value={logInEmail}
+                <Typography>Log In</Typography>
+                <TextField placeholder="Enter an email" size="small" value={logInEmail}
                     onChange={event => setLogInEmail(event.target.value)}/>
-                <input placeholder="Enter a password" value={logInPassword}
+                <TextField placeholder="Enter a password" size="small" value={logInPassword}
                     onChange={event => setLogInPassword(event.target.value)}/>
                 
-                <button onClick={logIn}>Log in</button>
+                <Button variant="outlined" onClick={logIn}>Log in</Button>
             </div>
             
             {/* <div>

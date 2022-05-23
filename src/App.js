@@ -18,6 +18,7 @@ import LogIn from "./pages/LogIn";
 import SignIn from "./pages/SignIn";
 import CreateReview from "./pages/CreateReview";
 import Header from "./pages/Header";
+import CreateHotel from "./pages/CreateHotel";
 
 
 
@@ -27,31 +28,17 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthState
 let key = 0;
 
 function App() {
-    const [isAuth, setIsAuth] = useState(false);
-    const [imageUpload, setImageUpload] = useState(null);
+    const [isAuth, setIsAuth] = useState(false); 
+    
     const [imageList, setImageList] = useState([]);
 
     const imageListRef = ref(storage, "images/")
 
-    const signUserOut = () => {
-        signOut(auth).then(() => {
-        //   localStorage.clear();
-            setIsAuth(false);
-        //   window.location.pathname = "/";
-        });
-    };
+    
 
     
 
-    const uploadImage = () => {
-        if (imageUpload == null) return;
-        const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-        uploadBytes(imageRef, imageUpload).then((snapshot) => {
-            getDownloadURL(snapshot.ref).then((url) => {
-                setImageList((prev) => [...prev, url])
-            })
-        })
-    }
+    
 
     useEffect(() => {
         
@@ -74,7 +61,7 @@ function App() {
         
             <Container>
                 <Router>
-                    <Header />
+                    <Header isAuth={isAuth} setIsAuth={setIsAuth} />
                         {/* <nav>
                             <Link to={"/"}><button>Home</button></Link>
                             <Link to={"/hotel"}><button>Hotel</button></Link>
@@ -84,26 +71,24 @@ function App() {
                                 <>
                                     <Link to={"/createreview"}><button>Create A Review</button></Link>
                                     <button onClick={signUserOut}>Log out</button> */}
-                        <input type="file" onChange={(event) => setImageUpload(event.target.files[0])} />
-                        <button onClick={uploadImage}>Upload image</button>
+                        
                                 {/* </>
                             }           
                         </nav> */}
                     <Routes>
-                        <Route path="/" element={<Home isAuth={isAuth} signUserOut={signUserOut} /> } />
-                        <Route path="/hotel" element={<Hotel isAdmin={isAdmin}/> } />
+                        <Route path="/" element={<Home isAuth={isAuth} /> } />
+                        <Route path="/createhotel" element={<CreateHotel setImageList={setImageList} /> } />
                         <Route path="/login" element={<LogIn setIsAuth={setIsAuth}/> } />
                         <Route path="/signin" element={<SignIn setIsAuth={setIsAuth}/> } />
                         <Route path="/createreview" element={<CreateReview isAuth={isAuth}/> } />
                     </Routes>
-                    {isAuth && <h3>User logged in: {auth.currentUser.email}</h3>}
+                    {/* {isAuth && <h3>User logged in: {auth.currentUser.email}</h3>} */}
                     {/* {console.log(imageList)} */}
 
 
                     <Grid container spacing={2} sx={{ mt: 1}}>
                         {imageList.map((url) => {
-                            key++;
-                            console.log(url);
+                            key++;                            
                             return (
                                 <Grid item>
                                     <Card sx={{ maxWidth: 345 }}>

@@ -1,7 +1,10 @@
+import React, {useEffect, useState, useContext, useMemo, Provider} from "react";
 
-
-export default function Header() {
-    // return (
+export default function Hotel() {
+    return (
+        <>
+            
+        </>
         
-    // )
+    )
 }
