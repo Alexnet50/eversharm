@@ -1,14 +1,16 @@
-import {useEffect, useState, useContext} from "react";
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 // import {TextField, Box, FormGroup, Button, Container} from '@mui/material';
-import {auth, db} from "../firebase-config";
+import { auth } from "../firebase-config";
 import { UserContext } from '../App';
 // import Home from "./pages/Home";
 // import LogIn from "./pages/LogIn";
 // import CreatePost from "./pages/CreatePost";
 
 // import {collection, getDocs, addDoc, updateDoc, deleteDoc, doc} from "firebase/firestore";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { Button, TextField, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 
 
 
@@ -22,8 +24,8 @@ function SignIn() {
     let errorMessage;
 
 
-    const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const passReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
+    // const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    // const passReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
     // const usersRef = collection(db, 'users');
     let navigate = useNavigate();
@@ -49,13 +51,14 @@ function SignIn() {
 
     const register = async () => {
         try {
-            const user = await createUserWithEmailAndPassword(
+            const userCreate = await createUserWithEmailAndPassword(
                 auth, registerEmail, registerPassword
             );
+            // userCreate();
             // localStorage.setItem("email", registerEmail);
-            setUser(registerEmail);
-            setRegisterEmail("")
-            setRegisterPassword("");
+            setUser((prev) => ({ ...prev, userName: registerEmail }));            
+            // setRegisterEmail("")
+            // setRegisterPassword("");
             navigate("/");            
         } 
         catch (error){
@@ -95,43 +98,16 @@ function SignIn() {
 
     
     
-    return (
-        // <Router>
-        //     <nav>
-        //         <Link to={"/"}><button>Home</button></Link>
-        //         <Link to={"/login"}><button>Log In</button></Link>
-        //         <Link to={"/createpost"}><button>Create Post</button></Link>
+    return (        
+        <Box className="signIn">            
+            <Typography variant="h6">Register new user</Typography>
+            <TextField placeholder="Enter an email" size="small" value={registerEmail} 
+                onChange={(event) => setRegisterEmail(event.target.value)}/>
+            <TextField placeholder="Enter a password" size="small" value={registerPassword}
+                onChange={(event) => setRegisterPassword(event.target.value)}/>
 
-
-
-                
-        //     </nav>
-        //     <Routes>
-        //         <Route path="/" element={<Home /> } />
-        //         <Route path="/login" element={<LogIn /> } />
-        //         <Route path="/createpost" element={<CreatePost /> } />
-        //     </Routes>
-        // </Router>
-
-        <div className="signIn">
-            <div>
-                <h3>Register new user</h3>
-                <input placeholder="Enter an email" value={registerEmail} 
-                    onChange={(event) => setRegisterEmail(event.target.value)}/>
-                <input placeholder="Enter a password"  value={registerPassword}
-                    onChange={(event) => setRegisterPassword(event.target.value)}/>
-
-                <button onClick={register}>Create a user</button>
-            </div>         
-            
-            {/* <div>
-                <h3>User logged in: {localStorage.getItem("email")}</h3>
-                <button onClick={logOut}>Log out</button>
-            </div>             */}
-                        {/* <button onClick={() => changeHandler(user.id)}>Change town</button>
-                        <button onClick={() => deleteHandler(user.id)}>Delete user</button> */}
-                    
-        </div>
+            <Button variant="outlined" onClick={register}>Create a user</Button>                    
+        </Box>
     );
 }
 

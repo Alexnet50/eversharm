@@ -1,7 +1,6 @@
-import React, {useEffect, useState, useContext, useMemo, Provider, createContext} from "react";
+import React, {useEffect, useState, useMemo, createContext} from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { Container,
-        Box,
+import { Container,        
         Card,
         CardContent,
         CardActions,
@@ -10,44 +9,40 @@ import { Container,
         Typography,
         Grid
         } from '@mui/material';
-import {auth, db, storage} from "./firebase-config";
-import { ref, uploadBytes, listAll, getDownloadURL, list } from "firebase/storage";
-import { v4 } from "uuid";
+import {storage} from "./firebase-config";
+import { ref, listAll, getDownloadURL } from "firebase/storage";
 import Home from "./pages/Home";
 import LogIn from "./pages/LogIn";
 import SignIn from "./pages/SignIn";
 import CreateReview from "./pages/CreateReview";
 import Header from "./pages/Header";
 import CreateHotel from "./pages/CreateHotel";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+import Hotel from "./pages/Hotel";
+
 
 export const UserContext = createContext({
-    user: null,
-    setUser: () => {},
-    isAdmin: false,
-    setIsAdmin: () => {}
+    user: {
+        userName: null,
+        isAdmin: false
+    },
+    setUser: () => {}    
 });
 
 let key = 0;
 
 function App() {
-    const [user, setUser] = useState(null);
-    const [isAdmin, setIsAdmin] = useState(true);
-    // const value = useMemo(() => ([ user, setUser ]), [user]);
-    const value = useMemo(() => ({ user, setUser, isAdmin, setIsAdmin }), []);
-    // const isAdminValue = useMemo(() => ({ isAdmin, setIsAdmin }), [isAdmin]);    
+    const [user, setUser] = useState({
+        userName: null,
+        isAdmin: false
+    });    
+    const value = useMemo(() => ({ user, setUser }), [user]);
+    // const value = useMemo(() => ({ user, setUser, isAdmin, setIsAdmin }), []);        
     const [imageList, setImageList] = useState([]);
-
-    const imageListRef = ref(storage, "images/")
-
-    
+    // const imageListRef = ref(storage, "images/")  
 
     
 
-    
-
-    useEffect(() => {
-        
+    useEffect(() => {        
         listAll(ref(storage, "images/")).then((response) => {
             setImageList([]);
             // let imageList = [];
@@ -74,13 +69,32 @@ function App() {
                         <Route path="/login" element={<LogIn /> } />
                         <Route path="/signin" element={<SignIn /> } />
                         <Route path="/createreview" element={<CreateReview /> } />
+                        <Route path="/hotel" element={<Hotel /> } />
                     </Routes>                    
 
-                    <Grid container spacing={2} sx={{ mt: 1}}>
+                    
+                </Router>      
+            </Container>
+        </UserContext.Provider>
+              
+            
+            
+        
+        
+                      
+           
+        
+        
+    );
+}
+
+export default App;
+
+{/* <Grid container spacing={2} sx={{ mt: 1}}>
                         {imageList.map((url) => {
                             key++;                            
                             return (
-                                <Grid item>
+                                <Grid item key={key}>
                                     <Card sx={{ maxWidth: 345 }}>
                                         <CardMedia
                                             component="img"
@@ -98,30 +112,14 @@ function App() {
                                             </Typography>
                                         </CardContent>
                                         <CardActions>
-                                            {user &&                                                
+                                            {user.userName &&                                                
                                                 <Link to={"/createreview"}><Button size="small" sx={{ mr: 1}}>Add A Review</Button></Link>
                                             }
                                             {/* <Button size="small">Add a reviev</Button> */}
-                                            <Button size="small">More info</Button>
-                                        </CardActions>
-                                    </Card>
-                                </Grid>                                                       
-                            )
-                        })}
-                    </Grid>
-                </Router>      
-            </Container>
-        </UserContext.Provider>
-              
-            
-            
-        
-        
-                      
-           
-        
-        
-    );
-}
-
-export default App;
+                                            // <Button size="small">More info</Button>
+                    //                     </CardActions>
+                    //                 </Card>
+                    //             </Grid>                                                       
+                    //         )
+                    //     })}
+                    // </Grid> */}

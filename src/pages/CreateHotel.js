@@ -1,28 +1,29 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {collection, addDoc } from "firebase/firestore";
 import { v4 } from "uuid";
-import { ref, uploadBytes, listAll, getDownloadURL, list } from "firebase/storage";
-import {auth, db, storage} from "../firebase-config";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { db, storage } from "../firebase-config";
 import { UserContext } from '../App';
 import { Box, Typography, FormGroup, FormControlLabel,
      Checkbox, TextField, FormControl, InputLabel, Select,
-     MenuItem, Button, TextareaAutosize
+     MenuItem, Button
  } from '@mui/material';
 
+
 export default function CreateHotel() {
+    const {user} = useContext(UserContext);
     const [hotelName, setHotelName] = useState("");
     const [hotelDescription, setHotelDescription] = useState("");
-    const [stars, setStars] = useState();
-    const [line, setLine] = useState();
+    const [stars, setStars] = useState(null);
+    const [line, setLine] = useState(null);
     const [warmPool, setWarmPool] = useState();
     const [aquapark, setAquapark] = useState();
     const [kidsClub, setKidsClub] = useState();
-    const [imageUpload, setImageUpload] = useState(null);
-    const {isAdmin, setIsAdmin} = useContext(UserContext);
+    const [imageUpload, setImageUpload] = useState(null);    
     const [imageList, setImageList] = useState([]);
 
-    const imageListRef = ref(storage, "images/")
+    // const imageListRef = ref(storage, "images/")
 
     const navigate = useNavigate();
     const hotelsCollectionRef = collection(db, "hotels");
@@ -51,12 +52,12 @@ export default function CreateHotel() {
     }
 
     useEffect(() => {
-        !isAdmin && navigate("/");
+        !user.isAdmin && navigate("/");
     })
 
     return (
-    <Box className="createHotelPage">
-        {/* <div className="createContainer"> */}
+    <Box sx={{ display: 'flex', flexDirection: 'column', maxWidth: 500}}>
+        
             <Typography
                 variant="h5"
                 sx={{
@@ -64,32 +65,35 @@ export default function CreateHotel() {
                 }}
             >
                 Create A New Hotel Page
-            </Typography>
+            </Typography>            
             
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-
-
-            </FormControl>
             <TextField placeholder="Hotel name" size="small" value={hotelName}
+                sx={{
+                    m: 1
+                }}
                 onChange={event => setHotelName(event.target.value)}
             />
             <TextField 
                 placeholder="Hotel description" 
                 size="small" 
                 value={hotelDescription}
+                sx={{
+                    m: 1
+                }}
                 onChange={event => setHotelDescription(event.target.value)}
                 multiline
-                rows={4}
+                rows={6}
             />
             
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <FormControl sx={{ m: 1 }} size="small">
                 <InputLabel>Stars</InputLabel>
                 <Select                    
                     id="stars"
+                    sx={{ width: 200}}                    
                     value={stars}
                     label="Stars"
                     onChange={event => setStars(event.target.value)}
-                >
+                >                    
                     <MenuItem value={2}>2*</MenuItem>
                     <MenuItem value={3}>3*</MenuItem>
                     <MenuItem value={4}>4*</MenuItem>
@@ -97,22 +101,22 @@ export default function CreateHotel() {
                 </Select>
             </FormControl>
 
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <FormControl sx={{ m: 1 }} size="small">
                 <InputLabel>Line from the shore</InputLabel>
                 <Select                    
                     id="line"
                     sx={{ width: 200}}
                     value={line}
-                    label="Line"
+                    label="Line from the shore"
                     onChange={event => setLine(event.target.value)}
-                >
+                >                    
                     <MenuItem value={1}>1-st line</MenuItem>
                     <MenuItem value={2}>2-nd line</MenuItem>
                     <MenuItem value={3}>3-rd line or further</MenuItem>                    
                 </Select>
             </FormControl>
 
-            <FormGroup>
+            <FormGroup sx={{ m: 1 }}>
                 <FormControlLabel control={<Checkbox 
                     onChange={event => setWarmPool(event.target.value)}
                 />} label="Heated swimming pool" />
@@ -124,11 +128,30 @@ export default function CreateHotel() {
                 />} label="Kids club" />
             </FormGroup>           
 
-            <TextField type="file" onChange={(event) => setImageUpload(event.target.files[0])} />
-            <Button variant="outlined" onClick={uploadImage}>Upload image</Button>
+            <TextField type="file" 
+                sx={{
+                    m: 1,
+                    width: 400
+                }} 
+                onChange={(event) => setImageUpload(event.target.files[0])} 
+            />
 
-            <Button variant="outlined" onClick={createHotel}>Create hotel page</Button>
-        {/* </div> */}
+            <Button variant="outlined" 
+                sx={{
+                    m: 1,
+                    width: 200
+                }}
+                onClick={uploadImage}>Upload image
+            </Button>
+
+            <Button variant="outlined"
+                sx={{
+                    m: 1,
+                    width: 200
+                }}
+                onClick={createHotel}>Create hotel page
+            </Button>
+        
     </Box>
     )
 }

@@ -1,21 +1,22 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
-import { signOut } from "firebase/auth";
-import {collection, getDocs, addDoc, updateDoc, deleteDoc, doc} from "firebase/firestore";
-import {auth, db} from "../firebase-config";
+// import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
+import {collection, getDocs, deleteDoc, doc} from "firebase/firestore";
+import {db} from "../firebase-config";
 import { UserContext } from '../App';
-import { Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import HotelList from './HotelList';
 
 let key = 0;
 export default function Home() {
+    const {user} = useContext(UserContext);
     const [reviews, setReviews] = useState([]);
     const reviewsRef = collection(db, 'reviews');
-    const {user, setUser} = useContext(UserContext);
+    
 
     
     const getReviews = async() => {
         const data = await getDocs(reviewsRef);
-        setReviews(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
+        setReviews(data.docs.map((doc) => ({...doc.data(), id: doc.id})));
     };
 
     const deleteHandler = async (id) => {
@@ -29,25 +30,23 @@ export default function Home() {
     }, []); 
 
     
-    return (<div>
-        {/* {localStorage.getItem("email") && <button onClick={logOut}>Log out</button>} */}
+    return (
+        <Box> 
+            <HotelList />
 
-        {reviews.map((review => {
-            key++;
-                return (
-                    <div className="review" key={key}>
-                        <h3>Name: {review.author.name}</h3>
-                        <h4>Title: {review.reviewTitle}</h4>
-                        <p>Text: {review.reviewText}</p>
-                        
-                        {user && review.author.name === user  
-                            && <Button onClick={() => deleteHandler(review.id)}>Delete review</Button>}
-                    </div>
-                    
-                )
-            }))}
-    </div>
-
-    
+            {reviews.map((review => {
+                key++;
+                    return (
+                        <Box className="review" key={key} sx={{ m: 1, p: 2, border: '1px solid' }}>
+                            <Typography variant='subtitle1' color="text.secondary">{review.author.name}</Typography>
+                            <Typography variant='h6'>{review.reviewTitle}</Typography>
+                            <Typography variant='body1' sx={{ m: 1 }}>{review.reviewText}</Typography>
+                            
+                            {user.userName && review.author.name === user.userName  
+                                && <Button onClick={() => deleteHandler(review.id)}>Delete review</Button>}
+                        </Box>                        
+                    )
+                }))}
+        </Box>    
     )
 }

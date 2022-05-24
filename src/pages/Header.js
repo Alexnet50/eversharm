@@ -11,22 +11,16 @@ import { AppBar,
     Button,
     MenuItem,
     TextField,
-    InputAdornment,
+    InputAdornment
 } from '@mui/material';
 import { MenuRounded, Search } from '@mui/icons-material/';
-import {auth, db, storage} from "../firebase-config";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
-
-
-    const pages = ['Products', 'Pricing', 'Blog'];
-    const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import { auth } from "../firebase-config";
+import { signOut } from "firebase/auth";
 
 export default function Header() {
     const [anchorElNav, setAnchorElNav] = useState(null);
-    // const [anchorElUser, setAnchorElUser] = useState(null);
-    // const [user, setUser] = useContext(UserContext);
-    const {user, setUser, isAdmin, setIsAdmin} = useContext(UserContext);
-    // const [isAdmin, setIsAdmin] = useContext(UserContext);
+    // const [anchorElUser, setAnchorElUser] = useState(null);    
+    const {user, setUser} = useContext(UserContext);    
     // const isAdmin = false;
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -46,8 +40,7 @@ export default function Header() {
     const signUserOut = () => {
         signOut(auth).then(() => {
         //   localStorage.clear();
-            setUser(null);
-            setIsAdmin(false);
+            setUser((prev) => ({ ...prev, userName: null, isAdmin: false }));            
         //   window.location.pathname = "/";
         });
     };
@@ -66,12 +59,12 @@ export default function Header() {
 
     return (   
              
-        <AppBar position="static">
+        <AppBar position="static" color={user.isAdmin ? "secondary" : "primary"}>
             {/* {console.log(UserContext)} */}
-            {console.log(user)}
+            {/* {console.log(user)}
             {console.log(isAdmin)}
             {console.log(setUser)}
-            {console.log(setIsAdmin)}
+            {console.log(setIsAdmin)} */}
             <Container maxWidth="lg">
                 <Toolbar>
                     <Typography
@@ -118,7 +111,7 @@ export default function Header() {
                                     horizontal: 'left',
                             }}
                                 open={Boolean(anchorElNav)}
-                                onClose={handleCloseNavMenu}
+                                onClick={handleCloseNavMenu}
                                 sx={{
                                     display: { xs: 'block', md: 'none' },
                             }}
@@ -134,7 +127,7 @@ export default function Header() {
                             </MenuItem>
                             
                             <MenuItem>
-                                {!user && 
+                                {!user.userName && 
                                 <>
                                     <Link to={"/signin"} style={linkStyle}>
                                         <Button
@@ -148,7 +141,7 @@ export default function Header() {
                             </MenuItem>
                         
                             <MenuItem>
-                                {!user && 
+                                {!user.userName && 
                                 <>
                                     <Link to={"/login"} style={linkStyle}>
                                         <Button
@@ -162,7 +155,7 @@ export default function Header() {
                             </MenuItem>
 
                             <MenuItem>
-                                {user && !isAdmin && 
+                                {user.userName && !user.isAdmin && 
                                     <>
                                         <Link to={"/createreview"} style={linkStyle}>
                                             <Button
@@ -176,7 +169,7 @@ export default function Header() {
                             </MenuItem>
 
                             <MenuItem>                                     
-                                {isAdmin &&
+                                {user.isAdmin &&
                                     <Link to={"/createhotel"} style={linkStyle}>
                                         <Button
                                             sx={{ display: 'block' }}
@@ -188,7 +181,7 @@ export default function Header() {
                             </MenuItem>    
 
                             <MenuItem>
-                                {user &&
+                                {user.userName &&
                                     <Button onClick={signUserOut}>Log out</Button>
                                 }
                             </MenuItem>                                      
@@ -223,7 +216,7 @@ export default function Header() {
                             </Button>
                         </Link>
 
-                        {!user && 
+                        {!user.userName && 
                             <>
                                 <Link to={"/signin"} style={linkStyle}>
                                     <Button
@@ -236,14 +229,14 @@ export default function Header() {
                                 <Link to={"/login"} style={linkStyle}>
                                     <Button
                                         sx={{ color: 'white', display: 'block' }}
-                                        onClick={setUser("aladdin@ukr.net")}
+                                        // onClick={setUser("aladdin@ukr.net")}
                                     >   
                                         Log In
                                     </Button>
                                 </Link>
                             </>
                         }
-                        {user && !isAdmin &&                            
+                        {user.userName && !user.isAdmin &&                            
                             <Link to={"/createreview"} style={linkStyle}>
                                 <Button
                                     sx={{ color: 'white', display: 'block' }}
@@ -253,7 +246,7 @@ export default function Header() {
                             </Link>
                         }
                         
-                        {isAdmin &&
+                        {user.isAdmin &&
                             <Link to={"/createhotel"} style={linkStyle}>
                                 <Button
                                     sx={{ color: 'white', display: 'block' }}
@@ -263,7 +256,7 @@ export default function Header() {
                             </Link>        
                         }
 
-                        {user &&
+                        {user.userName &&
                             <Button 
                                 onClick={signUserOut}
                                 sx={{ color: 'white', display: 'block' }}
@@ -293,8 +286,7 @@ export default function Header() {
                         size="small"
                         color="primary"
                         sx={{                        
-                            display: { xs: 'none', md: 'flex' },
-                            flexGrow: 1,                       
+                            display: { xs: 'none', md: 'flex' },                                                  
                             fontWeight: 700,                        
                             color: 'primary'                            
                             }}
@@ -308,22 +300,22 @@ export default function Header() {
                     />
 
                     
-                    {user && 
+                    {user.userName && 
                         <Box edge="end" sx={{ display: { xs: 'none', md: 'block' } }}>
                             <Typography
                                 variant="subtitle2"
                                 noWrap                                
                                 sx={{ 
                                     ml: 4,  
-                                    mr: 0,                                                  
-                                    fontWeight: 400,                        
+                                    mr: 0,                                                   
                                     color: 'secondary',
                                     textDecoration: 'none',
                                 }}
                             >
                                 Logged as 
                                 <br/>
-                                {user}
+                                {user.userName}
+                                {/* {auth.currentUser.email} */}
                             </Typography>
                         </Box>
                     }             

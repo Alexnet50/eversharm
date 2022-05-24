@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {collection, addDoc } from "firebase/firestore";
 import {auth, db} from "../firebase-config";
 import { UserContext  } from '../App';
 
-export default function CreateReview({ isAuth }) {
+export default function CreateReview() {
     const [reviewTitle, setReviewTitle] = useState("");
     const [reviewText, setReviewText] = useState("");
     const {user} = useContext(UserContext);
+
+    useEffect(() => {
+        !user.userName && navigate("/");
+    });
 
     const navigate = useNavigate();
     const reviewsCollectionRef = collection(db, "reviews");
@@ -21,9 +25,7 @@ export default function CreateReview({ isAuth }) {
         navigate("/"); 
     };
 
-    useEffect(() => {
-        !user && navigate("/");
-    })
+    
 
     return (
     <div className="createPostPage">
