@@ -44,7 +44,7 @@ export default function HotelList() {
                                             <CardMedia
                                                 component="img"
                                                 height="200"
-                                                image="https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1300,q_auto,w_2000/uploadimages/16/50/16507378.jpeg"
+                                                image={hotel.imageList && hotel.imageList[0]}
                                                 alt={hotel.hotelName}
                                         />
                                             <CardContent>

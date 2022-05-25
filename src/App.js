@@ -59,7 +59,7 @@ function App() {
 
     return (
         <UserContext.Provider value={value}>
-            <Container>
+            <Container maxWidth="lg">
                 <Router>
                     {/* {console.log(value)} */}
                     <Header />                        
