@@ -2,12 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import {collection, addDoc } from "firebase/firestore";
 import { v4 } from "uuid";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, getStorage, deleteObject } from "firebase/storage";
 import { db, storage } from "../firebase-config";
 import { UserContext } from '../App';
 import { Box, Typography, FormGroup, FormControlLabel,
      Checkbox, TextField, FormControl, InputLabel, Select,
-     MenuItem, Button, Container, Paper
+     MenuItem, Button, Container, Paper, Grid
  } from '@mui/material';
 
  let key = 0;
@@ -23,6 +23,7 @@ export default function CreateHotel() {
     const [kidsClub, setKidsClub] = useState(null);
     const [imageUpload, setImageUpload] = useState(null);    
     const [imageList, setImageList] = useState([]);
+    const [refresh, setRefresh] = useState(0);
 
     // const imageListRef = ref(storage, "images/")
 
@@ -53,13 +54,33 @@ export default function CreateHotel() {
         })                
     }
 
+    const deleteImgHandler = async (url) => {
+        try {
+            const imageRef = ref(storage, url);          
+            deleteObject(imageRef);
+            let list = imageList;
+            const index = list.findIndex(item => item === url);
+            list.splice(index, 1);
+            // setImageList(null);
+            setImageList(() => (list));
+            setRefresh((prev) => prev++);
+        }
+        
+        catch(error) {
+            console.log("Deleting error!");
+        }
+          
+
+    }
+
     useEffect(() => {
         !user.isAdmin && navigate("/");
+        
     })
 
     return (
-        <Box sx={{ display: 'flex' }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', maxWidth: 500}}>        
+        <Grid container spacing={1}>
+            <Grid item xs={12} md={7} sx={{ display: 'flex', flexDirection: 'column'}}>        
                 <Typography
                     variant="h5"
                     sx={{
@@ -134,7 +155,7 @@ export default function CreateHotel() {
                     sx={{
                         m: 1,
                         width: 400
-                    }} 
+                    }}                     
                     onChange={(event) => setImageUpload(event.target.files[0])} 
                 />
 
@@ -153,20 +174,37 @@ export default function CreateHotel() {
                     }}
                     onClick={createHotel}>Create hotel page
                 </Button>            
-            </Box>
+            </Grid>
 
-            <Box sx={{ minWidth: 300 }}>
+            <Grid item xs={12} md={5} sx={{ minWidth: 300, mt: 2}}>
+                <Grid container spacing={1}>
                 {imageList.map((url) => {
                     {key++} 
                     return (
-                        <Box key={key} sx={{ m: 1 }}>
-                            <img src={url} style={{ width: 400, resizeMode: "contain"}}/>
-                        </Box>
+                        <Grid item key={key}>
+                            <img src={url} style={{ maxWidth: 300}}/>
+                            <Button 
+                                variant="outlined"
+                                size="small"
+                                onClick={() => deleteImgHandler(url)}
+                            >
+                                X
+                            </Button>
+                        </Grid>
+                        // <Grid item xs={12} md={6} key={key} justify="space-between"  
+                        // style={{backgroundImage: `url(${url})`,   
+                        //  width:'200px',
+                        // //   marginTop: 20, 
+                        //   backgroundSize:'contain',
+                        //   backgroundRepeat: 'no-repeat'
+                        //   }}>
+                        // </Grid> xs={12} lg={7} 
+                        
                     )                             
-                })}
-            </Box>
-
-        </Box>
+                })}                
+                </Grid>
+            </Grid>
+        </Grid>
 
     
     )
