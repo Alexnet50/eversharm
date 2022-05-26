@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../App';
 import { AppBar,
@@ -125,24 +125,9 @@ export default function Header() {
                                 </Button>
                                 </Link>
                             </MenuItem>
-                            
-                            <MenuItem>
-                                {!user.userName && 
-                                <>
-                                    <Link to={"/signin"} style={linkStyle}>
-                                        <Button
-                                            sx={{ display: 'block' }}
-                                        >
-                                            Sign In
-                                        </Button>
-                                    </Link>
-                                </>
-                                }
-                            </MenuItem>
                         
-                            <MenuItem>
-                                {!user.userName && 
-                                <>
+                            {!user.userName &&
+                                <MenuItem>                         
                                     <Link to={"/login"} style={linkStyle}>
                                         <Button
                                             sx={{ display: 'block' }}
@@ -150,41 +135,52 @@ export default function Header() {
                                             Log In
                                         </Button>
                                     </Link>
-                                </>
-                                }
-                            </MenuItem>
+                                </MenuItem>
+                            }
 
-                            <MenuItem>
-                                {user.userName && !user.isAdmin && 
-                                    <>
-                                        <Link to={"/createreview"} style={linkStyle}>
-                                            <Button
-                                                sx={{ display: 'block' }}
-                                            >
-                                                Create A Review
-                                            </Button>
-                                        </Link>                                                                                
-                                    </>
-                                }
-                            </MenuItem>
+                            {!user.userName && 
+                                <MenuItem>                        
+                                    <Link to={"/signin"} style={linkStyle}>
+                                        <Button
+                                            sx={{ display: 'block' }}
+                                        >
+                                            Sign In
+                                        </Button>
+                                    </Link>                               
+                                </MenuItem>
+                            }
+                            
 
-                            <MenuItem>                                     
-                                {user.isAdmin &&
+                            {user.userName && !user.isAdmin && 
+                                <MenuItem>                                   
+                                    <Link to={"/createreview"} style={linkStyle}>
+                                        <Button
+                                            sx={{ display: 'block' }}
+                                        >
+                                            Create A Review
+                                        </Button>
+                                    </Link>                        
+                                </MenuItem>
+                            }
+
+                            
+                            {user.isAdmin &&
+                                <MenuItem>                             
                                     <Link to={"/createhotel"} style={linkStyle}>
                                         <Button
                                             sx={{ display: 'block' }}
                                         >
                                             Create A Hotel
                                         </Button>
-                                    </Link>        
-                                }  
-                            </MenuItem>    
+                                    </Link>                          
+                                </MenuItem>    
+                            }
 
-                            <MenuItem>
-                                {user.userName &&
-                                    <Button onClick={signUserOut}>Log out</Button>
-                                }
-                            </MenuItem>                                      
+                            {user.userName &&
+                                <MenuItem>                                
+                                    <Button onClick={signUserOut}>Log out</Button>                                
+                                </MenuItem>  
+                            }
                         </Menu>
                     </Box>
                     
@@ -216,26 +212,27 @@ export default function Header() {
                             </Button>
                         </Link>
 
-                        {!user.userName && 
-                            <>
-                                <Link to={"/signin"} style={linkStyle}>
-                                    <Button
-                                        sx={{ color: 'white', display: 'block' }}
-                                    >
-                                        Sign In
-                                    </Button>
-                                </Link>
-
-                                <Link to={"/login"} style={linkStyle}>
-                                    <Button
-                                        sx={{ color: 'white', display: 'block' }}
-                                        // onClick={setUser("aladdin@ukr.net")}
-                                    >   
-                                        Log In
-                                    </Button>
-                                </Link>
-                            </>
+                        {!user.userName &&
+                            <Link to={"/login"} style={linkStyle}>
+                                <Button
+                                    sx={{ color: 'white', display: 'block' }}
+                                    // onClick={setUser("aladdin@ukr.net")}
+                                >   
+                                    Log In
+                                </Button>
+                            </Link>
                         }
+
+                        {!user.userName &&     
+                            <Link to={"/signin"} style={linkStyle}>
+                                <Button
+                                    sx={{ color: 'white', display: 'block' }}
+                                >
+                                    Sign In
+                                </Button>
+                            </Link>                            
+                        }
+
                         {user.userName && !user.isAdmin &&                            
                             <Link to={"/createreview"} style={linkStyle}>
                                 <Button

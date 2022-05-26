@@ -2,13 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import {collection, addDoc } from "firebase/firestore";
 import { v4 } from "uuid";
-import { ref, uploadBytes, getDownloadURL, getStorage, deleteObject } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { db, storage } from "../firebase-config";
 import { UserContext } from '../App';
 import { Box, Typography, FormGroup, FormControlLabel,
      Checkbox, TextField, FormControl, InputLabel, Select,
-     MenuItem, Button, Container, Paper, Grid
+     MenuItem, Button, Grid, IconButton
  } from '@mui/material';
+ import CancelIcon from '@mui/icons-material/Cancel';
 
  let key = 0;
 
@@ -21,9 +22,10 @@ export default function CreateHotel() {
     const [warmPool, setWarmPool] = useState(null);
     const [aquapark, setAquapark] = useState(null);
     const [kidsClub, setKidsClub] = useState(null);
-    const [imageUpload, setImageUpload] = useState(null);    
+    const [imagesUpload, setImagesUpload] = useState(null);    
     const [imageList, setImageList] = useState([]);
-    const [refresh, setRefresh] = useState(0);
+   
+
 
     // const imageListRef = ref(storage, "images/")
 
@@ -45,13 +47,16 @@ export default function CreateHotel() {
     };
 
     const uploadImage = () => {
-        if (imageUpload == null) return;
-        const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-        uploadBytes(imageRef, imageUpload).then((snapshot) => {
-            getDownloadURL(snapshot.ref).then((url) => {
-                setImageList((prev) => [...prev, url])
-            })
-        })                
+        if (imagesUpload == null) return;
+            console.log(imagesUpload)
+        for (let i = 0; i < imagesUpload.length; i++) {            
+            const imageRef = ref(storage, `images/${imagesUpload[i].name + v4()}`);
+            uploadBytes(imageRef, imagesUpload[i]).then((snapshot) => {
+                getDownloadURL(snapshot.ref).then((url) => {
+                    setImageList((prev) => [...prev, url])
+                })
+            })     
+        }     
     }
 
     const deleteImgHandler = async (url) => {
@@ -60,12 +65,11 @@ export default function CreateHotel() {
             deleteObject(imageRef);
             let list = imageList;
             const index = list.findIndex(item => item === url);
-            list.splice(index, 1);
-            // setImageList(null);
-            setImageList(() => (list));
-            setRefresh((prev) => prev++);
-        }
-        
+            list.splice(index, 1);            
+            setImageList(list);            
+            setImagesUpload(key++);
+            
+        }        
         catch(error) {
             console.log("Deleting error!");
         }
@@ -84,6 +88,9 @@ export default function CreateHotel() {
                 <Typography
                     variant="h5"
                     sx={{
+                        ml: 2,
+                        mt: 2,
+                        color: "text.secondary",
                         fontWeight: 700
                     }}
                 >
@@ -155,8 +162,11 @@ export default function CreateHotel() {
                     sx={{
                         m: 1,
                         width: 400
-                    }}                     
-                    onChange={(event) => setImageUpload(event.target.files[0])} 
+                    }} 
+                    inputProps={ {multiple: "true"} }                            
+                    onChange={(event) => {
+                        setImagesUpload(event.target.files)                        
+                    }}                    
                 />
 
                 <Button variant="outlined" 
@@ -178,30 +188,20 @@ export default function CreateHotel() {
 
             <Grid item xs={12} md={5} sx={{ minWidth: 300, mt: 2}}>
                 <Grid container spacing={1}>
-                {imageList.map((url) => {
-                    {key++} 
-                    return (
-                        <Grid item key={key}>
-                            <img src={url} style={{ maxWidth: 300}}/>
-                            <Button 
-                                variant="outlined"
-                                size="small"
-                                onClick={() => deleteImgHandler(url)}
-                            >
-                                X
-                            </Button>
-                        </Grid>
-                        // <Grid item xs={12} md={6} key={key} justify="space-between"  
-                        // style={{backgroundImage: `url(${url})`,   
-                        //  width:'200px',
-                        // //   marginTop: 20, 
-                        //   backgroundSize:'contain',
-                        //   backgroundRepeat: 'no-repeat'
-                        //   }}>
-                        // </Grid> xs={12} lg={7} 
-                        
-                    )                             
-                })}                
+                    {imageList.map((url) => {
+                        {key++} 
+                        return (
+                            <Grid item key={key} style={{ position: "relative" }}>
+                                <img src={url} style={{ maxWidth: 300}}/>
+                                <IconButton                                 
+                                    style={{ position: "absolute", top: "10px", right: "0" }}
+                                    onClick={() => deleteImgHandler(url)}
+                                >
+                                    <CancelIcon color="error" fontSize="large"/>
+                                </IconButton>                           
+                            </Grid>                        
+                        )                             
+                    })}                
                 </Grid>
             </Grid>
         </Grid>
