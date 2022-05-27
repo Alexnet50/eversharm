@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
-import {collection, addDoc } from "firebase/firestore";
+import {collection, addDoc, getDoc, doc } from "firebase/firestore";
 import { v4 } from "uuid";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { db, storage } from "../firebase-config";
@@ -19,9 +19,9 @@ export default function CreateHotel() {
     const [hotelDescription, setHotelDescription] = useState("");
     const [stars, setStars] = useState("");
     const [line, setLine] = useState("");
-    const [warmPool, setWarmPool] = useState(null);
-    const [aquapark, setAquapark] = useState(null);
-    const [kidsClub, setKidsClub] = useState(null);
+    const [warmPool, setWarmPool] = useState(false);
+    const [aquapark, setAquapark] = useState(false);
+    const [kidsClub, setKidsClub] = useState(false);
     const [imagesUpload, setImagesUpload] = useState(null);    
     const [imageList, setImageList] = useState([]);
    
@@ -32,9 +32,9 @@ export default function CreateHotel() {
     const navigate = useNavigate();
     const hotelsCollectionRef = collection(db, "hotels");
     
-    const createHotel = async () => {
+    const createHotel = async () => {        
         await addDoc(hotelsCollectionRef, {
-            hotelName, 
+            hotelName,           
             hotelDescription, 
             stars,
             line,
@@ -77,10 +77,31 @@ export default function CreateHotel() {
 
     }
 
+    const formFill = async () => {
+        if (user.editableHotel === null) return;
+        const hotelDoc = doc(db, "hotels", user.editableHotel);
+        const hotelData = await getDoc(hotelDoc);
+        const hotelFields = hotelData._document.data.value.mapValue.fields;
+        setHotelName(hotelFields.hotelName.stringValue);
+        setHotelDescription(hotelFields.hotelDescription.stringValue);
+        setStars(hotelFields.stars.integerValue);
+        setLine(hotelFields.line.integerValue);
+        setAquapark(hotelFields.aquapark.booleanValue);
+        setWarmPool(hotelFields.warmPool.booleanValue);
+        setKidsClub(hotelFields.kidsClub.booleanValue);
+        setImageList(
+                hotelFields.imageList.arrayValue.values.map((value) => value.stringValue)
+            )
+        console.log(hotelFields);
+        console.log(warmPool);
+        // console.log(hotelData._document.data.value.mapValue.fields.hotelName);
+    }
+
+    
     useEffect(() => {
         !user.isAdmin && navigate("/");
-        
-    })
+        formFill();
+    },[])
 
     return (
         <Grid container spacing={1}>
@@ -147,15 +168,26 @@ export default function CreateHotel() {
                 </FormControl>
 
                 <FormGroup sx={{ m: 1 }}>
-                    <FormControlLabel control={<Checkbox 
-                        onChange={event => setWarmPool(event.target.value)}
-                    />} label="Heated swimming pool" />
-                    <FormControlLabel control={<Checkbox
-                        onChange={event => setAquapark(event.target.value)}
-                    />} label="Aquapark or water slides" />
-                    <FormControlLabel control={<Checkbox 
-                        onChange={event => setKidsClub(event.target.value)}
-                    />} label="Kids club" />
+                    <FormControlLabel control={
+                        <Checkbox 
+                            checked={warmPool}
+                            onChange={event => setWarmPool(event.target.checked)}
+                        />} 
+                        label="Heated swimming pool" 
+                    />
+                    <FormControlLabel control={
+                        <Checkbox
+                            checked={aquapark}
+                            onChange={event => setAquapark(event.target.checked)}
+                        />} 
+                        label="Aquapark or water slides" 
+                    />
+                    <FormControlLabel control={
+                        <Checkbox 
+                            checked={kidsClub}
+                            onChange={event => setKidsClub(event.target.checked)}
+                        />} 
+                        label="Kids club" />
                 </FormGroup>           
 
                 <TextField type="file" 
@@ -163,7 +195,7 @@ export default function CreateHotel() {
                         m: 1,
                         width: 400
                     }} 
-                    inputProps={ {multiple: "true"} }                            
+                    inputProps={ {multiple: true} }                            
                     onChange={(event) => {
                         setImagesUpload(event.target.files)                        
                     }}                    

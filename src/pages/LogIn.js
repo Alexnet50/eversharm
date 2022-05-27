@@ -54,9 +54,9 @@ function LogIn() {
     //     window.location.reload();
     // };
 
-    useEffect(()=>{
-        console.log(user.userName)
-    }, [user])
+    // useEffect(()=>{
+    //     console.log(user.userName)
+    // }, [user])
     
     return (        
         <Box className="logIn">          

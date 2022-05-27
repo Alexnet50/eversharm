@@ -33,7 +33,8 @@ let key = 0;
 function App() {
     const [user, setUser] = useState({
         userName: null,
-        isAdmin: false
+        isAdmin: false,
+        editableHotel: null
     });    
     const value = useMemo(() => ({ user, setUser }), [user]);
     // const value = useMemo(() => ({ user, setUser, isAdmin, setIsAdmin }), []);        
@@ -65,7 +66,7 @@ function App() {
                     <Header />                        
                     <Routes>
                         <Route path="/" element={<Home /> } />
-                        <Route path="/createhotel" element={<CreateHotel setImageList={setImageList} /> } />
+                        <Route path="/createhotel" element={<CreateHotel /> } />
                         <Route path="/login" element={<LogIn /> } />
                         <Route path="/signin" element={<SignIn /> } />
                         <Route path="/createreview" element={<CreateReview /> } />
