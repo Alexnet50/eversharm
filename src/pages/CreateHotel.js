@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
-import {collection, addDoc, getDoc, doc } from "firebase/firestore";
+import {collection, addDoc, getDoc, doc, deleteDoc } from "firebase/firestore";
 import { v4 } from "uuid";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { db, storage } from "../firebase-config";
@@ -32,7 +32,7 @@ export default function CreateHotel() {
     const navigate = useNavigate();
     const hotelsCollectionRef = collection(db, "hotels");
     
-    const createHotel = async () => {        
+    const createHandler = async () => {        
         await addDoc(hotelsCollectionRef, {
             hotelName,           
             hotelDescription, 
@@ -45,6 +45,25 @@ export default function CreateHotel() {
         });
         navigate("/"); 
     };
+
+    const saveHandler = async () => {
+        const hotelDoc = doc(db, "hotels", user.editableHotel);
+        await deleteDoc(hotelDoc);       
+        user.editableHotel = null;
+        createHandler();
+    };
+
+    const deleteHandler = async () => {        
+        const hotelDoc = doc(db, "hotels", user.editableHotel);
+        await deleteDoc(hotelDoc);       
+        user.editableHotel = null;
+        navigate("/"); 
+    };  
+
+    const cancelHandler = () => {            
+        user.editableHotel = null;
+        navigate("/"); 
+    };  
 
     const uploadImage = () => {
         if (imagesUpload == null) return;
@@ -73,9 +92,7 @@ export default function CreateHotel() {
         catch(error) {
             console.log("Deleting error!");
         }
-          
-
-    }
+    };
 
     const formFill = async () => {
         if (user.editableHotel === null) return;
@@ -90,18 +107,24 @@ export default function CreateHotel() {
         setWarmPool(hotelFields.warmPool.booleanValue);
         setKidsClub(hotelFields.kidsClub.booleanValue);
         setImageList(
-                hotelFields.imageList.arrayValue.values.map((value) => value.stringValue)
-            )
-        console.log(hotelFields);
-        console.log(warmPool);
-        // console.log(hotelData._document.data.value.mapValue.fields.hotelName);
-    }
-
+            hotelFields.imageList.arrayValue.values.map((value) => value.stringValue)
+        );        
+    };
     
     useEffect(() => {
         !user.isAdmin && navigate("/");
         formFill();
-    },[])
+    },[]);
+
+    const clearHandler = () => {
+        setHotelName("");
+        setHotelDescription("");
+        setStars("");
+        setLine("");
+        setAquapark(false);
+        setWarmPool(false);
+        setKidsClub(false);
+    };
 
     return (
         <Grid container spacing={1}>
@@ -208,15 +231,58 @@ export default function CreateHotel() {
                     }}
                     onClick={uploadImage}>Upload image
                 </Button>
+                
+                {user.editableHotel 
+                    ?
+                        <Button variant="outlined"
+                        sx={{
+                            m: 1,
+                            width: 200
+                        }}
+                        onClick={saveHandler}>
+                            Save a hotel page
+                        </Button> 
+                    :
+                        <Button variant="outlined"
+                        sx={{
+                            m: 1,
+                            width: 200
+                        }}
+                        onClick={createHandler}>
+                            Create a hotel page
+                        </Button> 
+                }                
 
-                <Button variant="outlined"
-                    sx={{
-                        m: 1,
-                        width: 200
-                    }}
-                    onClick={createHotel}>
-                        {hotelName ? "Save a " : "Create a "}hotel page
-                </Button>            
+                <Box sx={{ display: 'flex', flexDirection: 'row'}}>
+                    <Button variant="contained" 
+                        sx={{
+                            m: 1,
+                            width: 200
+                        }}
+                        onClick={cancelHandler}>
+                            Cancel
+                    </Button>
+
+                    {user.editableHotel &&
+                        <Button variant="contained" 
+                        sx={{
+                            m: 1,
+                            width: 200
+                        }}
+                        onClick={deleteHandler}>
+                            Delete a hotel
+                        </Button>
+                    }
+
+                    <Button variant="contained" 
+                        sx={{
+                            m: 1,
+                            width: 200
+                        }}
+                        onClick={clearHandler}>
+                            Clear form
+                    </Button>
+                </Box>           
             </Grid>
 
             <Grid item xs={12} md={5} sx={{ minWidth: 300, mt: 2}}>

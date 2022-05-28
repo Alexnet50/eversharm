@@ -21,10 +21,7 @@ import Hotel from "./pages/Hotel";
 
 
 export const UserContext = createContext({
-    user: {
-        userName: null,
-        isAdmin: false
-    },
+    user: {},
     setUser: () => {}    
 });
 
