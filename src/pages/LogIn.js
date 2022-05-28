@@ -6,6 +6,11 @@ import { UserContext } from '../App';
 import { Box, Button, TextField, Typography } from "@mui/material";
 
 
+//ADMIN
+
+//LOGIN: aladdin@ukr.net
+//PASSWORD: login123
+
 function LogIn() {   
     const [logInEmail, setLogInEmail] = useState('');
     const [logInPassword, setLogInPassword] = useState('')

@@ -30,6 +30,11 @@ export const UserContext = createContext({
 
 let key = 0;
 
+//ADMIN
+
+//LOGIN: aladdin@ukr.net
+//PASSWORD: login123
+
 function App() {
     const [user, setUser] = useState({
         userName: null,

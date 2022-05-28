@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {collection, addDoc } from "firebase/firestore";
 import {auth, db} from "../firebase-config";
 import { UserContext  } from '../App';
+import { Box, Button, TextField, Typography } from '@mui/material';
 
 export default function CreateReview() {
     const [reviewTitle, setReviewTitle] = useState("");
@@ -28,21 +29,20 @@ export default function CreateReview() {
     
 
     return (
-    <div className="createPostPage">
-        <div className="createContainer">
-            <h3>Create A Review</h3>
-            <div className="inputPost">
-                <h5>Title:</h5>
-                <input placeholder='Review title' value={reviewTitle}
-                    onChange={event => setReviewTitle(event.target.value)}/>
-            </div>
-            <div className="inputPost">
-            <h5>Review:</h5>
-                <textarea placeholder='Review text' value={reviewText}
-                    onChange={event => setReviewText(event.target.value)}/>
-            </div>
-            <button onClick={createReview}>Add a review</button>
-        </div>
-    </div>
+    <Box className="createPostPage">        
+        <Typography variant="h5">Create A Review</Typography>
+        <Box className="inputPost">
+            <Typography variant="h6">Title:</Typography>
+            <TextField placeholder='Review title' value={reviewTitle}
+                onChange={event => setReviewTitle(event.target.value)}/>
+        
+        <Typography variant="h6">Review:</Typography>
+            <TextField placeholder='Review text'
+                value={reviewText} multiline rows={6}
+                onChange={event => setReviewText(event.target.value)}/>
+        </Box>
+        <Button size="small" variant="outlined" onClick={createReview}>Add a review</Button>
+        
+    </Box>
     )
 }

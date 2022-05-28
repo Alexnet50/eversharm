@@ -4,7 +4,7 @@ import {collection, getDocs, deleteDoc, doc} from "firebase/firestore";
 import {db} from "../firebase-config";
 import { UserContext } from '../App';
 import { Box, Button, Typography } from "@mui/material";
-import HotelList from './HotelList';
+import HotelsList from './HotelsList';
 
 let key = 0;
 export default function Home() {
@@ -32,7 +32,7 @@ export default function Home() {
     
     return (
         <Box> 
-            <HotelList />
+            <HotelsList />
 
             {reviews.map((review => {
                 key++;

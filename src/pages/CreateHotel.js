@@ -115,7 +115,7 @@ export default function CreateHotel() {
                         fontWeight: 700
                     }}
                 >
-                    Create A New Hotel Page
+                    {hotelName ? "Edit A " : "Create A New "}Hotel Page
                 </Typography>            
                 
                 <TextField placeholder="Hotel name" size="small" value={hotelName}
@@ -214,7 +214,8 @@ export default function CreateHotel() {
                         m: 1,
                         width: 200
                     }}
-                    onClick={createHotel}>Create hotel page
+                    onClick={createHotel}>
+                        {hotelName ? "Save a " : "Create a "}hotel page
                 </Button>            
             </Grid>
 

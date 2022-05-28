@@ -8,12 +8,12 @@ import { Box, Button, Typography, Grid, Card,
 
 
 let key = 0;
-export default function HotelList() {
+export default function HotelsList() {
     const {user, setUser} = useContext(UserContext);
     const [hotels, setHotels] = useState([]);
     const hotelsRef = collection(db, 'hotels');  
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const linkStyle = {        
         textDecoration: "none",        
     };
@@ -26,12 +26,8 @@ export default function HotelList() {
 
     const editHandler = (id) => {
         console.log(id) 
-        setUser((prev) => ({ ...prev, editableHotel: id }))
-        // .then (() =>
-        //     // navigate("/createhotel")
-        // ); 
-        console.log(user)        
-        
+        setUser((prev) => ({ ...prev, editableHotel: id }))        
+        navigate("/createhotel")       
     };    
 
     useEffect(() => {        
