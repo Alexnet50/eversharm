@@ -11,11 +11,10 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 //LOGIN: aladdin@ukr.net
 //PASSWORD: login123
 
-function LogIn() {   
+export function LogIn(props) {   
     const [logInEmail, setLogInEmail] = useState('');
     const [logInPassword, setLogInPassword] = useState('')
-    const {user, setUser} = useContext(UserContext);
-    // const [isAdmin, setIsAdmin] = useContext(UserContext.isAdminValue);
+    const {user, setUser} = useContext(UserContext);   
 
     let errorCode;
     let errorMessage;
@@ -24,14 +23,6 @@ function LogIn() {
     // const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     // const passReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
-    
-    
-
-    // onAuthStateChanged(auth, (currentUser) => {
-    //     if (currentUser) localStorage.setItem("email", currentUser.email);          
-    // });
-    // console.log(setUser)
-    // console.log(setIsAdmin)
     const logIn = async () => {
        
         try {
@@ -42,7 +33,8 @@ function LogIn() {
             setUser((prev) => ({ ...prev, userName: logInEmail }));
            
             if (logInEmail === "aladdin@ukr.net") setUser((prev) => ({ ...prev, isAdmin: true }));            
-            // console.log(setUser)            
+            // console.log(setUser) 
+            props.callback(false);           
             navigate("/");
         } 
         catch (error){
@@ -52,28 +44,30 @@ function LogIn() {
             console.log(errorMessage);
         }
     };
-
-    // const logOut = async () => {
-    //     await signOut(auth);
-    //     localStorage.removeItem("email");
-    //     window.location.reload();
-    // };
-
-    // useEffect(()=>{
-    //     console.log(user.userName)
-    // }, [user])
-    
+   
     return (        
-        <Box className="logIn">          
-            <Typography variant="h6">Log In</Typography>
-            <TextField placeholder="Enter an email" size="small" value={logInEmail}
-                onChange={event => setLogInEmail(event.target.value)}/>
-            <TextField placeholder="Enter a password" size="small" value={logInPassword}
-                onChange={event => setLogInPassword(event.target.value)}/>
+        <Box sx={{ m: 2, display: 'flex', flexDirection: 'column'}}>          
+            <Typography 
+                variant="h6" 
+                sx={{ 
+                    mb: 2,                                                                            
+                    color: 'secondary'                            
+                }}
+            >
+                Log In
+            </Typography>
+            <TextField placeholder="Enter an email" 
+                size="small" value={logInEmail} sx={{ mb: 2 }}
+                onChange={event => setLogInEmail(event.target.value)}
+            />
+            <TextField placeholder="Enter a password" 
+                size="small" value={logInPassword} sx={{ mb: 2 }}
+                onChange={event => setLogInPassword(event.target.value)}
+            />
             
             <Button variant="outlined" onClick={logIn}>Log in</Button>            
         </Box>
     );
 }
 
-export default LogIn;
+

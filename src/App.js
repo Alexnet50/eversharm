@@ -12,8 +12,8 @@ import { Container,
 import {storage} from "./firebase-config";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import Home from "./pages/Home";
-import LogIn from "./pages/LogIn";
-import SignIn from "./pages/SignIn";
+// import LogIn from "./pages/LogIn";
+// import SignIn from "./pages/SignIn";
 import CreateReview from "./pages/CreateReview";
 import Header from "./pages/Header";
 import CreateHotel from "./pages/CreateHotel";
@@ -69,8 +69,8 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home /> } />
                         <Route path="/createhotel" element={<CreateHotel /> } />
-                        <Route path="/login" element={<LogIn /> } />
-                        <Route path="/signin" element={<SignIn /> } />
+                        {/* <Route path="/login" element={<LogIn /> } /> */}
+                        {/* <Route path="/signin" element={<SignIn /> } /> */}
                         <Route path="/createreview" element={<CreateReview /> } />
                         <Route path="/hotel" element={<Hotel /> } />
                     </Routes>                    

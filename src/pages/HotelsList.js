@@ -35,8 +35,8 @@ export default function HotelsList() {
     }, []); 
 
     
-    return (                              
-        <Grid container spacing={2} sx={{ mt: 1}}>
+    return (                                          
+        <Grid container spacing={2} sx={{ mt: 1, ml: "auto", mr: "auto" }}>
             {hotels.map(hotel => {
                 key++;                            
                 return (
@@ -86,6 +86,6 @@ export default function HotelsList() {
                     </Grid>                                                       
                 )
             })}
-        </Grid>                        
+        </Grid>                             
     )                
 }
