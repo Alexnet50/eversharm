@@ -8,7 +8,7 @@ import HotelsList from './HotelsList';
 
 let key = 0;
 export default function Home() {
-    const {user} = useContext(UserContext);
+    const {user, setUser} = useContext(UserContext);
     const [reviews, setReviews] = useState([]);
     const reviewsRef = collection(db, 'reviews');
     
@@ -25,7 +25,8 @@ export default function Home() {
         getReviews();
     };    
 
-    useEffect(() => {        
+    useEffect(() => {         
+        setUser((prev) => ({...prev, currentHotel: null}));
         getReviews();
     }, []); 
 

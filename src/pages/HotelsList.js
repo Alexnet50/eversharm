@@ -1,32 +1,37 @@
 import React, { useState, useContext, useEffect } from 'react';
-import {  Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {collection, getDocs, deleteDoc, doc} from "firebase/firestore";
 import {db} from "../firebase-config";
 import { UserContext } from '../App';
 import { Box, Button, Typography, Grid, Card,
      CardMedia, CardContent, CardActions } from "@mui/material";
-
-
+     
 let key = 0;
+
 export default function HotelsList() {
     const {user, setUser} = useContext(UserContext);
     const [hotels, setHotels] = useState([]);
     const hotelsRef = collection(db, 'hotels');  
 
     const navigate = useNavigate();
-    const linkStyle = {        
-        textDecoration: "none",        
-    };
-
-    const getHotels = async() => {
-        // setHotels([]);
+    
+    const getHotels = async() => {        
         const data = await getDocs(hotelsRef);
         setHotels(data.docs.map((doc) => ({...doc.data(), id: doc.id})));
     };
 
-    const editHandler = (id) => {
-        console.log(id) 
-        setUser((prev) => ({ ...prev, editableHotel: id }))        
+    const infoHandler = (id) => {         
+        setUser((prev) => ({ ...prev, currentHotel: id }))        
+        navigate("/hotel")       
+    };    
+
+    const reviewHandler = (id) => {         
+        setUser((prev) => ({ ...prev, currentHotel: id }))        
+        navigate("/createreview")       
+    };    
+
+    const editHandler = (id) => {         
+        setUser((prev) => ({ ...prev, currentHotel: id }))        
         navigate("/createhotel")       
     };    
 
@@ -63,23 +68,31 @@ export default function HotelsList() {
                                     {hotel.hotelDescription}
                                 </Typography>
                             </CardContent>
-                            <CardActions>
-                                {user.userName &&                                                
-                                    <Link to={"/createreview"} style={linkStyle}><Button size="small" sx={{ mr: 1}}>Add A Review</Button></Link>
+                            <CardActions>                                                                
+                                <Button 
+                                    size="small" sx={{ mr: 1}}
+                                    onClick={() => infoHandler(hotel.id)}
+                                >
+                                    More Info
+                                </Button>
+                                
+                                {user.userName && !user.isAdmin &&                               
+                                    <Button 
+                                        size="small" sx={{ mr: 1}}
+                                        onClick={() => reviewHandler(hotel.id)}
+                                    >
+                                        Add A Review
+                                    </Button>                                   
                                 }  
 
-                                <Link to={"/hotel"} style={linkStyle}><Button size="small" sx={{ mr: 1}}>More Info</Button></Link>
-                                
-                                {user.isAdmin &&                                                
-                                    // <Link to={"/createhotel"} style={linkStyle}>
-                                        <Button 
-                                            size="small"
-                                            sx={{ mr: 1}}
-                                            onClick={() => editHandler(hotel.id)}
-                                        >
-                                            Edit Hotel
-                                        </Button>
-                                    // </Link>
+                                {user.isAdmin &&                              
+                                    <Button 
+                                        size="small"
+                                        sx={{ mr: 1}}
+                                        onClick={() => editHandler(hotel.id)}
+                                    >
+                                        Edit Hotel
+                                    </Button>                                    
                                 }                                                 
                             </CardActions>
                         </Card>

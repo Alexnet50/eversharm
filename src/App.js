@@ -1,14 +1,6 @@
 import React, {useEffect, useState, useMemo, createContext} from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { Container,        
-        Card,
-        CardContent,
-        CardActions,
-        Button,
-        CardMedia,
-        Typography,
-        Grid
-        } from '@mui/material';
+import { Container } from '@mui/material';
 import {storage} from "./firebase-config";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import Home from "./pages/Home";
@@ -36,7 +28,7 @@ function App() {
     const [user, setUser] = useState({
         userName: null,
         isAdmin: false,
-        editableHotel: null
+        currentHotel: null
     });    
     const value = useMemo(() => ({ user, setUser }), [user]);
     // const value = useMemo(() => ({ user, setUser, isAdmin, setIsAdmin }), []);        
@@ -45,19 +37,19 @@ function App() {
 
     
 
-    useEffect(() => {        
-        listAll(ref(storage, "images/")).then((response) => {
-            setImageList([]);
-            // let imageList = [];
-            response.items.forEach((item) => {
-                getDownloadURL(item).then((url) => {
-                    // imageList.push(url);
-                    setImageList((prev) => [...prev, url]); 
-                })
-            });
-            // setImageList(imageList);
-        })
-    }, [])
+    // useEffect(() => {        
+    //     listAll(ref(storage, "images/")).then((response) => {
+    //         setImageList([]);
+    //         // let imageList = [];
+    //         response.items.forEach((item) => {
+    //             getDownloadURL(item).then((url) => {
+    //                 // imageList.push(url);
+    //                 setImageList((prev) => [...prev, url]); 
+    //             })
+    //         });
+    //         // setImageList(imageList);
+    //     })
+    // }, [])
     // console.log(currentUser);
 
     return (
@@ -93,36 +85,3 @@ function App() {
 
 export default App;
 
-{/* <Grid container spacing={2} sx={{ mt: 1}}>
-                        {imageList.map((url) => {
-                            key++;                            
-                            return (
-                                <Grid item key={key}>
-                                    <Card sx={{ maxWidth: 345 }}>
-                                        <CardMedia
-                                            component="img"
-                                            height="140"
-                                            image={url}
-                                            alt="travel"
-                                    />
-                                        <CardContent>
-                                            <Typography gutterBottom variant="h5" component="div">
-                                                Hotel
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                            </Typography>
-                                        </CardContent>
-                                        <CardActions>
-                                            {user.userName &&                                                
-                                                <Link to={"/createreview"}><Button size="small" sx={{ mr: 1}}>Add A Review</Button></Link>
-                                            }
-                                            {/* <Button size="small">Add a reviev</Button> */}
-                                            // <Button size="small">More info</Button>
-                    //                     </CardActions>
-                    //                 </Card>
-                    //             </Grid>                                                       
-                    //         )
-                    //     })}
-                    // </Grid> */}

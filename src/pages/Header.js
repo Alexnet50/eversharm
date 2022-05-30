@@ -48,14 +48,7 @@ export default function Header() {
 
     const toggleSigninDrawer = () => {        
         setSigninDrawerState(!signinDrawerState);
-    };
-        
-    // useEffect(() => {        
-    //     auth.currentUser != null && auth.currentUser.email === "aladdin@ukr.net" ?
-    //     setIsAdmin(true) :
-    //     setIsAdmin(false);
-    //     console.log(isAdmin);
-    // }, []); 
+    }; 
 
     const linkStyle = {        
         textDecoration: "none",        

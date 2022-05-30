@@ -14,7 +14,7 @@ import { Box, Typography, FormGroup, FormControlLabel,
  let key = 0;
 
 export default function CreateHotel() {
-    const {user} = useContext(UserContext);
+    const {user, setUser} = useContext(UserContext);
     const [hotelName, setHotelName] = useState("");
     const [hotelDescription, setHotelDescription] = useState("");
     const [stars, setStars] = useState("");
@@ -24,7 +24,7 @@ export default function CreateHotel() {
     const [kidsClub, setKidsClub] = useState(false);
     const [imagesUpload, setImagesUpload] = useState(null);    
     const [imageList, setImageList] = useState([]);
-   
+    const reviewsList = [];
 
 
     // const imageListRef = ref(storage, "images/")
@@ -41,33 +41,34 @@ export default function CreateHotel() {
             warmPool,
             aquapark,
             kidsClub,
-            imageList
+            imageList,
+            reviewsList
         });
         navigate("/"); 
     };
 
     const saveHandler = async () => {
-        const hotelDoc = doc(db, "hotels", user.editableHotel);
+        const hotelDoc = doc(db, "hotels", user.currentHotel);
         await deleteDoc(hotelDoc);       
-        user.editableHotel = null;
+        setUser((prev) => ({...prev, currentHotel: null}));
         createHandler();
     };
 
     const deleteHandler = async () => {        
-        const hotelDoc = doc(db, "hotels", user.editableHotel);
+        const hotelDoc = doc(db, "hotels", user.currentHotel);
         await deleteDoc(hotelDoc);       
-        user.editableHotel = null;
+        setUser((prev) => ({...prev, currentHotel: null}));
         navigate("/"); 
     };  
 
     const cancelHandler = () => {            
-        user.editableHotel = null;
+        setUser((prev) => ({...prev, currentHotel: null}));
         navigate("/"); 
     };  
 
     const uploadImage = () => {
         if (imagesUpload == null) return;
-            console.log(imagesUpload)
+            
         for (let i = 0; i < imagesUpload.length; i++) {            
             const imageRef = ref(storage, `images/${imagesUpload[i].name + v4()}`);
             uploadBytes(imageRef, imagesUpload[i]).then((snapshot) => {
@@ -86,8 +87,7 @@ export default function CreateHotel() {
             const index = list.findIndex(item => item === url);
             list.splice(index, 1);            
             setImageList(list);            
-            setImagesUpload(key++);
-            
+            setImagesUpload(key++);            
         }        
         catch(error) {
             console.log("Deleting error!");
@@ -95,8 +95,8 @@ export default function CreateHotel() {
     };
 
     const formFill = async () => {
-        if (user.editableHotel === null) return;
-        const hotelDoc = doc(db, "hotels", user.editableHotel);
+        if (user.currentHotel === null) return;
+        const hotelDoc = doc(db, "hotels", user.currentHotel);
         const hotelData = await getDoc(hotelDoc);
         const hotelFields = hotelData._document.data.value.mapValue.fields;
         setHotelName(hotelFields.hotelName.stringValue);
@@ -232,9 +232,9 @@ export default function CreateHotel() {
                     onClick={uploadImage}>Upload image
                 </Button>
                 
-                {user.editableHotel 
+                {user.currentHotel 
                     ?
-                        <Button variant="outlined"
+                        <Button variant="contained"
                         sx={{
                             m: 1,
                             width: 200
@@ -243,7 +243,7 @@ export default function CreateHotel() {
                             Save a hotel page
                         </Button> 
                     :
-                        <Button variant="outlined"
+                        <Button variant="contained"
                         sx={{
                             m: 1,
                             width: 200
@@ -254,7 +254,7 @@ export default function CreateHotel() {
                 }                
 
                 <Box sx={{ display: 'flex', flexDirection: 'row'}}>
-                    <Button variant="contained" 
+                    <Button variant="outlined" 
                         sx={{
                             m: 1,
                             width: 200
@@ -263,7 +263,7 @@ export default function CreateHotel() {
                             Cancel
                     </Button>
 
-                    {user.editableHotel &&
+                    {user.currentHotel &&
                         <Button variant="contained" 
                         sx={{
                             m: 1,
@@ -274,7 +274,7 @@ export default function CreateHotel() {
                         </Button>
                     }
 
-                    <Button variant="contained" 
+                    <Button variant="outlined" 
                         sx={{
                             m: 1,
                             width: 200
