@@ -9,7 +9,7 @@ import { Box, Typography, FormGroup, FormControlLabel,
      Checkbox, TextField, FormControl, InputLabel, Select,
      MenuItem, Button, Grid, IconButton
  } from '@mui/material';
- import CancelIcon from '@mui/icons-material/Cancel';
+import CancelIcon from '@mui/icons-material/Cancel';
 
  let key = 0;
 
@@ -24,7 +24,7 @@ export default function CreateHotel() {
     const [kidsClub, setKidsClub] = useState(false);
     const [imagesUpload, setImagesUpload] = useState(null);    
     const [imageList, setImageList] = useState([]);
-    const reviewsList = [];
+    const [reviewsList, setReviewsList] = useState([]);
 
 
     // const imageListRef = ref(storage, "images/")
@@ -296,7 +296,7 @@ export default function CreateHotel() {
                                     style={{ position: "absolute", top: "10px", right: "0" }}
                                     onClick={() => deleteImgHandler(url)}
                                 >
-                                    <CancelIcon color="error" fontSize="large"/>
+                                    <CancelIcon color="error" />
                                 </IconButton>                           
                             </Grid>                        
                         )                             

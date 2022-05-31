@@ -35,7 +35,7 @@ export default function Home() {
         <Box> 
             <HotelsList />
 
-            {reviews.map((review => {
+            {/* {reviews.map((review => {
                 key++;
                     return (
                         <Box className="review" key={key} sx={{ m: 1, p: 2, border: '1px solid' }}>
@@ -47,7 +47,7 @@ export default function Home() {
                                 && <Button onClick={() => deleteHandler(review.id)}>Delete review</Button>}
                         </Box>                        
                     )
-                }))}
+                }))} */}
         </Box>    
     )
 }
