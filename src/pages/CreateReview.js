@@ -71,11 +71,7 @@ export default function CreateReview() {
             cleanliness: cleanliness,
             service: service
         }];
-        const newImageList = [...hotel.imageList, ...imageList];       
-        
-        console.log(hotel.id)
-        console.log(newReviewsList)
-        console.log(newImageList)
+        const newImageList = [...hotel.imageList, ...imageList];        
         await updateDoc(hotelDoc, { 
             reviewsList: newReviewsList,
             imageList: newImageList

@@ -119,7 +119,7 @@ export default function CreateHotel() {
     const clearHandler = () => {
         setHotelName("");
         setHotelDescription("");
-        setStars("");
+        setStars();
         setLine("");
         setAquapark(false);
         setWarmPool(false);

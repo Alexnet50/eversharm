@@ -5,6 +5,7 @@ import {db} from "../firebase-config";
 import { UserContext } from '../App';
 import { Box, Button, Typography, Grid, Card,
      CardMedia, CardContent, CardActions } from "@mui/material";
+import Stars from './Stars';
      
 let key = 0;
 
@@ -54,11 +55,11 @@ export default function HotelsList() {
                                 alt={hotel.hotelName}
                         />
                             <CardContent>
+                                <Stars stars={hotel.stars} />
                                 <Typography gutterBottom variant="h5" component="div">
                                     {hotel.hotelName}
                                 </Typography>
-                                <Typography gutterBottom variant="subtitle2" component="div">
-                                    Stars: {hotel.stars}<br/>
+                                <Typography gutterBottom variant="subtitle2" component="div">                                    
                                     Line from the shore: {hotel.line}<br/>
                                     Heated swimming pool: {hotel.warmPool && "Yes"}<br/>
                                     Aquapark or water slades: {hotel.aquapark && "Yes"}<br/>
