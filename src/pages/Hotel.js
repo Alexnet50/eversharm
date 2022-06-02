@@ -9,6 +9,9 @@ import ColoredNumber from './ColoredNumber';
 import Stars from './Stars';
 import StarIcon from '@mui/icons-material/Star';
 import { yellow } from '@mui/material/colors';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 
 let key = 0;
 
@@ -103,9 +106,13 @@ export default function Hotel() {
                                     // key={key}
                                     xs={12} sm={9}
                                 >
-                                    <img src={hotel.imageList[0]} 
-                                        style={{ width: '100%'}}
-                                    />                                                   
+                                    <Slider className='fade'>
+                                        {hotel && hotel.imageList.map((url) => {
+                                            key++
+                                            return (<img src={url} key={key} style={{ width: '100%'}} />)                                                      
+                                        })} 
+                                    </Slider>
+                                                            
                                 </Grid> 
                                 
                                 <Paper elevation={3} sx={{ ml: 'auto', mt: 1, mb: 'auto', p: 4 }}>                                    
