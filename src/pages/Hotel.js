@@ -12,6 +12,7 @@ import { yellow } from '@mui/material/colors';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import hotelImage from '../images/hotel.jpg'
 
 let key = 0;
 
@@ -72,6 +73,7 @@ export default function Hotel() {
         user.userName ? navigate("/createreview") : alert("To add a review you must log in first.")
     }
 
+    let url1 = '../images/hotel.jpg'
     // console.log(hotel.overall)
 
     return (
@@ -104,62 +106,71 @@ export default function Hotel() {
                             return ( */}
                                 <Grid item 
                                     // key={key}
-                                    xs={12} sm={9}
+                                    xs={12} md={9}
                                 >
-                                    <Slider className='fade'>
+                                    <Slider autoplay={true}
+                                        // centerMode={true} centerPadding={'100px'}
+                                        // wariableWidth={true}
+                                        >
                                         {hotel && hotel.imageList.map((url) => {
-                                            key++
-                                            return (<img src={url} key={key} style={{ width: '100%'}} />)                                                      
+                                            key++;                                            
+                                            return (
+                                                <div key={key}>
+                                                    <img src={url} key={key} height={'400px'}/>
+                                                </div>                                            
+                                            )                                                      
                                         })} 
                                     </Slider>
                                                             
                                 </Grid> 
+                       
                                 
-                                <Paper elevation={3} sx={{ ml: 'auto', mt: 1, mb: 'auto', p: 4 }}>                                    
-                                    <Grid item sx={{ 
-                                            display: 'flex', flexDirection: 'column',
-                                            alingnItems: 'center', justifyContent: 'space-between'
-                                        }}>
-                                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                            <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                                <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
-                                                    Location
-                                                </Typography>
-                                                <ColoredNumber number={location} size={"h4"} /> 
-                                            </Box>
-
-                                            <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                                <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
-                                                    Food
-                                                </Typography>
-                                                <ColoredNumber number={food} size={"h4"} /> 
-                                            </Box>
-
-                                            <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                                <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
-                                                    Cleanliness
-                                                </Typography>
-                                                <ColoredNumber number={cleanliness} size={"h4"} /> 
-                                            </Box>
-
-                                            <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                                <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
-                                                    Service
-                                                </Typography>
-                                                <ColoredNumber number={service} size={"h4"} /> 
-                                            </Box>
+                                                                   
+                                <Grid item xs={12} md={3}
+                                    sx={{ 
+                                        display: 'flex', flexDirection: 'column',
+                                        alingnItems: 'center', justifyContent: 'space-between'
+                                    }}>
+                                        <Paper elevation={3} sx={{ ml: 'auto', mt: 1, mb: 'auto', p: 4 }}> 
+                                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                        <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
+                                                Location
+                                            </Typography>
+                                            <ColoredNumber number={location} size={"h4"} /> 
                                         </Box>
 
-                                        <Button variant="outlined" 
-                                            onClick={addReviewHandler}
-                                            sx={{ m: 2, width: '150px' }}
-                                        >
-                                            Add a review
-                                        </Button>  
-                                    </Grid>
-                                </Paper>                       
-                            {/* )                             
-                        })}                 */}
+                                        <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
+                                                Food
+                                            </Typography>
+                                            <ColoredNumber number={food} size={"h4"} /> 
+                                        </Box>
+
+                                        <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
+                                                Cleanliness
+                                            </Typography>
+                                            <ColoredNumber number={cleanliness} size={"h4"} /> 
+                                        </Box>
+
+                                        <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
+                                                Service
+                                            </Typography>
+                                            <ColoredNumber number={service} size={"h4"} /> 
+                                        </Box>
+                                    </Box>
+
+                                    <Button variant="outlined" 
+                                        onClick={addReviewHandler}
+                                        sx={{ m: 2, width: '150px' }}
+                                    >
+                                        Add a review
+                                    </Button> 
+                                    </Paper> 
+                                </Grid>                                                      
+                            
                     </Grid>                
                 // </Box>
             }
