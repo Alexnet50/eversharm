@@ -65,6 +65,10 @@ export default function Hotel() {
         getHotels();
     }, []); 
 
+    const addReviewHandler = () => {
+        user.userName ? navigate("/createreview") : alert("To add a review you must log in first.")
+    }
+
     // console.log(hotel.overall)
 
     return (
@@ -78,10 +82,10 @@ export default function Hotel() {
                     </Box>                    
                 </Box>
                 <Paper 
-                    sx={{ pl: 2, pr: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', borderRadius: '30px' }}
+                    sx={{ pl: 2, pr: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', borderRadius: '20px' }}
                     elevation={3}
                 >
-                    <Typography variant='subtitle1' color="text.secondary" fontWeight="bold" sx={{ mr: 1 }}>Rating</Typography>
+                    {/* <Typography variant='subtitle1' color="text.secondary" fontWeight="bold" sx={{ mr: 1 }}>Rating</Typography> */}
                     <ColoredNumber number={overall} size={"h3"} /> 
                     <Typography variant='subtitle2' color="text.secondary" sx={{ ml: 1 }}>{hotel.reviewsList.length} reviews</Typography>
                 </Paper>
@@ -97,42 +101,56 @@ export default function Hotel() {
                             return ( */}
                                 <Grid item 
                                     // key={key}
-                                    xs={12} md={8}
+                                    xs={12} sm={9}
                                 >
                                     <img src={hotel.imageList[0]} 
-                                        // style={{ maxWidth: 300}}
+                                        style={{ width: '100%'}}
                                     />                                                   
                                 </Grid> 
+                                
+                                <Paper elevation={3} sx={{ ml: 'auto', mt: 1, mb: 'auto', p: 4 }}>                                    
+                                    <Grid item sx={{ 
+                                            display: 'flex', flexDirection: 'column',
+                                            alingnItems: 'center', justifyContent: 'space-between'
+                                        }}>
+                                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                            <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                                <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
+                                                    Location
+                                                </Typography>
+                                                <ColoredNumber number={location} size={"h4"} /> 
+                                            </Box>
 
-                                <Grid item xs={12} md={4} sx={{ display: 'flex', flexDirection: 'column'}}> 
-                                    <Box sx={{ mt: 2, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                        <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
-                                            Location
-                                        </Typography>
-                                        <ColoredNumber number={location} size={"h4"} /> 
-                                    </Box>
+                                            <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                                <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
+                                                    Food
+                                                </Typography>
+                                                <ColoredNumber number={food} size={"h4"} /> 
+                                            </Box>
 
-                                    <Box sx={{ mt: 2, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                        <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
-                                            Food
-                                        </Typography>
-                                        <ColoredNumber number={food} size={"h4"} /> 
-                                    </Box>
+                                            <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                                <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
+                                                    Cleanliness
+                                                </Typography>
+                                                <ColoredNumber number={cleanliness} size={"h4"} /> 
+                                            </Box>
 
-                                    <Box sx={{ mt: 2, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                        <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
-                                            Cleanliness
-                                        </Typography>
-                                        <ColoredNumber number={cleanliness} size={"h4"} /> 
-                                    </Box>
+                                            <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                                <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
+                                                    Service
+                                                </Typography>
+                                                <ColoredNumber number={service} size={"h4"} /> 
+                                            </Box>
+                                        </Box>
 
-                                    <Box sx={{ mt: 2, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                        <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
-                                            Service
-                                        </Typography>
-                                        <ColoredNumber number={service} size={"h4"} /> 
-                                    </Box>
-                                </Grid>                       
+                                        <Button variant="outlined" 
+                                            onClick={addReviewHandler}
+                                            sx={{ m: 2, width: '150px' }}
+                                        >
+                                            Add a review
+                                        </Button>  
+                                    </Grid>
+                                </Paper>                       
                             {/* )                             
                         })}                 */}
                     </Grid>                

@@ -57,6 +57,9 @@ export default function CreateReview() {
     const selectHotelHandler = (event) => {            
             setHotelId(event.target.value);
             setUser((prev) => ({ ...prev, currentHotel: event.target.value })) 
+            console.log(event.target.value)
+            console.log(user.currentHotel)
+            
     }
     
     const createReview = async () => {        
@@ -118,7 +121,7 @@ export default function CreateReview() {
 
     useEffect(() => {       
         getHotels()        
-    }, []);
+    }, [user.currentHotel]);
 
     const textStyle = {        
         color: "text.secondary"        
@@ -129,11 +132,11 @@ export default function CreateReview() {
     return (
         <Grid container spacing={1}>
             <Grid item xs={12} md={7} sx={{ display: 'flex', flexDirection: 'column'}}>        
-                <Typography variant="h4" style={textStyle}>Create A Review</Typography>
+                <Typography variant="h5" style={textStyle} sx={{ mb: 1 }}>Create A Review</Typography>
 
                 {user.currentHotel 
                     ?
-                        <Typography variant="h5">{hotel?.hotelName}</Typography> 
+                        <Typography variant="h4" fontWeight='bold' color="primary">{hotel?.hotelName}</Typography> 
                     :
                         <FormControl sx={{ m: 1 }} size="small">
                             <InputLabel>Select a hotel</InputLabel>

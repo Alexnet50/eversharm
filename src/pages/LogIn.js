@@ -35,7 +35,7 @@ export function LogIn(props) {
             if (logInEmail === "aladdin@ukr.net") setUser((prev) => ({ ...prev, isAdmin: true }));            
             // console.log(setUser) 
             props.callback(false);           
-            navigate("/");
+            // navigate("/");
         } 
         catch (error){
             errorCode = error.code;
@@ -65,7 +65,8 @@ export function LogIn(props) {
                 onChange={event => setLogInPassword(event.target.value)}
             />
             
-            <Button variant="outlined" onClick={logIn}>Log in</Button>            
+            <Button variant="outlined" onClick={logIn}>Log in</Button>  
+            <Button >I forgot my password</Button>          
         </Box>
     );
 }

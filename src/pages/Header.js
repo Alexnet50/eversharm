@@ -57,7 +57,7 @@ export default function Header() {
 
     return (   
         <>   
-            <AppBar position="static" color={user.isAdmin ? "secondary" : "primary"}>               
+            <AppBar position="static" color={user.isAdmin ? "secondary" : "primary"} sx={{ mb: 1 }}>               
                 <Container maxWidth="lg">
                     <Toolbar>
                         <Typography

@@ -18,6 +18,7 @@ export function SignIn(props) {
     const {user, setUser} = useContext(UserContext);
     const [registerEmail, setRegisterEmail] = useState('');
     const [registerPassword, setRegisterPassword] = useState('');    
+    const [confirmPassword, setConfirmPassword] = useState('');    
 
     let errorCode;
     let errorMessage;
@@ -28,20 +29,22 @@ export function SignIn(props) {
     let navigate = useNavigate();
     
     const register = async () => {
+        if (registerPassword === confirmPassword) {
         try {
             const userCreate = await createUserWithEmailAndPassword(
                 auth, registerEmail, registerPassword
             );            
             setUser((prev) => ({ ...prev, userName: registerEmail }));            
             props.callback(false); 
-            navigate("/");            
+            // navigate("/");            
         } 
         catch (error){
             errorCode = error.code;
             errorMessage = error.message;
             console.log(errorCode);
             console.log(errorMessage);
-        }        
+        }} 
+        else alert('Passwords are not match!')  
     };    
     
     return (        
@@ -58,10 +61,18 @@ export function SignIn(props) {
             <TextField placeholder="Enter an email" 
                 size="small" value={registerEmail}  sx={{ mb: 2 }}
                 onChange={(event) => setRegisterEmail(event.target.value)}
+                required
             />
             <TextField placeholder="Enter a password" 
                 size="small" value={registerPassword} sx={{ mb: 2 }}
                 onChange={(event) => setRegisterPassword(event.target.value)}
+                required
+            />
+
+            <TextField placeholder="Confirm a password" 
+                size="small" value={registerPassword} sx={{ mb: 2 }}
+                onChange={(event) => setConfirmPassword(event.target.value)}
+                required
             />
 
             <Button variant="outlined" onClick={register}>Create a user</Button>                    
