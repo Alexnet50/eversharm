@@ -7,13 +7,24 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+.slick-prev:before {
+    color: blue !important;
+    background-color: #eee;
+  }
+  .slick-next:before {
+    color: blue !important;
+    background-color: #eee;
+  }
 
 .review {
     width: 500px;
     word-wrap: break-word;
 }   
-    
+   
+/* .slick-slide {
+    margin: 0 10px;
+} */
+
+/* .slick-list {
+    margin: 0 -10px;
+} */

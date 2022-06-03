@@ -99,40 +99,53 @@ export default function Hotel() {
             }
 
             {hotel && 
-                // <Box sx={{ m: 2 }}>                
-                    <Grid container spacing={1}>
-                        {/* {hotel.imageList.map((url) => {
-                            {key++} 
-                            return ( */}
-                                <Grid item 
-                                    // key={key}
-                                    xs={12} md={9}
-                                >
-                                    <Slider autoplay={true}
-                                        // centerMode={true} centerPadding={'100px'}
+                <div 
+                // height={'100px'}
+                 style={{
+                    // m: 2, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between'
+                    // height: '100%'
+                    }} 
+                 >                
+                    {/* // <Grid container spacing={3}>
+                        
+                    //             <Grid item                                     
+                    //                 xs={12} md={9}
+                    //                 sx={{ p: 2 }}
+                    //             > */}
+                                {/* <Box sx={{ maxWidth: '700px' }}> */}
+                                    <Slider autoplay={false} fade={false} 
+                                        centerMode={true} variableWidth={true}
+                                        rows={1}
+                                        adaptiveHeight={true}
+                                        // centerMode={true}
+                                        // centerPadding={'10px'}
                                         // wariableWidth={true}
                                         >
                                         {hotel && hotel.imageList.map((url) => {
                                             key++;                                            
                                             return (
-                                                <div key={key}>
-                                                    <img src={url} key={key} height={'400px'}/>
-                                                </div>                                            
+                                                // <div key={key}>
+                                                    <img src={url} key={key}
+                                                     height={'350px'}
+                                                    
+                                                       />
+                                                // </div>                                            
                                             )                                                      
                                         })} 
                                     </Slider>
-                                                            
-                                </Grid> 
+                                {/* </Box>                             */}
+                                {/* // </Grid>  */}
                        
                                 
                                                                    
-                                <Grid item xs={12} md={3}
-                                    sx={{ 
-                                        display: 'flex', flexDirection: 'column',
-                                        alingnItems: 'center', justifyContent: 'space-between'
-                                    }}>
-                                        <Paper elevation={3} sx={{ ml: 'auto', mt: 1, mb: 'auto', p: 4 }}> 
-                                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                {/* // <Grid item xs={12} md={3}
+                                //     sx={{ 
+                                        
+                                //         display: 'flex', flexDirection: 'column',
+                                //         alingnItems: 'center', justifyContent: 'space-between'
+                                //     }}> */}
+                                    <Paper elevation={3} sx={{ ml: 1, mt: 1, mb: 'auto', p: 4, display: 'flex', flexDirection: 'column' }}> 
+                                        
                                         <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                                             <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
                                                 Location
@@ -160,7 +173,7 @@ export default function Hotel() {
                                             </Typography>
                                             <ColoredNumber number={service} size={"h4"} /> 
                                         </Box>
-                                    </Box>
+                                    
 
                                     <Button variant="outlined" 
                                         onClick={addReviewHandler}
@@ -169,10 +182,10 @@ export default function Hotel() {
                                         Add a review
                                     </Button> 
                                     </Paper> 
-                                </Grid>                                                      
+                    {/* //             </Grid>                                                      
                             
-                    </Grid>                
-                // </Box>
+                    // </Grid>                  */}
+                </div>
             }
 
             <Box>
