@@ -21,7 +21,7 @@ export default function Hotel() {
     const [hotels, setHotels] = useState();    
     const [hotel, setHotel] = useState(); 
     
-    const [overall, setOverall] = useState(0);
+    // const [overall, setOverall] = useState(0);
     const [location, setLocation] = useState(0);
     const [food, setFood] = useState(0);
     const [cleanliness, setCleanliness] = useState(0);
@@ -33,32 +33,32 @@ export default function Hotel() {
     const getHotels = async () => {  
         const data = await getDocs(hotelsCollectionRef);
         const hotelsArray = data.docs.map((doc) => ({...doc.data(), id: doc.id}))
-        let newHotel = hotelsArray.find(item => item.id == user.currentHotel)
+        let currentHotel = hotelsArray.find(item => item.id == user.currentHotel)
         
         setHotel(() => {        
-                return newHotel
+                return currentHotel;
             }
         );
         
-        getAverageRatings(newHotel.reviewsList);
+        getAverageRatings(currentHotel.reviewsList);
         // setHotels(hotelsArray);          
     };
 
     const getAverageRatings = (reviewsArray) => {
-        let overallAcc = 0;
+        // let overallAcc = 0;
         let locationAcc = 0;
         let foodAcc = 0;
         let cleanlinessAcc = 0;
         let serviceAcc = 0;
         let length = reviewsArray.length;
         reviewsArray.forEach((review) => {
-            overallAcc += review.overall;
+            // overallAcc += review.overall;
             locationAcc += review.location;
             foodAcc += review.food;
             cleanlinessAcc += review.cleanliness;
             serviceAcc += review.cleanliness;
         })
-        setOverall(Math.floor((overallAcc / length) * 10) / 10);
+        // setOverall(Math.floor((overallAcc / length) * 10) / 10);
         setLocation(Math.floor((locationAcc / length) * 10) / 10);
         setFood(Math.floor((foodAcc / length) * 10) / 10);
         setCleanliness(Math.floor((cleanlinessAcc / length) * 10) / 10);
@@ -67,31 +67,34 @@ export default function Hotel() {
 
     useEffect(() => {
         getHotels();
+        console.log(hotel)
     }, []); 
 
     const addReviewHandler = () => {
         user.userName ? navigate("/createreview") : alert("To add a review you must log in first.")
     }
 
-    let url1 = '../images/hotel.jpg'
-    // console.log(hotel.overall)
+    
 
     return (
         <>
             {hotel &&
             <Box sx={{ m: 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>              
                 <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                    <Typography variant="h4" sx={{ mr: 2, mt: 1 }} fontWeight="bold" color="primary" >{hotel.hotelName}</Typography>
-                    <Box sx={{ mt: 2 }}>
+                    <Typography variant="h4" sx={{ mr: 2, mt: 1 }} fontWeight="bold" color="primary" >
+                        {hotel.hotelName}
+                    </Typography>
+                    <Box sx={{ mt: 2, width: '150px'}}>
                         <Stars stars={hotel.stars} />
                     </Box>                    
                 </Box>
                 <Paper 
-                    sx={{ pl: 2, pr: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', borderRadius: '20px' }}
+                    sx={{ pl: 2, pr: 2, width: '150px', display: 'flex', flexDirection: 'row', 
+                    alignItems: 'center', borderRadius: '20px' }}
                     elevation={3}
                 >
                     {/* <Typography variant='subtitle1' color="text.secondary" fontWeight="bold" sx={{ mr: 1 }}>Rating</Typography> */}
-                    <ColoredNumber number={overall} size={"h3"} /> 
+                    <ColoredNumber number={hotel.rating} size={"h3"} /> 
                     <Typography variant='subtitle2' color="text.secondary" sx={{ ml: 1 }}>{hotel.reviewsList.length} reviews</Typography>
                 </Paper>
                              
@@ -195,10 +198,13 @@ export default function Hotel() {
                     key++;
                         return (
                             <Paper key={key} sx={{ m: 1, p: 2 }}>
-                                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                    <Typography variant='subtitle1' color="text.secondary" fontWeight="bold" sx={{ fontFamily:'helvetica' }}>{review.reviewAuthor}</Typography>
-                                    {/* <Typography variant='h4' color="success.light" fontWeight="700" >{review.overall}</Typography> */}
-                                    {/* <ColoredNumber number={review.overall} size={"h5"} /> */}
+                                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', pl: 2 }}>
+                                    <ColoredNumber number={review.overall} size={"h4"} />
+
+                                    <Typography variant='subtitle1' color="text.secondary" fontWeight="bold" 
+                                        sx={{ fontFamily:'helvetica' }}>
+                                            {review.reviewAuthor}
+                                    </Typography>                              
                                 </Box>
                                                                 
                                 <Typography variant='h6'>{review.reviewTitle}</Typography>

@@ -36,6 +36,7 @@ export default function CreateReview() {
     const [cleanliness, setCleanliness] = useState(0);
     const [service, setService] = useState(0);
     const [imageList, setImageList] = useState([]);
+    const [myImageList, setMyImageList] = useState([]);
     const [imagesUpload, setImagesUpload] = useState(null);
     // const [reviewsList, setReviewsList] = useState([]);
 
@@ -57,6 +58,7 @@ export default function CreateReview() {
     const selectHotelHandler = (event) => {            
             setHotelId(event.target.value);
             setUser((prev) => ({ ...prev, currentHotel: event.target.value })) 
+            /////////////
             console.log(event.target.value)
             console.log(user.currentHotel)
             
@@ -72,12 +74,15 @@ export default function CreateReview() {
             location: location,
             food: food,
             cleanliness: cleanliness,
-            service: service
+            service: service,
+            myImageList: myImageList
         }];
-        const newImageList = [...hotel.imageList, ...imageList];        
+        const newImageList = [...hotel.imageList, ...imageList];
+        const newRating = (hotel.rating * hotel.reviewsList.length + overall)  / (hotel.reviewsList.length + 1)      
         await updateDoc(hotelDoc, { 
             reviewsList: newReviewsList,
-            imageList: newImageList
+            imageList: newImageList,
+            rating: newRating
         });
         navigate("/hotel"); 
 
@@ -99,6 +104,7 @@ export default function CreateReview() {
             uploadBytes(imageRef, imagesUpload[i]).then((snapshot) => {
                 getDownloadURL(snapshot.ref).then((url) => {
                     setImageList((prev) => [...prev, url])
+                    setMyImageList((prev) => [...prev, url])
                 })
             })     
         }     
@@ -108,10 +114,17 @@ export default function CreateReview() {
         try {
             const imageRef = ref(storage, url);          
             deleteObject(imageRef);
+
             let list = imageList;
             const index = list.findIndex(item => item === url);
             list.splice(index, 1);            
-            setImageList(list);            
+            setImageList(list);
+
+            let myList = myImageList;
+            const myIndex = myList.findIndex(item => item === url);
+            myList.splice(myIndex, 1);            
+            setMyImageList(myList);
+
             setImagesUpload(key++);            
         }        
         catch(error) {

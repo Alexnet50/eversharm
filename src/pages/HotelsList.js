@@ -6,6 +6,7 @@ import { UserContext } from '../App';
 import { Box, Button, Typography, Grid, Card,
      CardMedia, CardContent, CardActions } from "@mui/material";
 import Stars from './Stars';
+import ColoredNumber from './ColoredNumber';
      
 let key = 0;
 
@@ -55,7 +56,14 @@ export default function HotelsList() {
                                 alt={hotel.hotelName}
                         />
                             <CardContent>
-                                <Stars stars={hotel.stars} />
+                                <Box sx={{ m: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <Box>
+                                        <Stars stars={hotel.stars} />
+                                    </Box>
+                                    
+                                    {hotel.rating && <ColoredNumber number={hotel.rating} size={"h5"} />}
+                                </Box>
+                                
                                 <Typography gutterBottom variant="h5" component="div">
                                     {hotel.hotelName}
                                 </Typography>

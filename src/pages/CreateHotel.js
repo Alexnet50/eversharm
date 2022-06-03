@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
-import {collection, addDoc, getDoc, doc, deleteDoc } from "firebase/firestore";
+import {collection, addDoc, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { v4 } from "uuid";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { db, storage } from "../firebase-config";
@@ -15,6 +15,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 export default function CreateHotel() {
     const {user, setUser} = useContext(UserContext);
+    const [hotel, setHotel] = useState();
     const [hotelName, setHotelName] = useState("");
     const [hotelDescription, setHotelDescription] = useState("");
     const [stars, setStars] = useState("");
@@ -25,12 +26,21 @@ export default function CreateHotel() {
     const [imagesUpload, setImagesUpload] = useState(null);    
     const [imageList, setImageList] = useState([]);
     const [reviewsList, setReviewsList] = useState([]);
+    const [rating, setRating] = useState(null);
 
 
     // const imageListRef = ref(storage, "images/")
 
     const navigate = useNavigate();
     const hotelsCollectionRef = collection(db, "hotels");
+
+    const getHotel = async() => {  
+        const data = await getDocs(hotelsCollectionRef);
+        const hotelsArray = data.docs.map((doc) => ({...doc.data(), id: doc.id}))
+        // setHotels(hotelsArray);        
+        user.currentHotel && 
+            setHotel(hotelsArray.find(hotel => hotel.id == user.currentHotel));           
+    };
     
     const createHandler = async () => {        
         await addDoc(hotelsCollectionRef, {
@@ -42,7 +52,8 @@ export default function CreateHotel() {
             aquapark,
             kidsClub,
             imageList,
-            reviewsList
+            reviewsList,
+            rating
         });
         navigate("/"); 
     };
@@ -96,19 +107,23 @@ export default function CreateHotel() {
 
     const formFill = async () => {
         if (user.currentHotel === null) return;
-        const hotelDoc = doc(db, "hotels", user.currentHotel);
-        const hotelData = await getDoc(hotelDoc);
-        const hotelFields = hotelData._document.data.value.mapValue.fields;
-        setHotelName(hotelFields.hotelName.stringValue);
-        setHotelDescription(hotelFields.hotelDescription.stringValue);
-        setStars(hotelFields.stars.integerValue);
-        setLine(hotelFields.line.integerValue);
-        setAquapark(hotelFields.aquapark.booleanValue);
-        setWarmPool(hotelFields.warmPool.booleanValue);
-        setKidsClub(hotelFields.kidsClub.booleanValue);
-        setImageList(
-            hotelFields.imageList.arrayValue.values.map((value) => value.stringValue)
-        );        
+        getHotel();
+
+        // const hotelDoc = doc(db, "hotels", user.currentHotel);
+        // const hotelData = await getDoc(hotelDoc);
+        // const hotelFields = hotelData._document.data.value.mapValue.fields;
+        setHotelName(hotel.hotelName);
+        setHotelDescription(hotel.hotelDescription);
+        setStars(hotel.stars);
+        setLine(hotel.line);
+        setAquapark(hotel.aquapark);
+        setWarmPool(hotel.warmPool);
+        setKidsClub(hotel.kidsClub);
+        setImageList(hotel.imageList); 
+        setReviewsList(hotel.reviewsList);
+        setRating(hotel?.rating);
+        /////////
+        console.log(hotel)
     };
     
     useEffect(() => {
@@ -253,7 +268,7 @@ export default function CreateHotel() {
                         </Button> 
                 }                
 
-                <Box sx={{ display: 'flex', flexDirection: 'row'}}>
+                <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
                     <Button variant="outlined" 
                         sx={{
                             m: 1,
