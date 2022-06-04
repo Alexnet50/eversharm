@@ -7,6 +7,7 @@ import { UserContext } from '../App';
 import { Box, Button, Typography, Grid, Paper, Chip } from "@mui/material";
 import ColoredNumber from './ColoredNumber';
 import Stars from './Stars';
+import Review from './Review';
 import StarIcon from '@mui/icons-material/Star';
 import { yellow } from '@mui/material/colors';
 import "slick-carousel/slick/slick.css";
@@ -130,7 +131,7 @@ export default function Hotel() {
                                                 // <div key={key}>
                                                     <img src={url} key={key}
                                                      height={'350px'}
-                                                    
+                                                     sx={{ m: 1 }}
                                                        />
                                                 // </div>                                            
                                             )                                                      
@@ -190,33 +191,13 @@ export default function Hotel() {
                     // </Grid>                  */}
                 </div>
             }
-
             <Box>
                 {/* {console.log(hotel)} */}
                 {hotel && 
                 hotel.reviewsList.map((review => {
                     key++;
                         return (
-                            <Paper key={key} sx={{ m: 1, p: 2 }}>
-                                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', pl: 2 }}>
-                                    <ColoredNumber number={review.overall} size={"h4"} />
-
-                                    <Typography variant='subtitle1' color="text.secondary" fontWeight="bold" 
-                                        sx={{ fontFamily:'helvetica' }}>
-                                            {review.reviewAuthor}
-                                    </Typography>                              
-                                </Box>
-                                                                
-                                <Typography variant='h6'>{review.reviewTitle}</Typography>
-                                <Typography variant='body1' sx={{ m: 1 }}>{review.reviewText}</Typography>
-                                
-                                {user.userName && review.reviewAuthor === user.userName  
-                                    && <Button 
-                                    // onClick={() => deleteHandler(review.id)}
-                                    >
-                                        Delete review
-                                    </Button>}
-                            </Paper>                        
+                            <Review key={key} review={review} />                                   
                         )
                     }))}
             </Box>    

@@ -4,7 +4,7 @@ import {collection, getDocs, deleteDoc, doc} from "firebase/firestore";
 import {db} from "../firebase-config";
 import { UserContext } from '../App';
 import { Box, Button, Typography, Grid, Card,
-     CardMedia, CardContent, CardActions } from "@mui/material";
+     CardMedia, CardContent, CardActions, CardActionArea } from "@mui/material";
 import Stars from './Stars';
 import ColoredNumber from './ColoredNumber';
      
@@ -49,34 +49,37 @@ export default function HotelsList() {
                 return (
                     <Grid item key={key}>
                         <Card sx={{ maxWidth: 345 }}>
-                            <CardMedia
-                                component="img"
-                                height="200"
-                                image={hotel.imageList && hotel.imageList[0]}
-                                alt={hotel.hotelName}
-                        />
-                            <CardContent>
-                                <Box sx={{ m: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                    <Box>
-                                        <Stars stars={hotel.stars} />
+                            <CardActionArea onClick={() => infoHandler(hotel.id)}>
+                                <CardMedia
+                                    component="img"
+                                    height="200"
+                                    image={hotel.imageList && hotel.imageList[0]}
+                                    alt={hotel.hotelName}
+                                />
+                                <CardContent>
+                                    <Box sx={{ m: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <Box>
+                                            <Stars stars={hotel.stars} />
+                                        </Box>
+                                        
+                                        {hotel.rating && <ColoredNumber number={hotel.rating} size={"h5"} />}
                                     </Box>
                                     
-                                    {hotel.rating && <ColoredNumber number={hotel.rating} size={"h5"} />}
-                                </Box>
-                                
-                                <Typography gutterBottom variant="h5" component="div">
-                                    {hotel.hotelName}
-                                </Typography>
-                                <Typography gutterBottom variant="subtitle2" component="div">                                    
-                                    Line from the shore: {hotel.line}<br/>
-                                    Heated swimming pool: {hotel.warmPool && "Yes"}<br/>
-                                    Aquapark or water slades: {hotel.aquapark && "Yes"}<br/>
-                                    Kids club: {hotel.kidsClub && "Yes"}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    {hotel.hotelDescription}
-                                </Typography>
-                            </CardContent>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        {hotel.hotelName}
+                                    </Typography>
+                                    <Typography gutterBottom variant="subtitle2" component="div">                                    
+                                        Line from the shore: {hotel.line}<br/>
+                                        Heated swimming pool: {hotel.warmPool && "Yes"}<br/>
+                                        Aquapark or water slades: {hotel.aquapark && "Yes"}<br/>
+                                        Kids club: {hotel.kidsClub && "Yes"}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {hotel.hotelDescription}
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+
                             <CardActions>                                                                
                                 <Button 
                                     size="small" sx={{ mr: 1}}

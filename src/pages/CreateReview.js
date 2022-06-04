@@ -78,7 +78,7 @@ export default function CreateReview() {
             myImageList: myImageList
         }];
         const newImageList = [...hotel.imageList, ...imageList];
-        const newRating = (hotel.rating * hotel.reviewsList.length + overall)  / (hotel.reviewsList.length + 1)      
+        const newRating = Math.floor(((hotel.rating * hotel.reviewsList.length + overall) / (hotel.reviewsList.length + 1)) *10) / 10;      
         await updateDoc(hotelDoc, { 
             reviewsList: newReviewsList,
             imageList: newImageList,
