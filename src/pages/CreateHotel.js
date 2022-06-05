@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import {collection, addDoc, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { v4 } from "uuid";
@@ -10,13 +10,17 @@ import { Box, Typography, FormGroup, FormControlLabel,
      MenuItem, Button, Grid, IconButton
  } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { Editor } from '@tinymce/tinymce-react';
 
  let key = 0;
 
+ 
 export default function CreateHotel() {
     const {user, setUser} = useContext(UserContext);
     const [hotel, setHotel] = useState();
+    const [hotels, setHotels] = useState();
     const [hotelName, setHotelName] = useState("");
+    const [hotelSummary, setHotelSummary] = useState("");
     const [hotelDescription, setHotelDescription] = useState("");
     const [stars, setStars] = useState("");
     const [line, setLine] = useState("");
@@ -28,6 +32,13 @@ export default function CreateHotel() {
     const [reviewsList, setReviewsList] = useState([]);
     const [rating, setRating] = useState(null);
 
+    const editorRef = useRef(null);
+    const editorHandler = () => {
+        if (editorRef.current) {
+        setHotelDescription(editorRef.current.getContent());
+        }
+    };
+
 
     // const imageListRef = ref(storage, "images/")
 
@@ -37,14 +48,52 @@ export default function CreateHotel() {
     const getHotel = async() => {  
         const data = await getDocs(hotelsCollectionRef);
         const hotelsArray = data.docs.map((doc) => ({...doc.data(), id: doc.id}))
-        // setHotels(hotelsArray);        
-        user.currentHotel && 
-            setHotel(hotelsArray.find(hotel => hotel.id == user.currentHotel));           
+        setHotels(hotelsArray);
+        
+        if (user.currentHotel) {
+            let editableHotel = hotelsArray.find(hotel => hotel.id == user.currentHotel)
+            setHotel(editableHotel); 
+            formFill(editableHotel);  
+        }
+        // console.log(hotelsArray)        
+         
+                    
     };
+
+    const formFill = async(hotel) => {
+        if (user.currentHotel === null) return;
+        
+
+        // const hotelDoc = doc(db, "hotels", user.currentHotel);
+        // const hotelData = await getDoc(hotelDoc);
+        // const hotelFields = hotelData._document.data.value.mapValue.fields;
+        if (hotel) {
+            setHotelName(hotel.hotelName);
+            setHotelSummary(hotel.hotelSummary);
+            setHotelDescription(hotel.hotelDescription);
+            setStars(hotel.stars);
+            setLine(hotel.line);
+            setAquapark(hotel.aquapark);
+            setWarmPool(hotel.warmPool);
+            setKidsClub(hotel.kidsClub);
+            setImageList(hotel.imageList); 
+            setReviewsList(hotel.reviewsList);
+            setRating(hotel?.rating);
+        }
+        
+        /////////
+        console.log(hotel)
+    };
+    
+    useEffect(() => {
+        !user.isAdmin && navigate("/");
+        getHotel();        
+    },[]);
     
     const createHandler = async () => {        
         await addDoc(hotelsCollectionRef, {
-            hotelName,           
+            hotelName,
+            hotelSummary,           
             hotelDescription, 
             stars,
             line,
@@ -105,34 +154,11 @@ export default function CreateHotel() {
         }
     };
 
-    const formFill = async () => {
-        if (user.currentHotel === null) return;
-        getHotel();
-
-        // const hotelDoc = doc(db, "hotels", user.currentHotel);
-        // const hotelData = await getDoc(hotelDoc);
-        // const hotelFields = hotelData._document.data.value.mapValue.fields;
-        setHotelName(hotel.hotelName);
-        setHotelDescription(hotel.hotelDescription);
-        setStars(hotel.stars);
-        setLine(hotel.line);
-        setAquapark(hotel.aquapark);
-        setWarmPool(hotel.warmPool);
-        setKidsClub(hotel.kidsClub);
-        setImageList(hotel.imageList); 
-        setReviewsList(hotel.reviewsList);
-        setRating(hotel?.rating);
-        /////////
-        console.log(hotel)
-    };
     
-    useEffect(() => {
-        !user.isAdmin && navigate("/");
-        formFill();
-    },[]);
 
     const clearHandler = () => {
         setHotelName("");
+        setHotelSummary("");
         setHotelDescription("");
         setStars();
         setLine("");
@@ -140,6 +166,8 @@ export default function CreateHotel() {
         setWarmPool(false);
         setKidsClub(false);
     };
+
+    
 
     return (
         <Grid container spacing={1}>
@@ -162,7 +190,41 @@ export default function CreateHotel() {
                     }}
                     onChange={event => setHotelName(event.target.value)}
                 />
-                <TextField 
+               
+                <TextField
+                    id="editedField" 
+                    placeholder="Hotel summary" 
+                    size="small" 
+                    value={hotelSummary}
+                    sx={{
+                        m: 1
+                    }}
+                    onChange={event => setHotelSummary(event.target.value)}
+                    multiline
+                    rows={6}
+                />
+
+                <Editor
+                    apiKey='xnkep1e83iv4c4o42kq6tu0te8ail8r5o8x5zgqmtoue25xl'
+                    onInit={(evt, editor) => editorRef.current = editor}
+                    onChange={editorHandler}
+                    initialValue={hotelDescription}
+                    init={{
+                    height: 500,
+                    menubar: false,
+                    plugins: [
+                        
+                    ],
+                    toolbar: 'undo redo | blocks | ' +
+                        'bold italic forecolor | alignleft aligncenter ' +
+                        'alignright alignjustify | bullist numlist outdent indent | ' +
+                        'removeformat | help',
+                    content_style: 'body { font-family:Helvetica,Arial,Roboto,sans-serif; font-size:14px }'
+                    }}
+                />
+                {/* <button onClick={log}>Log editor content</button> */}
+                {/* <TextField 
+                    id="editedField" 
                     placeholder="Hotel description" 
                     size="small" 
                     value={hotelDescription}
@@ -171,8 +233,8 @@ export default function CreateHotel() {
                     }}
                     onChange={event => setHotelDescription(event.target.value)}
                     multiline
-                    rows={6}
-                />
+                    rows={12}
+                /> */}
                 
                 <FormControl sx={{ m: 1 }} size="small">
                     <InputLabel>Stars</InputLabel>

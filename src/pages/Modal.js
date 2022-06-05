@@ -8,14 +8,15 @@ import Typography from '@mui/material/Typography';
 
 const style = {
   position: 'absolute',
-  top: '40%',
+  top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
 //   width: 800,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
+  border: 'none',
   boxShadow: 24,
-  p: 0,
+  pt: 1,
+//   pb: 1
 };
 
 export default function NewModal(props) {
@@ -38,10 +39,7 @@ export default function NewModal(props) {
         }}
       >
         <Fade in={props.openModal}>
-          <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-              Text in a modal
-            </Typography>
+          <Box sx={style}>            
             {props.content}
           </Box>
         </Fade>

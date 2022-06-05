@@ -8,25 +8,22 @@ import { Box, Button, Typography, Grid, Paper, Chip } from "@mui/material";
 import ColoredNumber from './ColoredNumber';
 import Stars from './Stars';
 import Review from './Review';
-import StarIcon from '@mui/icons-material/Star';
-import { yellow } from '@mui/material/colors';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import hotelImage from '../images/hotel.jpg'
+
 
 let key = 0;
 
 export default function Hotel() {
     const {user, setUser} = useContext(UserContext);
     const [hotels, setHotels] = useState();    
-    const [hotel, setHotel] = useState(); 
+    const [hotel, setHotel] = useState();     
     
-    // const [overall, setOverall] = useState(0);
     const [location, setLocation] = useState(0);
     const [food, setFood] = useState(0);
     const [cleanliness, setCleanliness] = useState(0);
-    const [service, setService] = useState(0);
+    const [service, setService] = useState(0);    
 
     const navigate = useNavigate();
     const hotelsCollectionRef = collection(db, "hotels");
@@ -36,13 +33,9 @@ export default function Hotel() {
         const hotelsArray = data.docs.map((doc) => ({...doc.data(), id: doc.id}))
         let currentHotel = hotelsArray.find(item => item.id == user.currentHotel)
         
-        setHotel(() => {        
-                return currentHotel;
-            }
-        );
+        setHotel(() => {return currentHotel });
         
-        getAverageRatings(currentHotel.reviewsList);
-        // setHotels(hotelsArray);          
+        getAverageRatings(currentHotel.reviewsList);             
     };
 
     const getAverageRatings = (reviewsArray) => {
@@ -52,14 +45,12 @@ export default function Hotel() {
         let cleanlinessAcc = 0;
         let serviceAcc = 0;
         let length = reviewsArray.length;
-        reviewsArray.forEach((review) => {
-            // overallAcc += review.overall;
+        reviewsArray.forEach((review) => {            
             locationAcc += review.location;
             foodAcc += review.food;
             cleanlinessAcc += review.cleanliness;
             serviceAcc += review.cleanliness;
-        })
-        // setOverall(Math.floor((overallAcc / length) * 10) / 10);
+        });        
         setLocation(Math.floor((locationAcc / length) * 10) / 10);
         setFood(Math.floor((foodAcc / length) * 10) / 10);
         setCleanliness(Math.floor((cleanlinessAcc / length) * 10) / 10);
@@ -72,8 +63,17 @@ export default function Hotel() {
     }, []); 
 
     const addReviewHandler = () => {
-        user.userName ? navigate("/createreview") : alert("To add a review you must log in first.")
+        if (user.userName) {
+            navigate("/createreview")
+        }  else {
+            setUser((prev) => ({ ...prev, 
+                modalContent: <Typography sx={{ m: 2 }} variant='h5' >To add a review you must log in first</Typography>,
+                openModal: true 
+            }))             
+        }
     }
+
+    function createMarkup() { if (hotel) return {__html: hotel.hotelDescription}; };
 
     
 
@@ -91,7 +91,7 @@ export default function Hotel() {
                 </Box>
                 <Paper 
                     sx={{ pl: 2, pr: 2, width: '150px', display: 'flex', flexDirection: 'row', 
-                    alignItems: 'center', borderRadius: '20px' }}
+                    flexShrink: 0, alignItems: 'center', borderRadius: '20px' }}
                     elevation={3}
                 >
                     {/* <Typography variant='subtitle1' color="text.secondary" fontWeight="bold" sx={{ mr: 1 }}>Rating</Typography> */}
@@ -110,21 +110,19 @@ export default function Hotel() {
                     // height: '100%'
                     }} 
                  >                
-                    {/* // <Grid container spacing={3}>
-                        
-                    //             <Grid item                                     
-                    //                 xs={12} md={9}
-                    //                 sx={{ p: 2 }}
-                    //             > */}
+                <Grid container spacing={3}>
+                    
+                    <Grid item                                     
+                        xs={12} md={7}
+                        sx={{ p: 2 }}
+                    >
                                 {/* <Box sx={{ maxWidth: '700px' }}> */}
-                                    <Slider autoplay={false} fade={false} 
+                                    <Slider 
+                                        autoplay={false} fade={false} 
                                         centerMode={true} variableWidth={true}
                                         rows={1}
-                                        adaptiveHeight={true}
-                                        // centerMode={true}
-                                        // centerPadding={'10px'}
-                                        // wariableWidth={true}
-                                        >
+                                        adaptiveHeight={true}                                        
+                                    >
                                         {hotel && hotel.imageList.map((url) => {
                                             key++;                                            
                                             return (
@@ -138,17 +136,17 @@ export default function Hotel() {
                                         })} 
                                     </Slider>
                                 {/* </Box>                             */}
-                                {/* // </Grid>  */}
+                    </Grid> 
                        
                                 
                                                                    
-                                {/* // <Grid item xs={12} md={3}
-                                //     sx={{ 
-                                        
-                                //         display: 'flex', flexDirection: 'column',
-                                //         alingnItems: 'center', justifyContent: 'space-between'
-                                //     }}> */}
-                                    <Paper elevation={3} sx={{ ml: 1, mt: 1, mb: 'auto', p: 4, display: 'flex', flexDirection: 'column' }}> 
+                    <Grid item xs={12} md={3}
+                            sx={{ 
+                            
+                                display: 'flex', flexDirection: 'column',
+                                alingnItems: 'center', justifyContent: 'space-between'
+                            }}>
+                                    <Paper elevation={3} sx={{ ml: 1, mt: 1, mb: 'auto', p: 2, display: 'flex', flexDirection: 'column' }}> 
                                         
                                         <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                                             <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
@@ -181,17 +179,38 @@ export default function Hotel() {
 
                                     <Button variant="outlined" 
                                         onClick={addReviewHandler}
-                                        sx={{ m: 2, width: '150px' }}
+                                        sx={{ ml: 'auto', mr: 'auto', mt: 2, mb:2, width: '150px' }}
                                     >
                                         Add a review
                                     </Button> 
                                     </Paper> 
-                    {/* //             </Grid>                                                      
+                        </Grid>
+
+                        <Grid item xs={12} md={2}
+                            sx={{                            
+                                display: 'flex', flexDirection: 'column',
+                                alingnItems: 'center', justifyContent: 'space-between'
+                            }}>
+                                <Paper sx={{ width: '100%', height: '100%'}}></Paper>
+                        </Grid>                                                      
                             
-                    // </Grid>                  */}
+                    </Grid>                 
                 </div>
             }
-            <Box>
+
+        <Grid container spacing={3}>
+            <Grid item xs={12} sm={7}>
+                <Paper sx={{ p: 2 }}>
+                    <Typography>{hotel?.hotelSummary}</Typography>
+                </Paper >
+                <Paper sx={{ p: 2 }}>
+                    <div dangerouslySetInnerHTML={createMarkup()} />
+                </Paper>
+                
+                
+            </Grid>
+
+            <Grid item xs={12} sm={5}>
                 {/* {console.log(hotel)} */}
                 {hotel && 
                 hotel.reviewsList.map((review => {
@@ -200,7 +219,10 @@ export default function Hotel() {
                             <Review key={key} review={review} />                                   
                         )
                     }))}
-            </Box>    
+            </Grid>
+
+        </Grid>
+         
         </>
         
         

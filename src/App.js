@@ -10,6 +10,7 @@ import CreateReview from "./pages/CreateReview";
 import Header from "./pages/Header";
 import CreateHotel from "./pages/CreateHotel";
 import Hotel from "./pages/Hotel";
+import NewModal from "./pages/Modal"
 
 
 export const UserContext = createContext({
@@ -28,11 +29,15 @@ function App() {
     const [user, setUser] = useState({
         userName: null,
         isAdmin: false,
-        currentHotel: null
+        currentHotel: null,
+        openModal: false,
+        modalContent: ""
     });    
     const value = useMemo(() => ({ user, setUser }), [user]);
     // const value = useMemo(() => ({ user, setUser, isAdmin, setIsAdmin }), []);        
     const [imageList, setImageList] = useState([]);
+
+    const handleClose = () => setUser((prev) => ({ ...prev, openModal: false })) ;
     // const imageListRef = ref(storage, "images/")  
 
     
@@ -67,7 +72,7 @@ function App() {
                         <Route path="/hotel" element={<Hotel /> } />
                     </Routes>                    
 
-                    
+                    <NewModal openModal={user.openModal} content={user.modalContent} handleClose={handleClose} />   
                 </Router>      
             </Container>
         </UserContext.Provider>

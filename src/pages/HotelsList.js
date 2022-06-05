@@ -75,7 +75,7 @@ export default function HotelsList() {
                                         Kids club: {hotel.kidsClub && "Yes"}
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
-                                        {hotel.hotelDescription}
+                                        {hotel.hotelSummary ? hotel.hotelSummary : hotel.hotelDescription}
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>
