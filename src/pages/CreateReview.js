@@ -41,7 +41,7 @@ export default function CreateReview() {
     // const [reviewsList, setReviewsList] = useState([]);
 
     useEffect(() => {
-        !user.userName && navigate("/");
+        !user.currentUser && navigate("/");
     });
 
     const navigate = useNavigate();
@@ -67,7 +67,7 @@ export default function CreateReview() {
     const createReview = async () => {        
         const hotelDoc = doc(db, "hotels", user.currentHotel);
         const newReviewsList = [...hotel.reviewsList, {
-            reviewAuthor: user.userName,
+            reviewAuthor: user.currentUser.email,
             reviewTitle: reviewTitle,
             reviewText: reviewText,
             overall: overall,
@@ -84,15 +84,7 @@ export default function CreateReview() {
             imageList: newImageList,
             rating: newRating
         });
-        navigate("/hotel"); 
-
-        
-
-        // await addDoc(reviewsCollectionRef, {
-        //     reviewTitle, 
-        //     reviewText, 
-        //     author: {name: auth.currentUser.email, id: auth.currentUser.uid}
-        // });
+        navigate("/hotel");       
        
     };
 

@@ -221,20 +221,7 @@ export default function CreateHotel() {
                         'removeformat | help',
                     content_style: 'body { font-family:Helvetica,Arial,Roboto,sans-serif; font-size:14px }'
                     }}
-                />
-                {/* <button onClick={log}>Log editor content</button> */}
-                {/* <TextField 
-                    id="editedField" 
-                    placeholder="Hotel description" 
-                    size="small" 
-                    value={hotelDescription}
-                    sx={{
-                        m: 1
-                    }}
-                    onChange={event => setHotelDescription(event.target.value)}
-                    multiline
-                    rows={12}
-                /> */}
+                />                
                 
                 <FormControl sx={{ m: 1 }} size="small">
                     <InputLabel>Stars</InputLabel>

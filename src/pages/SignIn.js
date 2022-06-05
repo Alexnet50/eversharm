@@ -1,17 +1,9 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-// import {TextField, Box, FormGroup, Button, Container} from '@mui/material';
 import { auth } from "../firebase-config";
 import { UserContext } from '../App';
-// import Home from "./pages/Home";
-// import LogIn from "./pages/LogIn";
-// import CreatePost from "./pages/CreatePost";
-
-// import {collection, getDocs, addDoc, updateDoc, deleteDoc, doc} from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Button, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-
 
 
 export function SignIn(props) {
@@ -24,9 +16,7 @@ export function SignIn(props) {
     let errorMessage;
 
     // const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    // const passReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
-    
-    let navigate = useNavigate();
+    // const passReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/  
     
     const register = async () => {
         if (registerPassword === confirmPassword) {
@@ -34,18 +24,31 @@ export function SignIn(props) {
             const userCreate = await createUserWithEmailAndPassword(
                 auth, registerEmail, registerPassword
             );            
-            setUser((prev) => ({ ...prev, userName: registerEmail }));            
-            props.callback(false); 
-            // navigate("/");            
+                  
+            props.callback(false);                    
         } 
         catch (error){
             errorCode = error.code;
             errorMessage = error.message;
             console.log(errorCode);
             console.log(errorMessage);
+            setUser((prev) => ({ ...prev, 
+                modalContent: 
+                    <>
+                        <Typography sx={{ m: 2 }} variant='h5' >{error.message}</Typography>
+                        <Button onClick={closeModal} sx={{ ml: '80%'}} >OK</Button>
+                    </>
+                    ,
+                openModal: true 
+            })) 
         }} 
-        else alert('Passwords are not match!')  
-    };    
+        else setUser((prev) => ({ ...prev, 
+            modalContent: <Typography sx={{ m: 2 }} variant='h5' >Passwords are not match!</Typography>,
+            openModal: true 
+        })) 
+    };
+    
+    const closeModal = () => {setUser((prev) => ({ ...prev, openModal: false}))};
     
     return (        
         <Box sx={{ m: 2, display: 'flex', flexDirection: 'column'}}>          
@@ -70,7 +73,7 @@ export function SignIn(props) {
             />
 
             <TextField placeholder="Confirm a password" 
-                size="small" value={registerPassword} sx={{ mb: 2 }}
+                size="small" value={confirmPassword} sx={{ mb: 2 }}
                 onChange={(event) => setConfirmPassword(event.target.value)}
                 required
             />

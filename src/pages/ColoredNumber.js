@@ -19,7 +19,7 @@ export default function ColoredNumber(props) {
     }, [color]);
     return (        
         <Box>
-            <Typography variant={props.size} color={color} fontWeight="700" >{props.number}</Typography>
+            <Typography variant={props.size} color={color} fontFamily="Frijole" >{props.number}</Typography>
         </Box>            
     )
 };

@@ -10,7 +10,9 @@ import CreateReview from "./pages/CreateReview";
 import Header from "./pages/Header";
 import CreateHotel from "./pages/CreateHotel";
 import Hotel from "./pages/Hotel";
-import NewModal from "./pages/Modal"
+import NewModal from "./pages/Modal";
+import { auth } from "./firebase-config";
+
 
 
 export const UserContext = createContext({
@@ -26,23 +28,28 @@ let key = 0;
 //PASSWORD: login123
 
 function App() {
-    const [user, setUser] = useState({
-        userName: null,
+    const [user, setUser] = useState({        
         isAdmin: false,
         currentHotel: null,
         openModal: false,
-        modalContent: ""
+        modalContent: "",
+        currentUser: null,
+        pending: true
     });    
     const value = useMemo(() => ({ user, setUser }), [user]);
-    // const value = useMemo(() => ({ user, setUser, isAdmin, setIsAdmin }), []);        
-    const [imageList, setImageList] = useState([]);
-
-    const handleClose = () => setUser((prev) => ({ ...prev, openModal: false })) ;
-    // const imageListRef = ref(storage, "images/")  
-
+    const handleClose = () => setUser((prev) => ({ ...prev, openModal: false }));   
     
 
-    // useEffect(() => {        
+    useEffect(() => {
+        auth.onAuthStateChanged((newUser) => {
+            setUser((prev) => ({ ...prev,
+                currentUser: newUser,
+                pending: false            
+            }));            
+        })
+    }, []);
+    
+    
     //     listAll(ref(storage, "images/")).then((response) => {
     //         setImageList([]);
     //         // let imageList = [];
@@ -57,6 +64,10 @@ function App() {
     // }, [])
     // console.log(currentUser);
 
+    if(user.pending){
+        return <h4>Loading...</h4>
+      }
+
     return (
         <UserContext.Provider value={value}>
             <Container maxWidth="lg">
@@ -65,9 +76,7 @@ function App() {
                     <Header />                        
                     <Routes>
                         <Route path="/" element={<Home /> } />
-                        <Route path="/createhotel" element={<CreateHotel /> } />
-                        {/* <Route path="/login" element={<LogIn /> } /> */}
-                        {/* <Route path="/signin" element={<SignIn /> } /> */}
+                        <Route path="/createhotel" element={<CreateHotel /> } />                        
                         <Route path="/createreview" element={<CreateReview /> } />
                         <Route path="/hotel" element={<Hotel /> } />
                     </Routes>                    
@@ -75,16 +84,7 @@ function App() {
                     <NewModal openModal={user.openModal} content={user.modalContent} handleClose={handleClose} />   
                 </Router>      
             </Container>
-        </UserContext.Provider>
-              
-            
-            
-        
-        
-                      
-           
-        
-        
+        </UserContext.Provider>       
     );
 }
 

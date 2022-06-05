@@ -11,6 +11,7 @@ import Review from './Review';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import santorini from '../images/santorini.jpg'
 
 
 let key = 0;
@@ -38,8 +39,7 @@ export default function Hotel() {
         getAverageRatings(currentHotel.reviewsList);             
     };
 
-    const getAverageRatings = (reviewsArray) => {
-        // let overallAcc = 0;
+    const getAverageRatings = (reviewsArray) => {        
         let locationAcc = 0;
         let foodAcc = 0;
         let cleanlinessAcc = 0;
@@ -55,23 +55,37 @@ export default function Hotel() {
         setFood(Math.floor((foodAcc / length) * 10) / 10);
         setCleanliness(Math.floor((cleanlinessAcc / length) * 10) / 10);
         setService(Math.floor((serviceAcc / length) * 10) / 10);
-    }
+    };
+
+    // const deleteHandler = async (id) => {
+    //     const reviewDoc = doc(db, "reviews", id);
+    //     await deleteDoc(reviewDoc);
+    //     getReviews();
+    // };  
 
     useEffect(() => {
         getHotels();
         console.log(hotel)
     }, []); 
 
+
     const addReviewHandler = () => {
-        if (user.userName) {
+        if (user.currentUser) {
             navigate("/createreview")
         }  else {
             setUser((prev) => ({ ...prev, 
-                modalContent: <Typography sx={{ m: 2 }} variant='h5' >To add a review you must log in first</Typography>,
+                modalContent: 
+                <>
+                    <Typography sx={{ m: 2 }} variant='h5' >To add a review you must log in first</Typography>
+                    <Button onClick={closeModal} sx={{ ml: '80%'}} >OK</Button>
+                </>
+                ,
                 openModal: true 
             }))             
         }
     }
+
+    const closeModal = () => {setUser((prev) => ({ ...prev, openModal: false}))};
 
     function createMarkup() { if (hotel) return {__html: hotel.hotelDescription}; };
 
@@ -80,7 +94,7 @@ export default function Hotel() {
     return (
         <>
             {hotel &&
-            <Box sx={{ m: 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>              
+            <Box sx={{ m: 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' }}>              
                 <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                     <Typography variant="h4" sx={{ mr: 2, mt: 1 }} fontWeight="bold" color="primary" >
                         {hotel.hotelName}
@@ -90,11 +104,10 @@ export default function Hotel() {
                     </Box>                    
                 </Box>
                 <Paper 
-                    sx={{ pl: 2, pr: 2, width: '150px', display: 'flex', flexDirection: 'row', 
+                    sx={{ pl: 2, pr: 2, width: '170px', display: 'flex', flexDirection: 'row', 
                     flexShrink: 0, alignItems: 'center', borderRadius: '20px' }}
                     elevation={3}
-                >
-                    {/* <Typography variant='subtitle1' color="text.secondary" fontWeight="bold" sx={{ mr: 1 }}>Rating</Typography> */}
+                >                    
                     <ColoredNumber number={hotel.rating} size={"h3"} /> 
                     <Typography variant='subtitle2' color="text.secondary" sx={{ ml: 1 }}>{hotel.reviewsList.length} reviews</Typography>
                 </Paper>
@@ -115,32 +128,28 @@ export default function Hotel() {
                     <Grid item                                     
                         xs={12} md={7}
                         sx={{ p: 2 }}
-                    >
-                                {/* <Box sx={{ maxWidth: '700px' }}> */}
-                                    <Slider 
-                                        autoplay={false} fade={false} 
-                                        centerMode={true} variableWidth={true}
-                                        rows={1}
-                                        adaptiveHeight={true}                                        
-                                    >
-                                        {hotel && hotel.imageList.map((url) => {
-                                            key++;                                            
-                                            return (
-                                                // <div key={key}>
-                                                    <img src={url} key={key}
-                                                     height={'350px'}
-                                                     sx={{ m: 1 }}
-                                                       />
-                                                // </div>                                            
-                                            )                                                      
-                                        })} 
-                                    </Slider>
-                                {/* </Box>                             */}
+                    >                                
+                        <Slider 
+                            autoplay={false} fade={false} 
+                            centerMode={true} variableWidth={true}
+                            rows={1}
+                            adaptiveHeight={true}                                        
+                        >
+                            {hotel && hotel.imageList.map((url) => {
+                                key++;                                            
+                                return (                                    
+                                    <img src={url} key={key}
+                                        height={'350px'}
+                                        sx={{ m: 1 }}
+                                        />                                                                               
+                                )                                                      
+                            })} 
+                        </Slider>                                
                     </Grid> 
                        
                                 
                                                                    
-                    <Grid item xs={12} md={3}
+                    <Grid item xs={12} sm={6} md={3}
                             sx={{ 
                             
                                 display: 'flex', flexDirection: 'column',
@@ -186,12 +195,14 @@ export default function Hotel() {
                                     </Paper> 
                         </Grid>
 
-                        <Grid item xs={12} md={2}
+                        <Grid item xs={12} sm={6} md={2}
                             sx={{                            
                                 display: 'flex', flexDirection: 'column',
                                 alingnItems: 'center', justifyContent: 'space-between'
                             }}>
-                                <Paper sx={{ width: '100%', height: '100%'}}></Paper>
+                                <Paper sx={{ width: '100%', height: '100%', overflow: 'hidden'}}>
+                                    <img src={santorini} style={{ height: '500px'}}></img>
+                                </Paper>
                         </Grid>                                                      
                             
                     </Grid>                 
@@ -200,10 +211,10 @@ export default function Hotel() {
 
         <Grid container spacing={3}>
             <Grid item xs={12} sm={7}>
-                <Paper sx={{ p: 2 }}>
+                <Paper sx={{ p: 2, mb: 2 }} elevation={5}>
                     <Typography>{hotel?.hotelSummary}</Typography>
                 </Paper >
-                <Paper sx={{ p: 2 }}>
+                <Paper sx={{ p: 2 }} elevation={5}>
                     <div dangerouslySetInnerHTML={createMarkup()} />
                 </Paper>
                 

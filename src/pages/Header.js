@@ -16,12 +16,13 @@ import { AppBar,
 } from '@mui/material';
 import { MenuRounded, Search } from '@mui/icons-material/';
 import { auth } from "../firebase-config";
-import { signOut } from "firebase/auth";
+import { signOut, sendPasswordResetEmail } from "firebase/auth";
 import { LogIn } from "./LogIn"
 import { SignIn } from "./SignIn"
 
 export default function Header() {
     const [anchorElNav, setAnchorElNav] = useState(null);
+    const [anchorElUser, setAnchorElUser] = useState(null);
     const [loginDrawerState, setLoginDrawerState] = useState(false);
     const [signinDrawerState, setSigninDrawerState] = useState(false);
     const {user, setUser} = useContext(UserContext);    
@@ -33,13 +34,46 @@ export default function Header() {
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
+    const handleOpenUserMenu = (event) => {
+        setAnchorElUser(event.currentTarget);
+    };
+    
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
 
     const signUserOut = () => {
-        signOut(auth).then(() => {
-        //   localStorage.clear();
-            setUser((prev) => ({ ...prev, userName: null, isAdmin: false }));            
-        //   window.location.pathname = "/";
+        signOut(auth).then(() => {       
+            setUser((prev) => ({ ...prev, isAdmin: false }));   
         });
+    };
+
+    
+    const handlePasswordChange = async () => {
+        try {
+            await sendPasswordResetEmail(auth, user.currentUser.email);
+            setUser((prev) => ({ ...prev, 
+                modalContent: 
+                <>
+                    <Typography sx={{ m: 2 }} variant='h5' >Password reset link sent!</Typography>
+                    <Button onClick={closeModal} sx={{ ml: '80%'}} >OK</Button>
+                </>
+                ,
+                openModal: true 
+            }))             
+            } catch (error) {
+                setUser((prev) => ({ ...prev, 
+                    modalContent: 
+                    <>
+                        <Typography sx={{ m: 2 }} variant='h5' >{error.message}</Typography>
+                        <Button onClick={closeModal} sx={{ ml: '80%'}} >OK</Button>
+                    </>
+                    ,
+                    openModal: true 
+                }))     
+                console.error(error);
+                alert(error.message);
+            }
     };
       
     const toggleLoginDrawer = () => {        
@@ -49,6 +83,8 @@ export default function Header() {
     const toggleSigninDrawer = () => {        
         setSigninDrawerState(!signinDrawerState);
     }; 
+
+    const closeModal = () => {setUser((prev) => ({ ...prev, openModal: false}))};
 
     const linkStyle = {        
         textDecoration: "none",        
@@ -65,10 +101,11 @@ export default function Header() {
                             noWrap
                             component="a"
                             href="/"
+                            fontFamily="Frijole"
                             sx={{
                                 mr: 2,
                                 // display: { xs: 'none', md: 'flex' },                        
-                                fontWeight: 700,                          
+                                // fontWeight: 700,                          
                                 color: 'inherit',
                                 textDecoration: 'none',
                             }}
@@ -119,7 +156,7 @@ export default function Header() {
                                     </Link>
                                 </MenuItem>
                             
-                                {!user.userName &&
+                                {!user.currentUser &&
                                     <MenuItem>                                  
                                         <Button
                                             sx={{ display: 'block' }}
@@ -130,7 +167,7 @@ export default function Header() {
                                     </MenuItem>
                                 }
 
-                                {!user.userName && 
+                                {!user.currentUser && 
                                     <MenuItem>                                
                                         <Button
                                             sx={{ display: 'block' }}
@@ -142,7 +179,7 @@ export default function Header() {
                                 }
                                 
 
-                                {user.userName && !user.isAdmin && 
+                                {user.currentUser && !user.isAdmin && 
                                     <MenuItem>                                   
                                         <Link to={"/createreview"} style={linkStyle}>
                                             <Button
@@ -167,29 +204,56 @@ export default function Header() {
                                     </MenuItem>    
                                 }
 
-                                {user.userName &&
-                                    <MenuItem>                                
-                                        <Button onClick={signUserOut}>Log out</Button>                                
+                                {user.currentUser &&
+                                    <MenuItem>                                                                       
+                                        <Button 
+                                            onClick={handleOpenUserMenu}
+                                            sx={{ display: 'block' }}
+                                        >
+                                            User
+                                        </Button>                                
                                     </MenuItem>  
                                 }
                             </Menu>
-                        </Box>
-                        
-                        {/* <Typography
-                            variant="h5"
-                            noWrap
-                            component="a"
-                            href="/"
-                            sx={{                        
-                            display: { xs: 'flex', md: 'none' },
-                            flexGrow: 1,                       
-                            fontWeight: 700,                        
-                            color: 'inherit',
-                            textDecoration: 'none',
-                            }}
-                        >
-                            EverSharm
-                        </Typography> */}
+                            
+                            {user.currentUser &&
+                                <Menu
+                                    id="menu-user"
+                                    anchorEl={anchorElUser}
+                                    anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'left',
+                                    }}
+                                        keepMounted
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'left',
+                                    }}
+                                        open={Boolean(anchorElUser)}
+                                        onClick={handleCloseUserMenu}
+                                        sx={{
+                                            display: { xs: 'block' },
+                                    }}
+                                >
+                                    <MenuItem>
+                                        <Typography>User: {user.currentUser.email}</Typography>
+                                    </MenuItem>                            
+                                    
+                                    <MenuItem>                                  
+                                        <Button
+                                            sx={{ display: 'block' }}
+                                            onClick={handlePasswordChange}
+                                        >   
+                                            Change password
+                                        </Button>                                        
+                                    </MenuItem>                                
+
+                                    <MenuItem>                                
+                                            <Button onClick={signUserOut}>Log out</Button>                                                               
+                                    </MenuItem>
+                                </Menu>
+                            }
+                        </Box>                      
 
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 
@@ -203,7 +267,7 @@ export default function Header() {
                                 </Button>
                             </Link>
 
-                            {!user.userName &&                                
+                            {!user.currentUser &&                                
                                 <Button
                                     sx={{ color: 'white', display: 'block' }}
                                     onClick={toggleLoginDrawer}
@@ -212,7 +276,7 @@ export default function Header() {
                                 </Button>                               
                             }
 
-                            {!user.userName &&                              
+                            {!user.currentUser &&                              
                                 <Button
                                     sx={{ color: 'white', display: 'block' }}
                                     onClick={toggleSigninDrawer}
@@ -221,7 +285,7 @@ export default function Header() {
                                 </Button>                                                            
                             }
 
-                            {user.userName && !user.isAdmin &&                            
+                            {user.currentUser && !user.isAdmin &&                            
                                 <Link to={"/createreview"} style={linkStyle}>
                                     <Button
                                         sx={{ color: 'white', display: 'block' }}
@@ -241,14 +305,15 @@ export default function Header() {
                                 </Link>        
                             }
 
-                            {user.userName &&
+                            
+                            {user.currentUser &&                                                                                                       
                                 <Button 
-                                    onClick={signUserOut}
                                     sx={{ color: 'white', display: 'block' }}
+                                    onClick={handleOpenUserMenu}
                                 >
-                                    Log out
-                                </Button>                    
-                            }                         
+                                    User
+                                </Button>                         
+                            }
                         </Box>                 
 
                         <TextField 
@@ -258,7 +323,9 @@ export default function Header() {
                             size="small"
                             color="primary"
                             sx={{                        
-                                display: { xs: 'none', md: 'flex' },                                                  
+                                display: { xs: 'none', sm: 'flex'
+                                //  md: 'flex' 
+                                },                                                  
                                 fontWeight: 700,                        
                                 color: 'primary'                            
                                 }}
@@ -272,8 +339,8 @@ export default function Header() {
                         />
 
                         
-                        {user.userName && 
-                            <Box edge="end" sx={{ display: { xs: 'none', md: 'block' } }}>
+                        {user.currentUser && 
+                            <Box edge="end" sx={{ textAlign: 'center', display: { xs: 'none', lg: 'block' } }}>
                                 <Typography
                                     variant="subtitle2"
                                     noWrap                                
@@ -284,9 +351,9 @@ export default function Header() {
                                         textDecoration: 'none',
                                     }}
                                 >
-                                    Logged as 
+                                    You are logged as 
                                     <br/>
-                                    {user.userName}
+                                    {user.currentUser.email}
                                     {/* {auth.currentUser.email} */}
                                 </Typography>
                             </Box>

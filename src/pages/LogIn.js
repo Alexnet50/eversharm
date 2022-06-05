@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase-config";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, verifyPasswordResetCode, confirmPasswordReset, sendPasswordResetEmail } from "firebase/auth";
 import { UserContext } from '../App';
 import { Box, Button, TextField, Typography } from "@mui/material";
 
@@ -23,27 +23,63 @@ export function LogIn(props) {
     // const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     // const passReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
-    const logIn = async () => {
-       
+    const logIn = async () => {        
         try {
-            const userSignIn = await signInWithEmailAndPassword(
+            signInWithEmailAndPassword(
                 auth, logInEmail, logInPassword
-            );
-            // userSignIn();
-            setUser((prev) => ({ ...prev, userName: logInEmail }));
+            );      
            
             if (logInEmail === "aladdin@ukr.net") setUser((prev) => ({ ...prev, isAdmin: true }));            
             // console.log(setUser) 
-            props.callback(false);           
-            // navigate("/");
-        } 
-        catch (error){
+            props.callback(false);        
+        }
+        catch (error) {
             errorCode = error.code;
             errorMessage = error.message;
             console.log(errorCode);
             console.log(errorMessage);
+            setUser((prev) => ({ ...prev, 
+                modalContent: 
+                <>
+                    <Typography sx={{ m: 2 }} variant='h5' >{error.message}</Typography>
+                    <Button onClick={closeModal} sx={{ ml: '80%'}} >OK</Button>
+                </>
+                ,
+                openModal: true 
+            })) 
         }
     };
+
+    const resetHandler = async () => {
+        try {
+            await sendPasswordResetEmail(auth, logInEmail);
+            setUser((prev) => ({ ...prev, 
+                modalContent: 
+                <>
+                    <Typography sx={{ m: 2 }} variant='h5' >Password reset link sent!</Typography>
+                    <Button onClick={closeModal} sx={{ ml: '80%'}} >OK</Button>
+                </>
+                ,
+                openModal: true 
+            }))             
+            } catch (error) {
+                setUser((prev) => ({ ...prev, 
+                    modalContent: 
+                    <>
+                        <Typography sx={{ m: 2 }} variant='h5' >{error.message}</Typography>
+                        <Button onClick={closeModal} sx={{ ml: '80%'}} >OK</Button>
+                    </>
+                    ,
+                    openModal: true 
+                }))     
+                console.error(error);
+                alert(error.message);
+            }
+    };
+
+
+    const closeModal = () => {setUser((prev) => ({ ...prev, openModal: false}))};
+
    
     return (        
         <Box sx={{ m: 2, display: 'flex', flexDirection: 'column'}}>          
@@ -65,8 +101,10 @@ export function LogIn(props) {
                 onChange={event => setLogInPassword(event.target.value)}
             />
             
-            <Button variant="outlined" onClick={logIn}>Log in</Button>  
-            <Button >I forgot my password</Button>          
+            <Button variant="outlined" sx={{ mb: 2 }} 
+            onClick={logIn}>Log in</Button>  
+
+            <Button onClick={resetHandler}>I forgot my password</Button>          
         </Box>
     );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import {collection, getDocs, deleteDoc, doc} from "firebase/firestore";
+import {collection, getDocs, deleteDoc, doc, query, orderBy, limit} from "firebase/firestore";
 import {db} from "../firebase-config";
 import { UserContext } from '../App';
 import { Box, Button, Typography, Grid, Card,
@@ -18,8 +18,12 @@ export default function HotelsList() {
     const navigate = useNavigate();
     
     const getHotels = async() => {        
-        const data = await getDocs(hotelsRef);
-        setHotels(data.docs.map((doc) => ({...doc.data(), id: doc.id})));
+        // const data = await getDocs(hotelsRef);
+        const data = query(hotelsRef, orderBy("hotelName"), limit(10));        
+        const querySnapshot = await getDocs(data);
+        let hotelsArray = [];
+        querySnapshot.forEach((doc) => hotelsArray.push({...doc.data(), id: doc.id}))       
+        setHotels(hotelsArray);        
     };
 
     const infoHandler = (id) => {         
@@ -88,7 +92,7 @@ export default function HotelsList() {
                                     More Info
                                 </Button>
                                 
-                                {user.userName && !user.isAdmin &&                               
+                                {user.currentUser && !user.isAdmin &&                               
                                     <Button 
                                         size="small" sx={{ mr: 1}}
                                         onClick={() => reviewHandler(hotel.id)}

@@ -8,14 +8,14 @@ import { UserContext } from '../App';
 import Slider from 'react-slick';
 
 const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
+    const { expand, ...other } = props;
+    return <IconButton {...other} />;
 })(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
+        transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+        duration: theme.transitions.duration.shortest,
+    }),
 }));
 
 let key = 0;
@@ -46,11 +46,11 @@ export default function Review(props) {
         }));        
     }
 
-    
+    key++;
 
     return (
         <>
-            <Card key={props.key} sx={{ maxWidth: 500, m: 2 }}>
+            <Card key={key} sx={{ maxWidth: 500, m: 2 }}>
                 <CardContent>
                     <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', pl: 2 }}>
                     <ColoredNumber number={props.review.overall} size={"h4"} />
@@ -92,14 +92,14 @@ export default function Review(props) {
                                 props.review.myImageList.map((url) => {
                                     key++;
                                     return (
-                                        <img src={url} key={url.index} style={{ margin: 2, height: 150 }}
+                                        <img src={url} key={key} style={{ margin: 2, height: 150 }}
                                             onClick={() => imageClickHandler()}
                                         />
                                     )                                            
                                 })
                             }
                         </Box>
-                        {user.userName && props.review.reviewAuthor === user.userName  
+                        {user.currentUser && props.review.reviewAuthor === user.currentUser.email  
                             && <Button 
                                 // onClick={() => deleteHandler(props.review.id)}
                             >
