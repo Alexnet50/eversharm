@@ -1,4 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
+import { doc, updateDoc } from "firebase/firestore";
+import {db, storage} from "../firebase-config";
+import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Box, Button, Typography, Grid, Card, Collapse, IconButton, 
@@ -21,7 +24,8 @@ const ExpandMore = styled((props) => {
 let key = 0;
 export default function Review(props) {
     const [expanded, setExpanded] = useState(false);
-    const {user, setUser} = useContext(UserContext);    
+    const {user, setUser} = useContext(UserContext); 
+    const [hotel, setHotel] = useState();        
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -44,7 +48,39 @@ export default function Review(props) {
                 </Box>,
             openModal: true 
         }));        
-    }
+    };    
+    
+    const deleteHandler = async () => {        
+        const hotelDoc = doc(db, "hotels", user.currentHotel);
+        let imageList;
+        let reviewsList = props.hotel.reviewsList;
+        const index = reviewsList.findIndex(item => item.reviewId === props.review.reviewId);
+        reviewsList.splice(index, 1);            
+        
+        const deleteImages = async (url) => {
+            try {
+                const imageRef = ref(storage, url);          
+                deleteObject(imageRef);  
+
+                imageList = props.hotel.imageList;
+                const index = imageList.findIndex(item => item === url);
+                imageList.splice(index, 1);                                 
+            }        
+            catch(error) {
+                console.log("Deleting error!");
+            }
+        }; 
+        
+        props.review.myImageList.map((url) => deleteImages(url));
+        const newRating = Math.floor(((props.hotel.rating * props.hotel.reviewsList.length - props.review.overall) / (props.hotel.reviewsList.length - 1)) *10) / 10;      
+        
+        await updateDoc(hotelDoc, { 
+            reviewsList: reviewsList,
+            imageList: imageList,
+            rating: newRating
+        });
+        props.callback();       
+    };
 
     key++;
 
@@ -53,12 +89,21 @@ export default function Review(props) {
             <Card key={key} sx={{ maxWidth: 500, m: 2 }}>
                 <CardContent>
                     <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', pl: 2 }}>
-                    <ColoredNumber number={props.review.overall} size={"h4"} />
+                        <ColoredNumber number={props.review.overall} size={"h4"} />
 
-                    <Typography variant='subtitle1' color="text.secondary" fontWeight="bold" 
-                        sx={{ fontFamily:'helvetica' }}>
-                            {props.review.reviewAuthor}
-                    </Typography>                              
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
+                            <Typography variant='subtitle1' color="text.secondary" fontWeight="bold" 
+                                sx={{ fontFamily:'helvetica' }}>
+                                    {props.review.reviewAuthor}
+                            </Typography>   
+
+                            <Typography variant='subtitle2' color="text.secondary" fontWeight="bold" 
+                                sx={{ fontFamily:'helvetica' }}>
+                                    {props.review?.date}
+                            </Typography>  
+
+                        </Box>
+                                                   
                     </Box>
                 
                     <Typography variant='h6'>{props.review.reviewTitle}</Typography>
@@ -101,7 +146,7 @@ export default function Review(props) {
                         </Box>
                         {user.currentUser && props.review.reviewAuthor === user.currentUser.email  
                             && <Button 
-                                // onClick={() => deleteHandler(props.review.id)}
+                                onClick={() => deleteHandler()}
                             >
                                 Delete review
                             </Button>}                            

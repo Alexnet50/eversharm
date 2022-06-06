@@ -97,7 +97,7 @@ export function LogIn(props) {
                 onChange={event => setLogInEmail(event.target.value)}
             />
             <TextField placeholder="Enter a password" 
-                size="small" value={logInPassword} sx={{ mb: 2 }}
+                size="small" value={logInPassword} sx={{ mb: 2 }} type="password"
                 onChange={event => setLogInPassword(event.target.value)}
             />
             

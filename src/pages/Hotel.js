@@ -32,6 +32,7 @@ export default function Hotel() {
     const getHotels = async () => {  
         const data = await getDocs(hotelsCollectionRef);
         const hotelsArray = data.docs.map((doc) => ({...doc.data(), id: doc.id}))
+        setHotels(hotelsArray);
         let currentHotel = hotelsArray.find(item => item.id == user.currentHotel)
         
         setHotel(() => {return currentHotel });
@@ -55,17 +56,10 @@ export default function Hotel() {
         setFood(Math.floor((foodAcc / length) * 10) / 10);
         setCleanliness(Math.floor((cleanlinessAcc / length) * 10) / 10);
         setService(Math.floor((serviceAcc / length) * 10) / 10);
-    };
-
-    // const deleteHandler = async (id) => {
-    //     const reviewDoc = doc(db, "reviews", id);
-    //     await deleteDoc(reviewDoc);
-    //     getReviews();
-    // };  
+    };     
 
     useEffect(() => {
-        getHotels();
-        console.log(hotel)
+        getHotels();        
     }, []); 
 
 
@@ -126,7 +120,7 @@ export default function Hotel() {
                 <Grid container spacing={3}>
                     
                     <Grid item                                     
-                        xs={12} md={7}
+                        xs={12} md={9}
                         sx={{ p: 2 }}
                     >                                
                         <Slider 
@@ -149,7 +143,7 @@ export default function Hotel() {
                        
                                 
                                                                    
-                    <Grid item xs={12} sm={6} md={3}
+                    <Grid item xs={12} md={3}
                             sx={{ 
                             
                                 display: 'flex', flexDirection: 'column',
@@ -195,7 +189,7 @@ export default function Hotel() {
                                     </Paper> 
                         </Grid>
 
-                        <Grid item xs={12} sm={6} md={2}
+                        {/* <Grid item xs={12} sm={6} md={2}
                             sx={{                            
                                 display: 'flex', flexDirection: 'column',
                                 alingnItems: 'center', justifyContent: 'space-between'
@@ -203,7 +197,7 @@ export default function Hotel() {
                                 <Paper sx={{ width: '100%', height: '100%', overflow: 'hidden'}}>
                                     <img src={santorini} style={{ height: '500px'}}></img>
                                 </Paper>
-                        </Grid>                                                      
+                        </Grid>                                                       */}
                             
                     </Grid>                 
                 </div>
@@ -227,7 +221,7 @@ export default function Hotel() {
                 hotel.reviewsList.map((review => {
                     key++;
                         return (
-                            <Review key={key} review={review} />                                   
+                            <Review key={key} review={review} hotel={hotel} callback={getHotels}/>                                   
                         )
                     }))}
             </Grid>

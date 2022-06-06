@@ -67,13 +67,13 @@ export function SignIn(props) {
                 required
             />
             <TextField placeholder="Enter a password" 
-                size="small" value={registerPassword} sx={{ mb: 2 }}
+                size="small" value={registerPassword} sx={{ mb: 2 }} type="password"
                 onChange={(event) => setRegisterPassword(event.target.value)}
                 required
             />
 
             <TextField placeholder="Confirm a password" 
-                size="small" value={confirmPassword} sx={{ mb: 2 }}
+                size="small" value={confirmPassword} sx={{ mb: 2 }} type="password"
                 onChange={(event) => setConfirmPassword(event.target.value)}
                 required
             />

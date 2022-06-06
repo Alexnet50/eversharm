@@ -6,30 +6,24 @@ import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage
 import { db, storage } from "../firebase-config";
 import { UserContext  } from '../App';
 import { Box, Button, TextField, Typography, Rating,
-    FormControl, InputLabel, Select, MenuItem, Grid, IconButton
+    FormControl, InputLabel, Select, MenuItem, Grid, IconButton    
 } from '@mui/material';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 let key = 0;
 
 export default function CreateReview() {
-    const {user, setUser} = useContext(UserContext);
-    // const [hotelName, setHotelName] = useState("");
-    // const [hotelDescription, setHotelDescription] = useState("");
-    // const [stars, setStars] = useState("");
-    // const [line, setLine] = useState("");
-    // const [warmPool, setWarmPool] = useState(false);
-    // const [aquapark, setAquapark] = useState(false);
-    // const [kidsClub, setKidsClub] = useState(false);
-    // const [imagesUpload, setImagesUpload] = useState(null);    
-    // const [imageList, setImageList] = useState([]);
-    // const [reviewsList, setReviewsList] = useState([]);
+    const {user, setUser} = useContext(UserContext);    
     const [hotels, setHotels] = useState([]);    
     const [hotel, setHotel] = useState([]);    
-        
     const [hotelId, setHotelId] = useState([]);    
     const [reviewTitle, setReviewTitle] = useState("");
-    const [reviewText, setReviewText] = useState("");    
+    const [reviewText, setReviewText] = useState(""); 
+    const [dateOfVisit, setDateOfVisit] = useState(null);   
+    const [dateString, setDateString] = useState(null);   
     const [overall, setOverall] = useState(0);
     const [location, setLocation] = useState(0);
     const [food, setFood] = useState(0);
@@ -38,7 +32,7 @@ export default function CreateReview() {
     const [imageList, setImageList] = useState([]);
     const [myImageList, setMyImageList] = useState([]);
     const [imagesUpload, setImagesUpload] = useState(null);
-    // const [reviewsList, setReviewsList] = useState([]);
+    
 
     useEffect(() => {
         !user.currentUser && navigate("/");
@@ -48,6 +42,8 @@ export default function CreateReview() {
     const hotelsCollectionRef = collection(db, "hotels");
 
     const getHotels = async() => {  
+        const hotelDoc = doc(db, "hotels", user.currentHotel);
+        console.log(hotelDoc)
         const data = await getDocs(hotelsCollectionRef);
         const hotelsArray = data.docs.map((doc) => ({...doc.data(), id: doc.id}))
         setHotels(hotelsArray);        
@@ -56,26 +52,25 @@ export default function CreateReview() {
     };
 
     const selectHotelHandler = (event) => {            
-            setHotelId(event.target.value);
-            setUser((prev) => ({ ...prev, currentHotel: event.target.value })) 
-            /////////////
-            console.log(event.target.value)
-            console.log(user.currentHotel)
-            
+        setHotelId(event.target.value);
+        setUser((prev) => ({ ...prev, currentHotel: event.target.value }));           
     }
     
     const createReview = async () => {        
         const hotelDoc = doc(db, "hotels", user.currentHotel);
+        console.log(hotelDoc.reviewsList)
         const newReviewsList = [...hotel.reviewsList, {
             reviewAuthor: user.currentUser.email,
             reviewTitle: reviewTitle,
             reviewText: reviewText,
+            date: dateString,
             overall: overall,
             location: location,
             food: food,
             cleanliness: cleanliness,
             service: service,
-            myImageList: myImageList
+            myImageList: myImageList,
+            reviewId: hotel.reviewsList.length + 1
         }];
         const newImageList = [...hotel.imageList, ...imageList];
         const newRating = Math.floor(((hotel.rating * hotel.reviewsList.length + overall) / (hotel.reviewsList.length + 1)) *10) / 10;      
@@ -122,6 +117,12 @@ export default function CreateReview() {
         catch(error) {
             console.log("Deleting error!");
         }
+    };
+
+    const dateOfVisitHandler = (value) => {
+        setDateOfVisit(() => value);
+        let dateString = value.getDate() + "-" + (value.getMonth() < 10 && "0") + value.getMonth() + "-" + value.getFullYear();         
+        setDateString(() => dateString);                       
     };
 
     useEffect(() => {       
@@ -213,6 +214,21 @@ export default function CreateReview() {
                 </Box>
 
                 <Box sx={{ mb: 2 }}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DatePicker                            
+                            label="Date of visit"
+                            value={dateOfVisit}
+                            openTo="month"
+                            disableFuture                            
+                            type="text"
+                            size="small" 
+                            allowSameDateSelection={true}                                               
+                            onChange={event => dateOfVisitHandler(event)}                            
+                            renderInput={(params) => <TextField {...params} />}
+                            helperText="Date of visit"                                                    
+                        />
+                    </LocalizationProvider>
+
                     <Typography variant="h6" style={textStyle}
                     >
                         Title:
