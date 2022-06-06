@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useMemo, createContext} from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { Container } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import {storage} from "./firebase-config";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import Home from "./pages/Home";
@@ -47,25 +47,12 @@ function App() {
                 pending: false            
             }));            
         })
-    }, []);
+    }, []);    
     
-    
-    //     listAll(ref(storage, "images/")).then((response) => {
-    //         setImageList([]);
-    //         // let imageList = [];
-    //         response.items.forEach((item) => {
-    //             getDownloadURL(item).then((url) => {
-    //                 // imageList.push(url);
-    //                 setImageList((prev) => [...prev, url]); 
-    //             })
-    //         });
-    //         // setImageList(imageList);
-    //     })
-    // }, [])
-    // console.log(currentUser);
+  
 
     if(user.pending){
-        return <h4>Loading...</h4>
+        return <Typography variant='h4' color="text.secondary" fontWeight="bold" sx={{ ml: 10, mt: 5 }} >Loading...</Typography>
       }
 
     return (

@@ -30,7 +30,7 @@ export default function CreateHotel() {
     const [imagesUpload, setImagesUpload] = useState(null);    
     const [imageList, setImageList] = useState([]);
     const [reviewsList, setReviewsList] = useState([]);
-    const [rating, setRating] = useState(null);
+    const [rating, setRating] = useState(0);
 
     const editorRef = useRef(null);
     const editorHandler = () => {

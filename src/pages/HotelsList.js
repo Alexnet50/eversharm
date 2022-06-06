@@ -22,7 +22,7 @@ export default function HotelsList() {
     
     const getHotels = async() => {        
         // const data = await getDocs(hotelsRef);
-        const data = query(hotelsRef, orderBy(sort), limit(20));        
+        const data = query(hotelsRef, orderBy(sort, "desc"), limit(20));        
         const querySnapshot = await getDocs(data);
         let hotelsArray = [];
         querySnapshot.forEach((doc) => hotelsArray.push({...doc.data(), id: doc.id}))       
@@ -91,7 +91,7 @@ export default function HotelsList() {
                                                 <Stars stars={hotel.stars} />
                                             </Box>
                                             
-                                            {hotel.rating && <ColoredNumber number={hotel.rating} size={"h5"} />}
+                                            {hotel.rating !== 0 && <ColoredNumber number={hotel.rating} size={"h5"} />}
                                         </Box>
                                         
                                         <Typography gutterBottom variant="h5" component="div">

@@ -11,7 +11,7 @@ import Review from './Review';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import santorini from '../images/santorini.jpg'
+// import santorini from '../images/santorini.jpg'
 
 
 let key = 0;
