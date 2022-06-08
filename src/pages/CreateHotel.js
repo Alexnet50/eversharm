@@ -165,9 +165,7 @@ export default function CreateHotel() {
         setAquapark(false);
         setWarmPool(false);
         setKidsClub(false);
-    };
-
-    
+    };    
 
     return (
         <Grid container spacing={1}>
