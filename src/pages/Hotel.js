@@ -102,7 +102,7 @@ export default function Hotel() {
                     flexShrink: 0, alignItems: 'center', borderRadius: '20px' }}
                     elevation={3}
                 >                    
-                    <ColoredNumber number={hotel.rating} size={"h3"} /> 
+                    <ColoredNumber number={hotel.rating ? hotel.rating : "-"} size={"h3"} /> 
                     <Typography variant='subtitle2' color="text.secondary" sx={{ ml: 1 }}>{hotel.reviewsList.length} reviews</Typography>
                 </Paper>
                              
@@ -155,28 +155,28 @@ export default function Hotel() {
                                             <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
                                                 Location
                                             </Typography>
-                                            <ColoredNumber number={location} size={"h4"} /> 
+                                            <ColoredNumber number={location ? location : "-"} size={"h4"} /> 
                                         </Box>
 
                                         <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                                             <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
                                                 Food
                                             </Typography>
-                                            <ColoredNumber number={food} size={"h4"} /> 
+                                            <ColoredNumber number={food ? food : "-"} size={"h4"} /> 
                                         </Box>
 
                                         <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                                             <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
                                                 Cleanliness
                                             </Typography>
-                                            <ColoredNumber number={cleanliness} size={"h4"} /> 
+                                            <ColoredNumber number={cleanliness ? cleanliness : "-"} size={"h4"} /> 
                                         </Box>
 
                                         <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                                             <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
                                                 Service
                                             </Typography>
-                                            <ColoredNumber number={service} size={"h4"} /> 
+                                            <ColoredNumber number={service ? service : "-"} size={"h4"} /> 
                                         </Box>
                                     
 

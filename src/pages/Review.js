@@ -52,7 +52,7 @@ export default function Review(props) {
     
     const deleteHandler = async () => {        
         const hotelDoc = doc(db, "hotels", user.currentHotel);
-        let imageList;
+        let imageList = props.hotel.imageList;
         let reviewsList = props.hotel.reviewsList;
         const index = reviewsList.findIndex(item => item.reviewId === props.review.reviewId);
         reviewsList.splice(index, 1);            
@@ -62,7 +62,7 @@ export default function Review(props) {
                 const imageRef = ref(storage, url);          
                 deleteObject(imageRef);  
 
-                imageList = props.hotel.imageList;
+                
                 const index = imageList.findIndex(item => item === url);
                 imageList.splice(index, 1);                                 
             }        
@@ -72,7 +72,7 @@ export default function Review(props) {
         }; 
         
         props.review.myImageList.map((url) => deleteImages(url));
-        const newRating = Math.floor(((props.hotel.rating * props.hotel.reviewsList.length - props.review.overall) / (props.hotel.reviewsList.length - 1)) *10) / 10;      
+        const newRating = Math.floor(((props.hotel.rating * props.hotel.reviewsList.length - props.review.overall) / (props.hotel.reviewsList.length - 1)) * 10) / 10;      
         
         await updateDoc(hotelDoc, { 
             reviewsList: reviewsList,
