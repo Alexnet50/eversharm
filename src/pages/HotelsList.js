@@ -9,6 +9,7 @@ import { Box, Button, Typography, Grid, Card, Checkbox,
     } from "@mui/material";
 import Stars from './Stars';
 import ColoredNumber from './ColoredNumber';
+import Icons from './Icons';
      
 let key = 0;
 
@@ -135,32 +136,13 @@ export default function HotelsList() {
                                             </Box>
                                             
                                             {hotel.rating !== 0 && <ColoredNumber number={hotel.rating} size={"h5"} />}
-                                        </Box>
-                                        
+                                        </Box>                                        
                                         
                                         <Typography gutterBottom variant="h5" component="div">
                                             {hotel.hotelName}
                                         </Typography>
-                                        <Box sx={{ m: 1, display: 'flex', flexDirection: 'row'}}>
-                                            {hotel.line && hotel.line < 3 && 
-                                                <Box sx={{ mr: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                                <div style={{width: '32px', height: '16px', backgroundImage: 'url(/images/waves.png)', backgroundSize: 'contain'}}></div>
-                                                <Typography variant="subtitle2" color="text.secondary" fontWeight="bold" component="div">                                    
-                                                       {hotel.line} line
-                                                </Typography>
-                                                </Box>
-                                            }                                            
-                                             
-                                            {hotel.warmPool && 
-                                                <div style={{ marginRight: 15, width: '32px', height: '32px', backgroundImage: 'url(/images/swimming-pool1.png)', backgroundSize: 'contain'}}></div>}
-                                            {/* {hotel.warmPool && <Typography gutterBottom variant="subtitle2">Heated swimming pool</Typography>} */}
-                                            {hotel.aquapark && 
-                                                <div style={{ marginRight: 15, width: '32px', height: '32px', backgroundImage: 'url(/images/slide.png)', backgroundSize: 'contain'}}></div>}
-                                            {/* {hotel.aquapark && <Typography gutterBottom variant="subtitle2">Aquapark or water slades</Typography>} */}
-                                            {hotel.kidsClub && 
-                                                <div style={{ marginRight: 15, width: '32px', height: '32px', backgroundImage: 'url(/images/playground.png)', backgroundSize: 'contain'}}></div>}
-                                            {/* {hotel.kidsClub && <Typography gutterBottom variant="subtitle2">Kids club</Typography>} */}
-                                        </Box>
+
+                                        <Icons hotel={hotel} coef={1} />
 
                                         <Typography variant="body2" color="text.secondary">
                                             {hotel.hotelSummary ? hotel.hotelSummary : hotel.hotelDescription}

@@ -11,6 +11,7 @@ import Review from './Review';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import Icons from './Icons';
 // import santorini from '../images/santorini.jpg'
 
 
@@ -206,9 +207,13 @@ export default function Hotel() {
         <Grid container spacing={3}>
             <Grid item xs={12} sm={7}>
                 <Paper sx={{ p: 2, mb: 2 }} elevation={5}>
+                    <Icons hotel={hotel} coef={2} />
+                </Paper >
+
+                <Paper sx={{ p: 2, mb: 2 }} elevation={2}>
                     <Typography>{hotel?.hotelSummary}</Typography>
                 </Paper >
-                <Paper sx={{ p: 2 }} elevation={5}>
+                <Paper sx={{ p: 2 }} elevation={2}>
                     <div dangerouslySetInnerHTML={createMarkup()} />
                 </Paper>
                 

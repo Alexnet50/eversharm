@@ -27,6 +27,9 @@ export default function CreateHotel() {
     const [warmPool, setWarmPool] = useState(false);
     const [aquapark, setAquapark] = useState(false);
     const [kidsClub, setKidsClub] = useState(false);
+    const [coralReef, setCoralReef] = useState(false);
+    const [sandBeach, setSandBeach] = useState(false);
+    const [freeWiFi, setFreeWiFi] = useState(false);
     const [imagesUpload, setImagesUpload] = useState(null);    
     const [imageList, setImageList] = useState([]);
     const [reviewsList, setReviewsList] = useState([]);
@@ -62,11 +65,7 @@ export default function CreateHotel() {
 
     const formFill = async(hotel) => {
         if (user.currentHotel === null) return;
-        
 
-        // const hotelDoc = doc(db, "hotels", user.currentHotel);
-        // const hotelData = await getDoc(hotelDoc);
-        // const hotelFields = hotelData._document.data.value.mapValue.fields;
         if (hotel) {
             setHotelName(hotel.hotelName);
             setHotelSummary(hotel.hotelSummary);
@@ -76,11 +75,13 @@ export default function CreateHotel() {
             setAquapark(hotel.aquapark);
             setWarmPool(hotel.warmPool);
             setKidsClub(hotel.kidsClub);
+            setCoralReef(hotel?.coralReef);
+            setSandBeach(hotel?.sandBeach);
+            setFreeWiFi(hotel?.freeWiFi);
             setImageList(hotel.imageList); 
             setReviewsList(hotel.reviewsList);
             setRating(hotel?.rating);
-        }
-        
+        }        
         /////////
         console.log(hotel)
     };
@@ -100,6 +101,9 @@ export default function CreateHotel() {
             warmPool,
             aquapark,
             kidsClub,
+            coralReef,
+            sandBeach,
+            freeWiFi,
             imageList,
             reviewsList,
             rating
@@ -272,7 +276,29 @@ export default function CreateHotel() {
                             checked={kidsClub}
                             onChange={event => setKidsClub(event.target.checked)}
                         />} 
-                        label="Kids club" />
+                        label="Kids club" 
+                    />
+                    <FormControlLabel control={
+                        <Checkbox 
+                            checked={coralReef}
+                            onChange={event => setCoralReef(event.target.checked)}
+                        />} 
+                        label="Coral reef" 
+                    />
+                    <FormControlLabel control={
+                        <Checkbox 
+                            checked={sandBeach}
+                            onChange={event => setSandBeach(event.target.checked)}
+                        />} 
+                        label="Sand beach" 
+                    />
+                    <FormControlLabel control={
+                        <Checkbox 
+                            checked={freeWiFi}
+                            onChange={event => setFreeWiFi(event.target.checked)}
+                        />} 
+                        label="Free WiFi" 
+                    />
                 </FormGroup>           
 
                 <TextField type="file" 
@@ -280,7 +306,7 @@ export default function CreateHotel() {
                         m: 1,
                         width: 400
                     }} 
-                    inputProps={ {multiple: true} }                            
+                    inputProps={{ multiple: true }}                            
                     onChange={(event) => {
                         setImagesUpload(event.target.files)                        
                     }}                    
