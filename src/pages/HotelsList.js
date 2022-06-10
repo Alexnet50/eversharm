@@ -144,9 +144,9 @@ export default function HotelsList() {
 
                                         <Icons hotel={hotel} coef={1} />
 
-                                        <Typography variant="body2" color="text.secondary">
+                                        {/* <Typography variant="body2" color="text.secondary">
                                             {hotel.hotelSummary ? hotel.hotelSummary : hotel.hotelDescription}
-                                        </Typography>
+                                        </Typography> */}
                                     </CardContent>
                                 </CardActionArea>
 
