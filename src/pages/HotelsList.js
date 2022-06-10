@@ -98,6 +98,7 @@ export default function HotelsList() {
                     <FormControlLabel control={
                         <Checkbox 
                             checked={sort.five === 5}
+                            size='small'
                             onChange={(event) => toggleCheckbox(5)}
                         />} 
                         label="5 stars" 
@@ -105,6 +106,7 @@ export default function HotelsList() {
                     <FormControlLabel control={
                         <Checkbox
                             checked={sort.four === 4}
+                            size='small'
                             onChange={(event) => toggleCheckbox(4)}
                         />} 
                         label="4 stars" 
@@ -112,25 +114,27 @@ export default function HotelsList() {
                     <FormControlLabel control={
                         <Checkbox 
                             checked={sort.three === 3}
+                            size='small'
                             onChange={(event) => toggleCheckbox(3)}
                         />} 
                         label="3 stars" />
-                </Box>  
+            </Box>
+
             <Grid container spacing={2} sx={{ mt: 1, ml: "auto", mr: "auto" }}>
                 {hotels.map(hotel => {
                     key++;                            
                     return (
                         <Grid item key={key}>
-                            <Card sx={{ maxWidth: 345 }}>
+                            <Card sx={{ width: 345 }}>
                                 <CardActionArea onClick={() => infoHandler(hotel.id)}>
                                     <CardMedia
                                         component="img"
-                                        height="200"
+                                        height="150"
                                         image={hotel.imageList && hotel.imageList[0]}
                                         alt={hotel.hotelName}
                                     />
-                                    <CardContent>
-                                        <Box sx={{ m: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <Box sx={{ p: 1 }} style={{ backgroundColor: 'rgba(0, 150, 255, 0.08)' }}>
+                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                                             <Box>
                                                 <Stars stars={hotel.stars} />
                                             </Box>
@@ -143,24 +147,15 @@ export default function HotelsList() {
                                         </Typography>
 
                                         <Icons hotel={hotel} coef={1} />
-
-                                        {/* <Typography variant="body2" color="text.secondary">
-                                            {hotel.hotelSummary ? hotel.hotelSummary : hotel.hotelDescription}
-                                        </Typography> */}
-                                    </CardContent>
+                                        
+                                    </Box>
                                 </CardActionArea>
-
-                                <CardActions>                                                                
-                                    <Button 
-                                        size="small" sx={{ mr: 1}}
-                                        onClick={() => infoHandler(hotel.id)}
-                                    >
-                                        More Info
-                                    </Button>
-                                    
+                                
+                                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'end' }} 
+                                    style={{ backgroundColor: 'rgba(0, 150, 255, 0.08)' }} >                                 
                                     {user.currentUser && !user.isAdmin &&                               
                                         <Button 
-                                            size="small" sx={{ mr: 1}}
+                                            size="small" sx={{ mr: 2}}
                                             onClick={() => reviewHandler(hotel.id)}
                                         >
                                             Add A Review
@@ -170,13 +165,20 @@ export default function HotelsList() {
                                     {user.isAdmin &&                              
                                         <Button 
                                             size="small"
-                                            sx={{ mr: 1}}
+                                            sx={{ mr: 2}}
                                             onClick={() => editHandler(hotel.id)}
                                         >
                                             Edit Hotel
                                         </Button>                                    
-                                    }                                                 
-                                </CardActions>
+                                    }
+
+                                    <Button 
+                                        size="small" sx={{ mr: 1}}
+                                        onClick={() => infoHandler(hotel.id)}
+                                    >
+                                        More Info
+                                    </Button> 
+                                </Box>                       
                             </Card>
                         </Grid>                                                       
                     )

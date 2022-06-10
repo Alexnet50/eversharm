@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { Popover, Typography, Box } from '@mui/material';
+import React, { useState } from 'react';
+import { Box } from '@mui/material';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 
@@ -21,7 +21,8 @@ export default function Icons(props) {
     const NewIcon = (props) => {
         return (
             <LightTooltip title={props.prompt}>           
-                <Box                    
+                <Box  
+                    sx={{ mr: coef }}                  
                     style={{ marginRight: 15, width: `${32 * coef}px`, height: `${32 * coef}px`, 
                     backgroundImage: `url(/images/${props.url})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat' }}
                 ></Box>
@@ -32,8 +33,8 @@ export default function Icons(props) {
     
 
     return (    
-        <Box sx={{ m: 1, display: 'flex', flexDirection: 'row'}}>
-            {/*  */}
+        <Box sx={{ m: 1, mb: 0, display: 'flex', flexDirection: 'row'}}>
+            
             {props.hotel?.line === 1 && <NewIcon url={'1line.png'} prompt={'1st line from the seashore'} />}                                          
             
             {props.hotel?.line === 2 && <NewIcon url={'2line.png'} prompt={'2nd line from the seashore'} />}                                          

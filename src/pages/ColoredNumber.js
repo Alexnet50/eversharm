@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography } from "@mui/material";
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import { lime } from '@mui/material/colors';
+import { green } from '@mui/material/colors';
 import { yellow } from '@mui/material/colors';
 import { orange } from '@mui/material/colors';
 
 export default function ColoredNumber(props) {
-    const [color, setColor] = useState("lime");
+    const [color, setColor] = useState("rgba(0, 230, 0, 1)");
 
     const getColor = () => {        
         if (props.number <= 2) setColor("error")

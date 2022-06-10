@@ -37,8 +37,7 @@ function App() {
         pending: true
     });    
     const value = useMemo(() => ({ user, setUser }), [user]);
-    const handleClose = () => setUser((prev) => ({ ...prev, openModal: false }));   
-    
+    const handleClose = () => setUser((prev) => ({ ...prev, openModal: false }));    
 
     useEffect(() => {
         auth.onAuthStateChanged((newUser) => {
@@ -47,8 +46,7 @@ function App() {
                 pending: false            
             }));            
         })
-    }, []);    
-    
+    }, []);  
   
 
     if(user.pending){
@@ -65,7 +63,7 @@ function App() {
                         <Route path="/" element={<Home /> } />
                         <Route path="/createhotel" element={<CreateHotel /> } />                        
                         <Route path="/createreview" element={<CreateReview /> } />
-                        <Route path="/hotel" element={<Hotel /> } />
+                        <Route path="/hotel" element={<Hotel key={user.currentHotel} /> } />
                     </Routes>                    
 
                     <NewModal openModal={user.openModal} content={user.modalContent} handleClose={handleClose} />   

@@ -42,8 +42,7 @@ export default function CreateReview() {
     const hotelsCollectionRef = collection(db, "hotels");
 
     const getHotels = async() => {  
-        const hotelDoc = doc(db, "hotels", user.currentHotel);
-        console.log(hotelDoc)
+        const hotelDoc = doc(db, "hotels", user.currentHotel);        
         const data = await getDocs(hotelsCollectionRef);
         const hotelsArray = data.docs.map((doc) => ({...doc.data(), id: doc.id}))
         setHotels(hotelsArray);        
