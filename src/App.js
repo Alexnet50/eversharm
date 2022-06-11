@@ -21,7 +21,7 @@ export const UserContext = createContext({
 });
 
 let key = 0;
-
+console.log(process.env);
 //ADMIN
 
 //LOGIN: aladdin@ukr.net
