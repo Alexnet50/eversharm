@@ -1,11 +1,7 @@
 import React, {useEffect, useState, useMemo, createContext} from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Container, Typography } from '@mui/material';
-import {storage} from "./firebase-config";
-import { ref, listAll, getDownloadURL } from "firebase/storage";
 import Home from "./pages/Home";
-// import LogIn from "./pages/LogIn";
-// import SignIn from "./pages/SignIn";
 import CreateReview from "./pages/CreateReview";
 import Header from "./pages/Header";
 import CreateHotel from "./pages/CreateHotel";
@@ -20,8 +16,6 @@ export const UserContext = createContext({
     setUser: () => {}    
 });
 
-let key = 0;
-console.log(process.env);
 //ADMIN
 
 //LOGIN: aladdin@ukr.net
@@ -40,9 +34,11 @@ function App() {
     const handleClose = () => setUser((prev) => ({ ...prev, openModal: false }));    
 
     useEffect(() => {
-        auth.onAuthStateChanged((newUser) => {
+        auth.onAuthStateChanged((newUser) => {            
+            const isAdmin = (newUser.email === "aladdin@ukr.net")            
             setUser((prev) => ({ ...prev,
                 currentUser: newUser,
+                isAdmin: isAdmin,
                 pending: false            
             }));            
         })
@@ -56,8 +52,7 @@ function App() {
     return (
         <UserContext.Provider value={value}>
             <Container maxWidth="lg">
-                <Router>
-                    {/* {console.log(value)} */}
+                <Router>                    
                     <Header />                        
                     <Routes>
                         <Route path="/" element={<Home /> } />

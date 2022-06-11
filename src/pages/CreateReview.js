@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
-import {collection, addDoc, doc, getDoc, getDocs, deleteDoc, updateDoc } from "firebase/firestore";
+import {collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import { v4 } from "uuid";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { db, storage } from "../firebase-config";
@@ -41,13 +41,12 @@ export default function CreateReview() {
     const navigate = useNavigate();
     const hotelsCollectionRef = collection(db, "hotels");
 
-    const getHotels = async() => {  
-        const hotelDoc = doc(db, "hotels", user.currentHotel);        
+    const getHotels = async() => {                 
         const data = await getDocs(hotelsCollectionRef);
         const hotelsArray = data.docs.map((doc) => ({...doc.data(), id: doc.id}))
         setHotels(hotelsArray);        
         user.currentHotel && 
-            setHotel(hotelsArray.find(hotel => hotel.id == user.currentHotel));           
+            setHotel(hotelsArray.find(hotel => hotel.id === user.currentHotel));           
     };
 
     const selectHotelHandler = (event) => {            
@@ -278,10 +277,10 @@ export default function CreateReview() {
             <Grid item xs={12} md={5} sx={{ minWidth: 300, mt: 2}}>
                 <Grid container spacing={1}>
                     {imageList.map((url) => {
-                        {key++} 
+                        key++ 
                         return (
                             <Grid item key={key} style={{ position: "relative" }}>
-                                <img src={url} style={{ maxWidth: 300}}/>
+                                <img src={url} style={{ maxWidth: 300}} alt={"Review"}/>
                                 <IconButton                                 
                                     style={{ position: "absolute", top: "10px", right: "0" }}
                                     onClick={() => deleteImgHandler(url)}

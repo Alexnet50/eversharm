@@ -4,8 +4,8 @@ import {collection, getDocs, where, query, orderBy, limit} from "firebase/firest
 import {db} from "../firebase-config";
 import { UserContext } from '../App';
 import { Box, Button, Typography, Grid, Card, Checkbox,
-     CardMedia, CardContent, CardActions, CardActionArea,
-    FormControl, InputLabel, Select, MenuItem, FormGroup, FormControlLabel
+     CardMedia, CardActionArea,
+    FormControl, InputLabel, Select, MenuItem, FormControlLabel
     } from "@mui/material";
 import Stars from './Stars';
 import ColoredNumber from './ColoredNumber';

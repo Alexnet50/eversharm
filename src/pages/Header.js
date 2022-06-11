@@ -13,17 +13,14 @@ import { AppBar,
     Container,
     Button,
     MenuItem,
-    TextField,
-    InputAdornment,
+    TextField,    
     Drawer, Autocomplete
 } from '@mui/material';
-import { MenuRounded, Search } from '@mui/icons-material/';
+import { MenuRounded } from '@mui/icons-material/';
 import { auth } from "../firebase-config";
 import { signOut, sendPasswordResetEmail } from "firebase/auth";
 import { LogIn } from "./LogIn"
 import { SignIn } from "./SignIn"
-
-let key = 0;
 
 export default function Header() {
     const [anchorElNav, setAnchorElNav] = useState(null);
@@ -31,7 +28,7 @@ export default function Header() {
     const [loginDrawerState, setLoginDrawerState] = useState(false);
     const [signinDrawerState, setSigninDrawerState] = useState(false);
     const [hotels, setHotels] = useState([]);   
-    const [searchValue, setSearchValue] = useState('');
+    // const [searchValue, setSearchValue] = useState('');
     const {user, setUser} = useContext(UserContext);    
    
     const navigate = useNavigate();
@@ -94,7 +91,7 @@ export default function Header() {
 
     useEffect(() => {       
         getHotels()        
-    }, []);
+    });
         
     useEffect(() => {  
         setHotels([])     
@@ -141,9 +138,7 @@ export default function Header() {
                                 href="/"
                                 fontFamily="Frijole"
                                 sx={{
-                                    mr: 2,
-                                    // display: { xs: 'none', md: 'flex' },                        
-                                    // fontWeight: 700,                          
+                                    mr: 2,                                                             
                                     color: 'inherit',
                                     textDecoration: 'none',
                                 }}
@@ -362,16 +357,14 @@ export default function Header() {
                                 options={hotels && hotels.map((hotel) => hotel.hotelName)}
                                 onChange={(event, newInputValue) => {                                    
                                     handleSearch(newInputValue);
-                                    setSearchValue(newInputValue);
+                                    // setSearchValue(newInputValue);
                                   }}
                                 renderInput={(params) => (
                                 <TextField
                                     className="searchInput"
                                     {...params}
                                     label="Search"
-                                    size="small"
-                                    // color={'rgba(255, 255, 255, 1)'}
-                                    // style={{ color: 'rgba(255, 255, 255, 1)'}}
+                                    size="small"                                    
                                     InputProps={{
                                     ...params.InputProps,
                                     type: 'search',
@@ -396,8 +389,7 @@ export default function Header() {
                                     >
                                         You are logged as 
                                         <br/>
-                                        {user.currentUser.email}
-                                        {/* {auth.currentUser.email} */}
+                                        {user.currentUser.email}                                        
                                     </Typography>
                                 </Box>
                             }             

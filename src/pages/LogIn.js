@@ -1,7 +1,6 @@
-import { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useContext } from "react";
 import { auth } from "../firebase-config";
-import { getAuth, signInWithEmailAndPassword, verifyPasswordResetCode, confirmPasswordReset, sendPasswordResetEmail } from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { UserContext } from '../App';
 import { Box, Button, TextField, Typography } from "@mui/material";
 
@@ -14,11 +13,11 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 export function LogIn(props) {   
     const [logInEmail, setLogInEmail] = useState('');
     const [logInPassword, setLogInPassword] = useState('')
-    const {user, setUser} = useContext(UserContext);   
+    const { setUser } = useContext(UserContext);   
 
     let errorCode;
     let errorMessage;
-    const navigate = useNavigate();
+    
 
     // const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     // const passReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
@@ -27,10 +26,7 @@ export function LogIn(props) {
         try {
             signInWithEmailAndPassword(
                 auth, logInEmail, logInPassword
-            );      
-           
-            if (logInEmail === "aladdin@ukr.net") setUser((prev) => ({ ...prev, isAdmin: true }));            
-            // console.log(setUser) 
+            );                
             props.callback(false);        
         }
         catch (error) {

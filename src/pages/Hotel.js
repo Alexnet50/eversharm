@@ -1,29 +1,25 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-// import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
-import {collection, getDocs, deleteDoc, doc} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import {db} from "../firebase-config";
 import { UserContext } from '../App';
-import { Box, Button, Typography, Grid, Paper, Chip } from "@mui/material";
+import { Box, Button, Typography, Grid, Paper } from "@mui/material";
 import ColoredNumber from './ColoredNumber';
 import Stars from './Stars';
 import Review from './Review';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slider, { Settings } from "react-slick";
-import styled from 'styled-components';
+import Slider from "react-slick";
 import Icons from './Icons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 
-let key = 0;
+let key = 0; 
 
 export default function Hotel(props) {
-    const {user, setUser} = useContext(UserContext);
-    const [hotels, setHotels] = useState();    
-    const [hotel, setHotel] = useState();     
-    
+    const {user, setUser} = useContext(UserContext);      
+    const [hotel, setHotel] = useState();    
     const [location, setLocation] = useState(0);
     const [food, setFood] = useState(0);
     const [cleanliness, setCleanliness] = useState(0);
@@ -35,12 +31,12 @@ export default function Hotel(props) {
     const getHotels = async () => {  
         const data = await getDocs(hotelsCollectionRef);
         const hotelsArray = data.docs.map((doc) => ({...doc.data(), id: doc.id}))
-        setHotels(hotelsArray);
-        let currentHotel = hotelsArray.find(item => item.id == user.currentHotel)
+       
+        let currentHotel = hotelsArray.find(item => item.id === user.currentHotel)
         
         setHotel(() => {return currentHotel });
         
-        getAverageRatings(currentHotel.reviewsList);             
+        getAverageRatings(currentHotel && currentHotel.reviewsList);             
     };
 
     const getAverageRatings = (reviewsArray) => {        
@@ -86,12 +82,14 @@ export default function Hotel(props) {
 
     function createMarkup() { if (hotel) return {__html: hotel.hotelDescription}; };
     
-    const slider = React.useRef(null);    
+    const slider = React.useRef(null);
+
+       
 
     return (
         <>
             {hotel &&
-                <Box key={props.key} sx={{ m: 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' }}>              
+                <Box sx={{ m: 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' }}>              
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Typography variant="h4" sx={{ mr: 2, mt: 1 }} fontWeight="bold" color="primary" >
                             {hotel.hotelName}
@@ -135,7 +133,7 @@ export default function Hotel(props) {
                                 {hotel && hotel.imageList.map((url) => {
                                     key++;                                            
                                     return (                                    
-                                        <img src={url} key={key}
+                                        <img src={url} key={key} alt={hotel.hotelName}
                                             height={'350px'}
                                             sx={{ m: 1 }}
                                             />                                                                               
@@ -227,8 +225,7 @@ export default function Hotel(props) {
                 
             </Grid>
 
-            <Grid item xs={12} sm={5}>
-                {/* {console.log(hotel)} */}
+            <Grid item xs={12} sm={5}>                
                 {hotel && 
                 hotel.reviewsList.map((review => {
                     key++;
@@ -238,10 +235,7 @@ export default function Hotel(props) {
                     }))}
             </Grid>
 
-        </Grid>
-         
-        </>
-        
-        
+        </Grid>         
+        </>       
     )
 }

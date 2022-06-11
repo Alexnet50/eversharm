@@ -17,8 +17,8 @@ import { Editor } from '@tinymce/tinymce-react';
  
 export default function CreateHotel() {
     const {user, setUser} = useContext(UserContext);
-    const [hotel, setHotel] = useState();
-    const [hotels, setHotels] = useState();
+    // const [hotel, setHotel] = useState();
+    // const [hotels, setHotels] = useState();
     const [hotelName, setHotelName] = useState("");
     const [hotelSummary, setHotelSummary] = useState("");
     const [hotelDescription, setHotelDescription] = useState("");
@@ -40,26 +40,19 @@ export default function CreateHotel() {
         if (editorRef.current) {
         setHotelDescription(editorRef.current.getContent());
         }
-    };
-
-
-    // const imageListRef = ref(storage, "images/")
+    };    
 
     const navigate = useNavigate();
     const hotelsCollectionRef = collection(db, "hotels");
 
     const getHotel = async() => {  
         const data = await getDocs(hotelsCollectionRef);
-        const hotelsArray = data.docs.map((doc) => ({...doc.data(), id: doc.id}))
-        setHotels(hotelsArray);
+        const hotelsArray = data.docs.map((doc) => ({...doc.data(), id: doc.id}))       
         
         if (user.currentHotel) {
-            let editableHotel = hotelsArray.find(hotel => hotel.id == user.currentHotel)
-            setHotel(editableHotel); 
+            let editableHotel = hotelsArray.find(hotel => hotel.id === user.currentHotel)            
             formFill(editableHotel);  
-        }
-        // console.log(hotelsArray)        
-         
+        }     
                     
     };
 
@@ -75,21 +68,20 @@ export default function CreateHotel() {
             setAquapark(hotel.aquapark);
             setWarmPool(hotel.warmPool);
             setKidsClub(hotel.kidsClub);
-            setCoralReef(hotel?.coralReef);
-            setSandBeach(hotel?.sandBeach);
-            setFreeWiFi(hotel?.freeWiFi);
+            setCoralReef(hotel.coralReef);
+            setSandBeach(hotel.sandBeach);
+            setFreeWiFi(hotel.freeWiFi);
             setImageList(hotel.imageList); 
             setReviewsList(hotel.reviewsList);
             setRating(hotel?.rating);
-        }        
-        /////////
-        console.log(hotel)
+        }       
+        
     };
     
     useEffect(() => {
         !user.isAdmin && navigate("/");
         getHotel();        
-    },[]);
+    }, []);
     
     const createHandler = async () => {        
         await addDoc(hotelsCollectionRef, {
@@ -157,18 +149,20 @@ export default function CreateHotel() {
             console.log("Deleting error!");
         }
     };
-
     
 
     const clearHandler = () => {
         setHotelName("");
         setHotelSummary("");
         setHotelDescription("");
-        setStars();
+        setStars("");
         setLine("");
         setAquapark(false);
         setWarmPool(false);
         setKidsClub(false);
+        setCoralReef(false);
+        setSandBeach(false);
+        setFreeWiFi(false);
     };    
 
     return (
@@ -376,10 +370,10 @@ export default function CreateHotel() {
             <Grid item xs={12} md={5} sx={{ minWidth: 300, mt: 2}}>
                 <Grid container spacing={1}>
                     {imageList.map((url) => {
-                        {key++} 
+                        key++
                         return (
                             <Grid item key={key} style={{ position: "relative" }}>
-                                <img src={url} style={{ maxWidth: 300}}/>
+                                <img src={url} style={{ maxWidth: 300}} alt={"Hotel"}/>
                                 <IconButton                                 
                                     style={{ position: "absolute", top: "10px", right: "0" }}
                                     onClick={() => deleteImgHandler(url)}
