@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useMemo, createContext} from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
 import { Container, Typography } from '@mui/material';
 import Home from "./pages/Home";
 import CreateReview from "./pages/CreateReview";
@@ -34,15 +35,26 @@ function App() {
     const value = useMemo(() => ({ user, setUser }), [user]);
     const handleClose = () => setUser((prev) => ({ ...prev, openModal: false }));    
 
+    // onAuthStateChanged(auth, (user) => {
+    //     // let isAdmin;          
+    //     // newUser && newUser.email === "aladdin@ukr.net" ? isAdmin = true : isAdmin = false;                       
+    //     setUser((prev) => ({ ...prev,
+    //         currentUser: user ? user : null,
+    //         isAdmin: (user?.email && user?.email === "aladdin@ukr.net") ? true : false,
+    //         pending: false            
+    //     }));         
+    //     console.log(user ? user.email : "no user")   
+    // })
     useEffect(() => {
-        auth.onAuthStateChanged((newUser) => { 
-            let isAdmin;          
-            newUser && newUser.email === "aladdin@ukr.net" ? isAdmin = true : isAdmin = false;                       
+        auth.onAuthStateChanged((user) => { 
+            // let isAdmin;          
+            // newUser && newUser.email === "aladdin@ukr.net" ? isAdmin = true : isAdmin = false;                       
             setUser((prev) => ({ ...prev,
-                currentUser: newUser,
-                isAdmin: isAdmin,
+                currentUser: user ? user : null,
+                isAdmin: (user?.email && user?.email === "aladdin@ukr.net") ? true : false,
                 pending: false            
-            }));            
+            })); 
+            console.log(user.currentUser)           
         })
     }, []);  
   

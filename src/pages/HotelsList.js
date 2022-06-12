@@ -73,7 +73,8 @@ export default function HotelsList(props) {
     };    
 
     useEffect(() => {        
-        getHotels();        
+        getHotels();  
+        console.log(user.currentUser)      
     }, [props.sort]); 
 
     

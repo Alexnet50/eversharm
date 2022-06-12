@@ -13,7 +13,7 @@ import { AppBar,
     Container,
     Button,
     MenuItem,
-    TextField,    
+    TextField, ClickAwayListener,   
     Drawer, Autocomplete
 } from '@mui/material';
 import { MenuRounded } from '@mui/icons-material/';
@@ -33,14 +33,16 @@ export default function Header() {
    
     const navigate = useNavigate();
     const handleOpenNavMenu = (event) => {
-        setAnchorElNav(event.currentTarget);
+        setAnchorElNav(anchorElNav ? null : event.currentTarget);
     };
     
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
-    };
+    };    
+
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
+        setAnchorElNav(null);
     };
     
     const handleCloseUserMenu = () => {
@@ -91,7 +93,7 @@ export default function Header() {
 
     useEffect(() => {       
         getHotels()        
-    });
+    }, []);
         
     useEffect(() => {  
         setHotels([])     
@@ -109,10 +111,12 @@ export default function Header() {
       
     const toggleLoginDrawer = () => {        
         setLoginDrawerState(!loginDrawerState);
+        setAnchorElNav(null);
     };
 
     const toggleSigninDrawer = () => {        
         setSigninDrawerState(!signinDrawerState);
+        setAnchorElNav(null);
     }; 
 
     const closeModal = () => {setUser((prev) => ({ ...prev, openModal: false}))};
@@ -160,10 +164,11 @@ export default function Header() {
                                 >
                                     <MenuRounded />
                                 </IconButton>
-
+                                
                                 <Menu
                                     id="menu-appbar"
                                     anchorEl={anchorElNav}
+                                    autoFocusItem='true'
                                     anchorOrigin={{
                                         vertical: 'bottom',
                                         horizontal: 'left',
@@ -174,15 +179,43 @@ export default function Header() {
                                             horizontal: 'left',
                                     }}
                                         open={Boolean(anchorElNav)}
-                                        onClick={handleCloseNavMenu}
+                                        
                                         sx={{
                                             display: { xs: 'block', md: 'none' },
                                     }}
                                 >
+                                    
+                                    <MenuItem>                                    
+                                        <Autocomplete                                            
+                                            freeSolo
+                                            id="searchInput"                                
+                                            sx={{ minWidth: 250 }}                                
+                                            options={hotels && hotels.map((hotel) => hotel.hotelName)}
+                                            onClick={(event) => setAnchorElNav(event.currentTarget)}
+                                            onChange={(event, newInputValue) => {                                    
+                                                handleSearch(newInputValue);
+                                                // setSearchValue(newInputValue);
+                                            }}
+                                            renderInput={(params) => (
+                                            <TextField
+                                                className="searchInput"
+                                                {...params}
+                                                label="Search"
+                                                size="small"                                    
+                                                InputProps={{
+                                                ...params.InputProps,
+                                                type: 'search',
+                                                }}
+                                            />
+                                            )}
+                                        />                                                  
+                                    </MenuItem>
+                                    
                                     <MenuItem>
                                         <Link to={"/"} style={linkStyle}>
                                         <Button
                                             sx={{ display: 'block' }}
+                                            onClick={handleCloseNavMenu}
                                         >
                                             Home
                                         </Button>
@@ -217,6 +250,7 @@ export default function Header() {
                                             <Link to={"/createreview"} style={linkStyle}>
                                                 <Button
                                                     sx={{ display: 'block' }}
+                                                    onClick={handleCloseNavMenu}
                                                 >
                                                     Create A Review
                                                 </Button>
@@ -230,6 +264,7 @@ export default function Header() {
                                             <Link to={"/createhotel"} style={linkStyle}>
                                                 <Button
                                                     sx={{ display: 'block' }}
+                                                    onClick={handleCloseNavMenu}
                                                 >
                                                     Create A Hotel
                                                 </Button>
@@ -242,6 +277,7 @@ export default function Header() {
                                             <Link to={"/createpost"} style={linkStyle}>
                                                 <Button
                                                     sx={{ display: 'block' }}
+                                                    onClick={handleCloseNavMenu}
                                                 >
                                                     Create A Post
                                                 </Button>
@@ -259,7 +295,7 @@ export default function Header() {
                                             </Button>                                
                                         </MenuItem>  
                                     }
-                                </Menu>
+                                </Menu>                                
                                 
                                 {user.currentUser &&
                                     <Menu
@@ -373,10 +409,11 @@ export default function Header() {
                             </Box> 
 
                             <Autocomplete
-                                key={user.currentHotel}
+                                // key={user.currentHotel}
+                                // style={{ display={ display: { xs: 'flex', md: 'none' } } }}
                                 freeSolo
                                 id="searchInput"                                
-                                sx={{ minWidth: 300 }}                                
+                                sx={{ minWidth: 250, display: { xs: 'none', sm: 'block' } }}                                
                                 options={hotels && hotels.map((hotel) => hotel.hotelName)}
                                 onChange={(event, newInputValue) => {                                    
                                     handleSearch(newInputValue);
