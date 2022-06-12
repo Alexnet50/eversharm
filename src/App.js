@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import CreateReview from "./pages/CreateReview";
 import Header from "./pages/Header";
 import CreateHotel from "./pages/CreateHotel";
+import CreatePost from "./pages/CreatePost";
 import Hotel from "./pages/Hotel";
 import NewModal from "./pages/Modal";
 import { auth } from "./firebase-config";
@@ -34,8 +35,9 @@ function App() {
     const handleClose = () => setUser((prev) => ({ ...prev, openModal: false }));    
 
     useEffect(() => {
-        auth.onAuthStateChanged((newUser) => {            
-            const isAdmin = (newUser.email === "aladdin@ukr.net")            
+        auth.onAuthStateChanged((newUser) => { 
+            let isAdmin;          
+            newUser && newUser.email === "aladdin@ukr.net" ? isAdmin = true : isAdmin = false;                       
             setUser((prev) => ({ ...prev,
                 currentUser: newUser,
                 isAdmin: isAdmin,
@@ -58,6 +60,7 @@ function App() {
                         <Route path="/" element={<Home /> } />
                         <Route path="/createhotel" element={<CreateHotel /> } />                        
                         <Route path="/createreview" element={<CreateReview /> } />
+                        <Route path="/createpost" element={<CreatePost /> } />
                         <Route path="/hotel" element={<Hotel key={user.currentHotel} /> } />
                     </Routes>                    
 

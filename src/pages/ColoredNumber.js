@@ -18,7 +18,7 @@ export default function ColoredNumber(props) {
     }, [color]);
     return (        
         <Box>
-            <Typography variant={props.size} color={color} fontFamily="Frijole" >{props.number}</Typography>
+            <Typography variant={props.size} color={color} fontFamily="Poppins" >{props.number}</Typography>
         </Box>            
     )
 };

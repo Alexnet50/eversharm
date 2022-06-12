@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
 import {db} from "../firebase-config";
@@ -82,7 +82,7 @@ export default function Hotel(props) {
 
     function createMarkup() { if (hotel) return {__html: hotel.hotelDescription}; };
     
-    const slider = React.useRef(null);
+    const slider = useRef(null);
 
        
 

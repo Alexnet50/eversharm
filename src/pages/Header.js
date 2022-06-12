@@ -127,7 +127,7 @@ export default function Header() {
             <AppBar position="static" 
                 color="secondary"
                 style={{ backgroundColor: !user.isAdmin && 'rgba(0, 174, 255, 1)' }}          
-                sx={{ mb: 1 }}
+                sx={{ mb: 1, mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}
             >               
                     <Container maxWidth="lg">
                         <Toolbar>
@@ -136,7 +136,7 @@ export default function Header() {
                                 noWrap
                                 component="a"
                                 href="/"
-                                fontFamily="Frijole"
+                                fontFamily="Merriweather"
                                 sx={{
                                     mr: 2,                                                             
                                     color: 'inherit',
@@ -234,7 +234,19 @@ export default function Header() {
                                                     Create A Hotel
                                                 </Button>
                                             </Link>                          
-                                        </MenuItem>    
+                                        </MenuItem> 
+                                    }
+
+                                    {user.isAdmin &&
+                                        <MenuItem>                             
+                                            <Link to={"/createpost"} style={linkStyle}>
+                                                <Button
+                                                    sx={{ display: 'block' }}
+                                                >
+                                                    Create A Post
+                                                </Button>
+                                            </Link>                          
+                                        </MenuItem>                                          
                                     }
 
                                     {user.currentUser &&
@@ -329,13 +341,24 @@ export default function Header() {
                                 }
                                 
                                 {user.isAdmin &&
-                                    <Link to={"/createhotel"} style={linkStyle}>
-                                        <Button
-                                            sx={{ color: 'white', display: 'block' }}
-                                        >
-                                            Create A Hotel
-                                        </Button>
-                                    </Link>        
+                                    <>
+                                        <Link to={"/createhotel"} style={linkStyle}>
+                                            <Button
+                                                sx={{ color: 'white', display: 'block' }}
+                                            >
+                                                Create A Hotel
+                                            </Button>
+                                        </Link> 
+                                        
+                                                                    
+                                        <Link to={"/createpost"} style={linkStyle}>
+                                            <Button
+                                                sx={{ color: 'white', display: 'block' }}
+                                            >
+                                                Create A Post
+                                            </Button>
+                                        </Link>                          
+                                    </>       
                                 }
 
                                 

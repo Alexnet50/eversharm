@@ -208,8 +208,9 @@ export default function CreateHotel() {
                     init={{
                     height: 500,
                     menubar: false,
-                    plugins: [
-                        
+                    plugins: ['advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                    'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'                        
                     ],
                     toolbar: 'undo redo | blocks | ' +
                         'bold italic forecolor | alignleft aligncenter ' +
