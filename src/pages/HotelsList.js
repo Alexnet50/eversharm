@@ -13,23 +13,23 @@ import Icons from './Icons';
      
 let key = 0;
 
-export default function HotelsList() {
+export default function HotelsList(props) {
     const {user, setUser} = useContext(UserContext);
     const [hotels, setHotels] = useState([]);   
-    const [sort, setSort] = useState({
-        value: 'rating', 
-        order: 'desc', 
-        name: 'rating', 
-        three: 3, 
-        four: 4, 
-        five: 5
-    });
+    // const [sort, setSort] = useState({
+    //     value: 'rating', 
+    //     order: 'desc', 
+    //     name: 'rating', 
+    //     three: 3, 
+    //     four: 4, 
+    //     five: 5
+    // });
     const hotelsRef = collection(db, 'hotels');  
 
     const navigate = useNavigate();
     
     const getHotels = async() => {        
-        const data = query(hotelsRef, orderBy(sort.name, sort.order), where('stars', 'in', [sort.three, sort.four, sort.five]) , limit(20));      
+        const data = query(hotelsRef, orderBy(props.sort.name, props.sort.order), where('stars', 'in', [props.sort.three, props.sort.four, props.sort.five]) , limit(20));      
         const querySnapshot = await getDocs(data);
         let hotelsArray = [];
         querySnapshot.forEach((doc) => hotelsArray.push({...doc.data(), id: doc.id}))       
@@ -37,25 +37,25 @@ export default function HotelsList() {
     };
     
 
-    const sortHandler = (event) => {        
-        event.target.value === 'name' ?
-        setSort((prev) => ({...prev, value: 'name', order: 'asc', name: 'hotelName'})) :
-        setSort((prev) => ({...prev, value: 'rating', order: 'desc', name: 'rating'}));
+    // const sortHandler = (event) => {        
+    //     event.target.value === 'name' ?
+    //     setSort((prev) => ({...prev, value: 'name', order: 'asc', name: 'hotelName'})) :
+    //     setSort((prev) => ({...prev, value: 'rating', order: 'desc', name: 'rating'}));
         
-    };
+    // };
 
-    const toggleCheckbox = (digit) => {
-        switch (digit) {
-            case 5: 
-            sort.five === 5 ? setSort((prev) => ({...prev, five: 0})) : setSort((prev) => ({...prev, five: 5}));
-            break;
-            case 4: 
-            sort.four === 4 ? setSort((prev) => ({...prev, four: 0})) : setSort((prev) => ({...prev, four: 4}));
-            break;
-            case 3: 
-            sort.three === 3 ? setSort((prev) => ({...prev, three: 0})) : setSort((prev) => ({...prev, three: 3}));
-        }        
-    }
+    // const toggleCheckbox = (digit) => {
+    //     switch (digit) {
+    //         case 5: 
+    //         sort.five === 5 ? setSort((prev) => ({...prev, five: 0})) : setSort((prev) => ({...prev, five: 5}));
+    //         break;
+    //         case 4: 
+    //         sort.four === 4 ? setSort((prev) => ({...prev, four: 0})) : setSort((prev) => ({...prev, four: 4}));
+    //         break;
+    //         case 3: 
+    //         sort.three === 3 ? setSort((prev) => ({...prev, three: 0})) : setSort((prev) => ({...prev, three: 3}));
+    //     }        
+    // }
 
     const infoHandler = (id) => {         
         setUser((prev) => ({ ...prev, currentHotel: id }));        
@@ -74,12 +74,12 @@ export default function HotelsList() {
 
     useEffect(() => {        
         getHotels();        
-    }, [sort]); 
+    }, [props.sort]); 
 
     
     return (  
         <>   
-            <FormControl sx={{ m: 1 }} size="small">
+            {/* <FormControl sx={{ m: 1 }} size="small">
                 <InputLabel>Sort by</InputLabel>
                 <Select                    
                     id="sort"
@@ -118,7 +118,7 @@ export default function HotelsList() {
                             onChange={(event) => toggleCheckbox(3)}
                         />} 
                         label="3 stars" />
-            </Box>
+            </Box> */}
 
             <Grid container spacing={2} sx={{ mt: 1, ml: "auto", mr: "auto" }}>
                 {hotels.map(hotel => {
