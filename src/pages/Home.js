@@ -85,7 +85,8 @@ export default function Home() {
                                 fade={true}
                                 arrows={false}                         
                                 rows={1}                                
-                                autoplay={true}  
+                                autoplay={true}
+                                autoplaySpeed={6000}  
                                                                                              
                             >
 
@@ -212,23 +213,24 @@ export default function Home() {
                     </Grid>
                     
 
-                    <Grid item className={'hotelsList'} xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column'}}>
+                    <Grid item className={'hotelsList'} xs={12} lg={5} 
+                        sx={{ display: 'flex', flexDirection: 'column', order: { xs: 2, lg: 1 }}}>
                         <HotelsList sort={sort} /> 
                     </Grid>
 
-                    <Grid item className={'posts'} xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column'}}>
+                    <Grid item className={'posts'} xs={12} lg={7} 
+                        sx={{ mt: 1, display: 'flex', flexDirection: 'column', order: { xs: 1, lg: 2 }}}>
                         {posts[0] && 
                             <Paper sx={{ p: 2, m: 2 }} elevation={2}>                                
                                 <Box                                     
                                     dangerouslySetInnerHTML={createMarkup(posts[0].post)} 
                                     sx={{ mb: 2 }}
-                                >
-                                {/* {item.post} */}
+                                >                            
                                     
                                 </Box>
                                 {user.isAdmin && 
                                     <Button 
-                                        onClick={() => deleteHandler()}
+                                        onClick={() => deleteHandler(posts[0].id)}
                                     >
                                         Delete post
                                     </Button>
@@ -241,13 +243,12 @@ export default function Home() {
                                 <Box                                     
                                     dangerouslySetInnerHTML={createMarkup(posts[1].post)} 
                                     sx={{ mb: 2 }}
-                                >
-                                {/* {item.post} */}
+                                >                              
                                     
                                 </Box>
                                 {user.isAdmin && 
                                     <Button 
-                                        onClick={() => deleteHandler()}
+                                        onClick={() => deleteHandler(posts[1].id)}
                                     >
                                         Delete post
                                     </Button>
@@ -264,8 +265,8 @@ export default function Home() {
             }}>
                 <a href="https://tp.media/click?shmarker=366829&promo_id=663&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank"> <img src="https://c22.travelpayouts.com/content?promo_id=663&shmarker=366829&type=init&trs=173476" width="240" height="400" alt="Забронировать трансфер в Египте - 240*400"/> </a>
                 <a href="https://tp.media/click?shmarker=366829&promo_id=3488&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank"> <img src="https://c22.travelpayouts.com/content?promo_id=3488&shmarker=366829&type=init&trs=173476" width="240" height="400" alt="240_400_turc_EN"/> </a>  
-                <a href="https://tp.media/click?shmarker=366829&promo_id=3485&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank"> <img src="https://c22.travelpayouts.com/content?promo_id=3485&shmarker=366829&type=init&trs=173476" width="160" height="600" alt="160_600_Disn_EN"/> </a> 
-                <a href="https://tp.media/click?shmarker=366829&promo_id=3489&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank"> <img src="https://c22.travelpayouts.com/content?promo_id=3489&shmarker=366829&type=init&trs=173476" width="160" height="600" alt="160_600_more_EN"/> </a> 
+                <a href="https://tp.media/click?shmarker=366829&promo_id=663&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank"> <img src="https://c22.travelpayouts.com/content?promo_id=663&shmarker=366829&type=init&trs=173476" width="240" height="400" alt="Забронировать трансфер в Египте - 240*400"/> </a>
+                <a href="https://tp.media/click?shmarker=366829&promo_id=3488&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank"> <img src="https://c22.travelpayouts.com/content?promo_id=3488&shmarker=366829&type=init&trs=173476" width="240" height="400" alt="240_400_turc_EN"/> </a>  
             </Grid>  
                        
         </Grid>    

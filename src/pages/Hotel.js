@@ -99,7 +99,7 @@ export default function Hotel(props) {
                         </Box>                    
                     </Box>
                     <Paper 
-                        sx={{ pl: 2, pr: 2, width: '170px', display: 'flex', flexDirection: 'row', 
+                        sx={{ pl: 2, pr: 2, width: '100px', display: 'flex', flexDirection: 'row', 
                         flexShrink: 0, alignItems: 'center', borderRadius: '20px' }}
                         elevation={3}
                     >                    
@@ -111,131 +111,176 @@ export default function Hotel(props) {
             }
 
             {hotel &&                              
-                <Grid container spacing={3}>                    
-                    <Grid item                                     
-                        xs={12} md={9}
-                        sx={{ p: 2, display: 'flex', flexDirection: 'row', alignItems: 'center' }}
-                    >                           
-                        <ArrowBackIosNewIcon 
-                            onClick={() => slider?.current?.slickNext()} color='primary' 
-                        >
-                            Prev
-                        </ArrowBackIosNewIcon>
-                        
-                        <Box sx={{ maxWidth: '95%' }}>
-                            <Slider 
-                                ref={slider}
-                                arrows={false}                            
-                                centerMode={true} variableWidth={true}
-                                rows={1}
-                                adaptiveHeight={true}                                                                    
-                            >
-                                {hotel && hotel.imageList.map((url) => {
-                                    key++;                                            
-                                    return (                                    
-                                        <img src={url} key={key} alt={hotel.hotelName}
-                                            height={'350px'}
-                                            sx={{ m: 1 }}
-                                            />                                                                               
-                                    )                                                      
-                                })} 
+                <Grid container spacing={3}>
+                    <Grid item className='main'                                   
+                        xs={12} lg={9} >
+                        <Grid container className='main' spacing={3}>           
+                            <Grid item className='slider'                                   
+                                xs={12} md={9}
+                                sx={{ p: 2, display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+                            >                           
+                                <ArrowBackIosNewIcon 
+                                    onClick={() => slider?.current?.slickNext()} color='primary' 
+                                >
+                                    Prev
+                                </ArrowBackIosNewIcon>
                                 
-                            </Slider> 
-                        </Box>
-                        <ArrowForwardIosIcon 
-                            onClick={() => slider?.current?.slickPrev()} color='primary'
-                        >
-                            Next
-                        </ArrowForwardIosIcon> 
-                        
-                    </Grid>                              
+                                <Box sx={{ maxWidth: '95%' }}>
+                                    <Slider 
+                                        ref={slider}
+                                        arrows={false}                            
+                                        centerMode={true} variableWidth={true}
+                                        rows={1}
+                                        adaptiveHeight={true}                                                                    
+                                    >
+                                        {hotel && hotel.imageList.map((url) => {
+                                            key++;                                            
+                                            return (                                    
+                                                <img src={url} key={key} alt={hotel.hotelName}
+                                                    height={'350px'}
+                                                    sx={{ m: 1 }}
+                                                    />                                                                               
+                                            )                                                      
+                                        })} 
+                                        
+                                    </Slider> 
+                                </Box>
+                                <ArrowForwardIosIcon 
+                                    onClick={() => slider?.current?.slickPrev()} color='primary'
+                                >
+                                    Next
+                                </ArrowForwardIosIcon> 
+                                
+                            </Grid>                              
                                                                    
-                    <Grid item xs={12} md={3}
-                        sx={{                         
-                            display: 'flex', flexDirection: 'column',
-                            alingnItems: 'center', justifyContent: 'space-between'
-                        }}
-                    >
-                        <Paper elevation={3} sx={{ mb: 3, p: 2, display: 'flex', flexDirection: 'column' }}> 
-                            
-                            <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
-                                    Location
-                                </Typography>
-                                <ColoredNumber number={location ? location : "-"} size={"h4"} /> 
-                            </Box>
-
-                            <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
-                                    Food
-                                </Typography>
-                                <ColoredNumber number={food ? food : "-"} size={"h4"} /> 
-                            </Box>
-
-                            <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
-                                    Cleanliness
-                                </Typography>
-                                <ColoredNumber number={cleanliness ? cleanliness : "-"} size={"h4"} /> 
-                            </Box>
-
-                            <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
-                                    Service
-                                </Typography>
-                                <ColoredNumber number={service ? service : "-"} size={"h4"} /> 
-                            </Box>                        
-
-                            <Button variant="outlined" 
-                                onClick={addReviewHandler}
-                                sx={{ ml: 'auto', mr: 'auto', mt: 2, mb:2, width: '150px' }}
+                            <Grid item className='ratings' xs={12} sm={7} md={3}
+                                sx={{                         
+                                    display: 'flex', flexDirection: 'column',
+                                    alingnItems: 'center', justifyContent: 'space-between',
+                                    maxHeight: '450px', display: { xs: 'none', md: 'block' }
+                                }}
                             >
-                                Add a review
-                            </Button> 
-                        </Paper> 
-                    </Grid>
+                                <Paper elevation={3} sx={{ mb: 3, p: 2, display: 'flex', flexDirection: 'column' }}> 
+                                    
+                                    <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
+                                            Location
+                                        </Typography>
+                                        <ColoredNumber number={location ? location : "-"} size={"h4"} /> 
+                                    </Box>
 
-                    {/* <Grid item xs={12} sm={6} md={2}
-                        sx={{                            
-                            display: 'flex', flexDirection: 'column',
-                            alingnItems: 'center', justifyContent: 'space-between'
-                        }}>
-                            <Paper sx={{ width: '100%', height: '100%', overflow: 'hidden'}}>
-                                <img src={santorini} style={{ height: '500px'}}></img>
-                            </Paper>
-                    </Grid>                                                       */}
+                                    <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
+                                            Food
+                                        </Typography>
+                                        <ColoredNumber number={food ? food : "-"} size={"h4"} /> 
+                                    </Box>
+
+                                    <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
+                                            Cleanliness
+                                        </Typography>
+                                        <ColoredNumber number={cleanliness ? cleanliness : "-"} size={"h4"} /> 
+                                    </Box>
+
+                                    <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
+                                            Service
+                                        </Typography>
+                                        <ColoredNumber number={service ? service : "-"} size={"h4"} /> 
+                                    </Box>                        
+
+                                    <Button variant="outlined" 
+                                        onClick={addReviewHandler}
+                                        sx={{ ml: 'auto', mr: 'auto', mt: 2, mb:2, width: '150px' }}
+                                    >
+                                        Add a review
+                                    </Button> 
+                                </Paper>                               
+                            </Grid> 
+
+                            <Grid item className='infoBlock' xs={12} sm={7} sx={{ order: { xs: 2, sm: 3 } }}>
+                                <Box className='ratings' xs={12} sm={7} md={3}
+                                    sx={{                         
+                                        display: 'flex', flexDirection: 'column',
+                                        alingnItems: 'center', justifyContent: 'space-between',
+                                        maxHeight: '450px', display: { xs: 'block', md: 'none' }
+                                    }}
+                                >
+                                    <Paper elevation={3} sx={{ mb: 3, p: 2, display: 'flex', flexDirection: 'column' }}> 
+                                        
+                                        <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
+                                                Location
+                                            </Typography>
+                                            <ColoredNumber number={location ? location : "-"} size={"h4"} /> 
+                                        </Box>
+
+                                        <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
+                                                Food
+                                            </Typography>
+                                            <ColoredNumber number={food ? food : "-"} size={"h4"} /> 
+                                        </Box>
+
+                                        <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
+                                                Cleanliness
+                                            </Typography>
+                                            <ColoredNumber number={cleanliness ? cleanliness : "-"} size={"h4"} /> 
+                                        </Box>
+
+                                        <Box sx={{ mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <Typography variant='h6' color="text.secondary" fontWeight="bold" sx={{ mr: 2 }}>
+                                                Service
+                                            </Typography>
+                                            <ColoredNumber number={service ? service : "-"} size={"h4"} /> 
+                                        </Box>                        
+
+                                        <Button variant="outlined" 
+                                            onClick={addReviewHandler}
+                                            sx={{ ml: 'auto', mr: 'auto', mt: 2, mb:2, width: '150px' }}
+                                        >
+                                            Add a review
+                                        </Button> 
+                                    </Paper>                               
+                                </Box> 
+
+
+                                <Paper className='icons' sx={{ p: 1, mb: 2 }} elevation={5}>
+                                    <Icons hotel={hotel} coef={2} />
+                                </Paper >
+
+                                <Paper className='hotelInfo' sx={{ p: 2, mb: 2 }} elevation={2}>
+                                    <Typography>{hotel?.hotelSummary}</Typography>
+                                </Paper >
+                                <Paper sx={{ p: 2, mb: 2 }} elevation={2}>
+                                    <div dangerouslySetInnerHTML={createMarkup()} />
+                                </Paper>               
+                            </Grid>
+
                             
-                </Grid>                 
-                
-            }
+                            <Grid className='reviews' item xs={12} sm={5} sx={{ order: { xs: 3, sm: 2 } }}>                
+                                {hotel && 
+                                hotel.reviewsList.map((review => {
+                                    key++;
+                                        return (
+                                            <Review key={key} review={review} hotel={hotel} callback={getHotels}/>                                   
+                                        )
+                                    }))}
+                            </Grid>                           
+                        </Grid>                                                          
+                    </Grid> 
 
-        <Grid container spacing={3}>
-            <Grid item xs={12} sm={7}>
-                <Paper sx={{ p: 1, mb: 2 }} elevation={5}>
-                    <Icons hotel={hotel} coef={2} />
-                </Paper >
-
-                <Paper sx={{ p: 2, mb: 2 }} elevation={2}>
-                    <Typography>{hotel?.hotelSummary}</Typography>
-                </Paper >
-                <Paper sx={{ p: 2, mb: 2 }} elevation={2}>
-                    <div dangerouslySetInnerHTML={createMarkup()} />
-                </Paper>
-                
-                
-            </Grid>
-
-            <Grid item xs={12} sm={5}>                
-                {hotel && 
-                hotel.reviewsList.map((review => {
-                    key++;
-                        return (
-                            <Review key={key} review={review} hotel={hotel} callback={getHotels}/>                                   
-                        )
-                    }))}
-            </Grid>
-
-        </Grid>         
+                    <Grid item xs={12} lg={3} className='banners'>
+                        <a href="https://tp.media/click?shmarker=366829&promo_id=663&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank"> <img src="https://c22.travelpayouts.com/content?promo_id=663&shmarker=366829&type=init&trs=173476" width="240" height="400" alt="Забронировать трансфер в Египте - 240*400"/> </a>
+                        <a href="https://tp.media/click?shmarker=366829&promo_id=3488&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank"> <img src="https://c22.travelpayouts.com/content?promo_id=3488&shmarker=366829&type=init&trs=173476" width="240" height="400" alt="240_400_turc_EN"/> </a>  
+                        <a href="https://tp.media/click?shmarker=366829&promo_id=663&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank"> <img src="https://c22.travelpayouts.com/content?promo_id=663&shmarker=366829&type=init&trs=173476" width="240" height="400" alt="Забронировать трансфер в Египте - 240*400"/> </a>
+                        <a href="https://tp.media/click?shmarker=366829&promo_id=3488&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank"> <img src="https://c22.travelpayouts.com/content?promo_id=3488&shmarker=366829&type=init&trs=173476" width="240" height="400" alt="240_400_turc_EN"/> </a>  
+                    </Grid>
+                </Grid>         
+            }         
         </>       
     )
 }
+

@@ -17,14 +17,7 @@ let key = 0;
 export default function HotelsList(props) {
     const {user, setUser} = useContext(UserContext);
     const [hotels, setHotels] = useState([]);   
-    // const [sort, setSort] = useState({
-    //     value: 'rating', 
-    //     order: 'desc', 
-    //     name: 'rating', 
-    //     three: 3, 
-    //     four: 4, 
-    //     five: 5
-    // });
+    
     const hotelsRef = collection(db, 'hotels');  
 
     const navigate = useNavigate();
@@ -35,28 +28,7 @@ export default function HotelsList(props) {
         let hotelsArray = [];
         querySnapshot.forEach((doc) => hotelsArray.push({...doc.data(), id: doc.id}))       
         setHotels(hotelsArray);        
-    };
-    
-
-    // const sortHandler = (event) => {        
-    //     event.target.value === 'name' ?
-    //     setSort((prev) => ({...prev, value: 'name', order: 'asc', name: 'hotelName'})) :
-    //     setSort((prev) => ({...prev, value: 'rating', order: 'desc', name: 'rating'}));
-        
-    // };
-
-    // const toggleCheckbox = (digit) => {
-    //     switch (digit) {
-    //         case 5: 
-    //         sort.five === 5 ? setSort((prev) => ({...prev, five: 0})) : setSort((prev) => ({...prev, five: 5}));
-    //         break;
-    //         case 4: 
-    //         sort.four === 4 ? setSort((prev) => ({...prev, four: 0})) : setSort((prev) => ({...prev, four: 4}));
-    //         break;
-    //         case 3: 
-    //         sort.three === 3 ? setSort((prev) => ({...prev, three: 0})) : setSort((prev) => ({...prev, three: 3}));
-    //     }        
-    // }
+    };    
 
     const infoHandler = (id) => {         
         setUser((prev) => ({ ...prev, currentHotel: id }));        

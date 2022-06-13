@@ -86,7 +86,7 @@ export default function Review(props) {
 
     return (
         <>
-            <Card key={key} sx={{ maxWidth: 500, m: 2 }}>
+            <Card key={key} sx={{ maxWidth: 500, mb: 2 }}>
                 <CardContent>
                     <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', pl: 2 }}>
                         <ColoredNumber number={props.review.overall} size={"h4"} />

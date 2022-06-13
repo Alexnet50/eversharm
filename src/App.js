@@ -11,6 +11,7 @@ import Hotel from "./pages/Hotel";
 import NewModal from "./pages/Modal";
 import { auth } from "./firebase-config";
 import Background from "./pages/Background";
+import Footer from "./pages/Footer";
 
 
 export const UserContext = createContext({
@@ -37,15 +38,12 @@ function App() {
 
     
     useEffect(() => {
-        auth.onAuthStateChanged((user) => { 
-            // let isAdmin;          
-            // newUser && newUser.email === "aladdin@ukr.net" ? isAdmin = true : isAdmin = false;                       
+        auth.onAuthStateChanged((user) => {                                   
             setUser((prev) => ({ ...prev,
                 currentUser: user ? user : null,
                 isAdmin: (user?.email && user?.email === "aladdin@ukr.net") ? true : false,
                 pending: false            
-            })); 
-            console.log(user.currentUser)           
+            }));                  
         })
     }, []);  
   
@@ -69,6 +67,7 @@ function App() {
                     </Routes>                    
 
                     <NewModal openModal={user.openModal} content={user.modalContent} handleClose={handleClose} />   
+                    <Footer />
                 </Router>      
             </Container>
         </UserContext.Provider>       

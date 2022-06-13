@@ -26,7 +26,7 @@ import { Editor } from '@tinymce/tinymce-react';
     
 
     const createHandler = async () => {        
-        await addDoc(postsCollectionRef, {content: post});
+        await addDoc(postsCollectionRef, {post: post});
         navigate("/"); 
     };
 
