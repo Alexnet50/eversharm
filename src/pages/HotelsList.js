@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import {collection, getDocs, where, query, orderBy, limit} from "firebase/firestore";
 import {db} from "../firebase-config";
 import { UserContext } from '../App';
-import { Box, Button, Typography, Grid, Card, Checkbox,
-     CardMedia, CardActionArea,
-    FormControl, InputLabel, Select, MenuItem, FormControlLabel
+import { Box, Button, Typography, Grid, Card,
+     CardMedia, CardActionArea    
     } from "@mui/material";
 import Stars from './Stars';
 import ColoredNumber from './ColoredNumber';
 import Icons from './Icons';
+import ScrollAnimation from 'react-animate-on-scroll';
+import "animate.css/animate.min.css";
      
 let key = 0;
 
@@ -79,54 +80,20 @@ export default function HotelsList(props) {
 
     
     return (  
-        <>   
-            {/* <FormControl sx={{ m: 1 }} size="small">
-                <InputLabel>Sort by</InputLabel>
-                <Select                    
-                    id="sort"
-                    sx={{ width: 200 }}                    
-                    value={sort.value}
-                    label="Sorting order"
-                    onChange={sortHandler}
-                >                    
-                    <MenuItem value={"name"} >name</MenuItem>
-                    <MenuItem value={"rating"} >rating</MenuItem>                        
-                </Select>
-            </FormControl>
-            
-
-            <Box sx={{ display: "flex", flexDirection: "row", m: 1 }}>
-                    <FormControlLabel control={
-                        <Checkbox 
-                            checked={sort.five === 5}
-                            size='small'
-                            onChange={(event) => toggleCheckbox(5)}
-                        />} 
-                        label="5 stars" 
-                    />
-                    <FormControlLabel control={
-                        <Checkbox
-                            checked={sort.four === 4}
-                            size='small'
-                            onChange={(event) => toggleCheckbox(4)}
-                        />} 
-                        label="4 stars" 
-                    />
-                    <FormControlLabel control={
-                        <Checkbox 
-                            checked={sort.three === 3}
-                            size='small'
-                            onChange={(event) => toggleCheckbox(3)}
-                        />} 
-                        label="3 stars" />
-            </Box> */}
-
+        <> 
             <Grid container spacing={2} sx={{ mt: 1, ml: "auto", mr: "auto" }}>
                 {hotels.map(hotel => {
                     key++;                            
                     return (
+                        
                         <Grid item key={key}>
-                            <Card sx={{ width: 345 }}>
+                            <ScrollAnimation 
+                                animateIn="animate__bounceInLeft" 
+                                animateOnce                            
+                            >
+                            <Card                             
+                            sx={{ width: 345 }}                            
+                            >
                                 <CardActionArea onClick={() => infoHandler(hotel.id)}>
                                     <CardMedia
                                         component="img"
@@ -181,7 +148,9 @@ export default function HotelsList(props) {
                                     </Button> 
                                 </Box>                       
                             </Card>
-                        </Grid>                                                       
+                            </ScrollAnimation> 
+                        </Grid>
+                                                                              
                     )
                 })}
             </Grid>

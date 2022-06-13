@@ -11,6 +11,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { blue } from '@mui/material/colors';
 import HotelsList from './HotelsList';
+import ScrollAnimation from 'react-animate-on-scroll';
+import "animate.css/animate.min.css";
 
 export default function Home() {
     const { user, setUser } = useContext(UserContext);
@@ -146,8 +148,13 @@ export default function Home() {
                         {/* </Container> */}
                     </Grid>
 
+                    
                     <Grid item className={'sortingPanel'} xs={12} style={{ zIndex: 999 }} marginTop={{ xs: '0', sm: '-40px'}}                   
                     >
+                        <ScrollAnimation 
+                            animateIn="animate__bounceInRight" 
+                            animateOnce                            
+                        >
                         <Paper sx={{ ml: 'auto', mr: 'auto', maxWidth: '550px', 
                             // position: 'absolute', left: '50%', transform: 'translate(-50%, 0)',
                             p: 1, display: "flex", flexDirection: "row", alignItems: "center", flexWrap: "wrap"
@@ -201,29 +208,53 @@ export default function Home() {
                                     />
                             </Box>
                         </Paper>
+                        </ScrollAnimation>
                     </Grid>
+                    
 
-                    <Grid item className={'hotelsList'} xs={12} md={7} sx={{ display: 'flex', flexDirection: 'column'}}>
+                    <Grid item className={'hotelsList'} xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column'}}>
                         <HotelsList sort={sort} /> 
                     </Grid>
 
-                    <Grid item className={'posts'} xs={12} md={7} sx={{ display: 'flex', flexDirection: 'column'}}>
-                        {posts && 
-                            <Paper sx={{ p: 2, mb: 2 }} elevation={2}>
-                                {posts.map(post => {
-                                    <div key={post?.id} dangerouslySetInnerHTML={createMarkup(post?.post)} 
-                                        marginBottom="20px"
-                                    />
-                                    {user.isAdmin && 
-                                        <Button 
-                                            onClick={() => deleteHandler()}
-                                        >
-                                            Delete post
-                                        </Button>
-                                    }                                                                    
-                                })}                            
+                    <Grid item className={'posts'} xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column'}}>
+                        {posts[0] && 
+                            <Paper sx={{ p: 2, m: 2 }} elevation={2}>                                
+                                <Box                                     
+                                    dangerouslySetInnerHTML={createMarkup(posts[0].post)} 
+                                    sx={{ mb: 2 }}
+                                >
+                                {/* {item.post} */}
+                                    
+                                </Box>
+                                {user.isAdmin && 
+                                    <Button 
+                                        onClick={() => deleteHandler()}
+                                    >
+                                        Delete post
+                                    </Button>
+                                }                                          
                             </Paper>
+                        }  
+
+                        {(posts[1]) && 
+                            <Paper sx={{ p: 2, m: 2 }} elevation={2}>                                
+                                <Box                                     
+                                    dangerouslySetInnerHTML={createMarkup(posts[1].post)} 
+                                    sx={{ mb: 2 }}
+                                >
+                                {/* {item.post} */}
+                                    
+                                </Box>
+                                {user.isAdmin && 
+                                    <Button 
+                                        onClick={() => deleteHandler()}
+                                    >
+                                        Delete post
+                                    </Button>
+                                }
+                            </Paper>            
                         }
+                        
                     </Grid>
                 </Grid> 
             </Grid>

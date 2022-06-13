@@ -10,7 +10,7 @@ import CreatePost from "./pages/CreatePost";
 import Hotel from "./pages/Hotel";
 import NewModal from "./pages/Modal";
 import { auth } from "./firebase-config";
-
+import Background from "./pages/Background";
 
 
 export const UserContext = createContext({
@@ -35,16 +35,7 @@ function App() {
     const value = useMemo(() => ({ user, setUser }), [user]);
     const handleClose = () => setUser((prev) => ({ ...prev, openModal: false }));    
 
-    // onAuthStateChanged(auth, (user) => {
-    //     // let isAdmin;          
-    //     // newUser && newUser.email === "aladdin@ukr.net" ? isAdmin = true : isAdmin = false;                       
-    //     setUser((prev) => ({ ...prev,
-    //         currentUser: user ? user : null,
-    //         isAdmin: (user?.email && user?.email === "aladdin@ukr.net") ? true : false,
-    //         pending: false            
-    //     }));         
-    //     console.log(user ? user.email : "no user")   
-    // })
+    
     useEffect(() => {
         auth.onAuthStateChanged((user) => { 
             // let isAdmin;          
@@ -65,6 +56,7 @@ function App() {
 
     return (
         <UserContext.Provider value={value}>
+            <Background />
             <Container maxWidth="lg">
                 <Router>                    
                     <Header />                        

@@ -168,7 +168,7 @@ export default function Header() {
                                 <Menu
                                     id="menu-appbar"
                                     anchorEl={anchorElNav}
-                                    autoFocusItem='true'
+                                    // autoFocusItem='true'
                                     anchorOrigin={{
                                         vertical: 'bottom',
                                         horizontal: 'left',
@@ -191,7 +191,8 @@ export default function Header() {
                                             id="searchInput"                                
                                             sx={{ minWidth: 250 }}                                
                                             options={hotels && hotels.map((hotel) => hotel.hotelName)}
-                                            onClick={(event) => setAnchorElNav(event.currentTarget)}
+                                            // onClick={(event) => setAnchorElNav(event.currentTarget)}
+                                            onClose={(event) => setAnchorElNav(null)}
                                             onChange={(event, newInputValue) => {                                    
                                                 handleSearch(newInputValue);
                                                 // setSearchValue(newInputValue);

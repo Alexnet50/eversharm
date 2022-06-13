@@ -91,7 +91,7 @@ export default function Hotel(props) {
             {hotel &&
                 <Box sx={{ m: 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' }}>              
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                        <Typography variant="h4" sx={{ mr: 2, mt: 1 }} fontWeight="bold" color="primary" >
+                        <Typography variant="h4" sx={{ mr: 2, mt: 1 }} fontWeight="bold" fontFamily="Merriweather" color="primary" >
                             {hotel.hotelName}
                         </Typography>
                         <Box sx={{ mt: 2, width: '150px'}}>

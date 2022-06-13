@@ -42,3 +42,15 @@ body {
     color: white;
     /* 'rgba(255, 255, 255, 1)' */
 }
+
+canvas {
+    display: block;
+    vertical-align: bottom;
+  }
+  /* ---- tsparticles container ---- */
+  #tsparticles {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
