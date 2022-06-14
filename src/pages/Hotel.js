@@ -99,7 +99,7 @@ export default function Hotel(props) {
                         </Box>                    
                     </Box>
                     <Paper 
-                        sx={{ pl: 2, pr: 2, width: '100px', display: 'flex', flexDirection: 'row', 
+                        sx={{ pl: 2, pr: 2, display: 'flex', flexDirection: 'row', 
                         flexShrink: 0, alignItems: 'center', borderRadius: '20px' }}
                         elevation={3}
                     >                    
@@ -155,7 +155,7 @@ export default function Hotel(props) {
                                                                    
                             <Grid item className='ratings' xs={12} sm={7} md={3}
                                 sx={{                         
-                                    display: 'flex', flexDirection: 'column',
+                                    mt: 3, display: 'flex', flexDirection: 'column',
                                     alingnItems: 'center', justifyContent: 'space-between',
                                     maxHeight: '450px', display: { xs: 'none', md: 'block' }
                                 }}
