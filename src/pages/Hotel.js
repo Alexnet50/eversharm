@@ -58,7 +58,8 @@ export default function Hotel(props) {
     };     
 
     useEffect(() => {
-        getHotels();        
+        getHotels();
+        // eslint-disable-next-line        
     }, []); 
 
 
@@ -155,9 +156,9 @@ export default function Hotel(props) {
                                                                    
                             <Grid item className='ratings' xs={12} sm={7} md={3}
                                 sx={{                         
-                                    mt: 3, display: 'flex', flexDirection: 'column',
+                                    mt: 3, flexDirection: 'column',
                                     alingnItems: 'center', justifyContent: 'space-between',
-                                    maxHeight: '450px', display: { xs: 'none', md: 'block' }
+                                    maxHeight: '450px', display: { xs: 'none', md: 'flex' }
                                 }}
                             >
                                 <Paper elevation={3} sx={{ mb: 3, p: 2, display: 'flex', flexDirection: 'column' }}> 
@@ -202,9 +203,9 @@ export default function Hotel(props) {
                             <Grid item className='infoBlock' xs={12} sm={7} sx={{ order: { xs: 2, sm: 3 } }}>
                                 <Box className='ratings' xs={12} sm={7} md={3}
                                     sx={{                         
-                                        display: 'flex', flexDirection: 'column',
+                                        flexDirection: 'column',
                                         alingnItems: 'center', justifyContent: 'space-between',
-                                        maxHeight: '450px', display: { xs: 'block', md: 'none' }
+                                        maxHeight: '450px', display: { xs: 'flex', md: 'none' }
                                     }}
                                 >
                                     <Paper elevation={3} sx={{ mb: 3, p: 2, display: 'flex', flexDirection: 'column' }}> 
@@ -273,10 +274,10 @@ export default function Hotel(props) {
                     </Grid> 
 
                     <Grid item xs={12} lg={3} className='banners'>
-                        <a href="https://tp.media/click?shmarker=366829&promo_id=663&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank"> <img src="https://c22.travelpayouts.com/content?promo_id=663&shmarker=366829&type=init&trs=173476" width="240" height="400" alt="Забронировать трансфер в Египте - 240*400"/> </a>
-                        <a href="https://tp.media/click?shmarker=366829&promo_id=3488&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank"> <img src="https://c22.travelpayouts.com/content?promo_id=3488&shmarker=366829&type=init&trs=173476" width="240" height="400" alt="240_400_turc_EN"/> </a>  
-                        <a href="https://tp.media/click?shmarker=366829&promo_id=663&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank"> <img src="https://c22.travelpayouts.com/content?promo_id=663&shmarker=366829&type=init&trs=173476" width="240" height="400" alt="Забронировать трансфер в Египте - 240*400"/> </a>
-                        <a href="https://tp.media/click?shmarker=366829&promo_id=3488&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank"> <img src="https://c22.travelpayouts.com/content?promo_id=3488&shmarker=366829&type=init&trs=173476" width="240" height="400" alt="240_400_turc_EN"/> </a>  
+                        <a href="https://tp.media/click?shmarker=366829&promo_id=663&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank" rel="noreferrer"> <img src="https://c22.travelpayouts.com/content?promo_id=663&shmarker=366829&type=init&trs=173476" width="240" height="400" alt="Забронировать трансфер в Египте - 240*400"/> </a>
+                        <a href="https://tp.media/click?shmarker=366829&promo_id=3488&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank" rel="noreferrer"> <img src="https://c22.travelpayouts.com/content?promo_id=3488&shmarker=366829&type=init&trs=173476" width="240" height="400" alt="240_400_turc_EN"/> </a>  
+                        <a href="https://tp.media/click?shmarker=366829&promo_id=663&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank" rel="noreferrer"> <img src="https://c22.travelpayouts.com/content?promo_id=663&shmarker=366829&type=init&trs=173476" width="240" height="400" alt="Забронировать трансфер в Египте - 240*400"/> </a>
+                        <a href="https://tp.media/click?shmarker=366829&promo_id=3488&source_type=banner&type=click&campaign_id=22&trs=173476" target="_blank" rel="noreferrer"> <img src="https://c22.travelpayouts.com/content?promo_id=3488&shmarker=366829&type=init&trs=173476" width="240" height="400" alt="240_400_turc_EN"/> </a>  
                     </Grid>
                 </Grid>         
             }         

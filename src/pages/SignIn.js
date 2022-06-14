@@ -7,7 +7,7 @@ import { Box } from '@mui/material';
 
 
 export function SignIn(props) {
-    const {user, setUser} = useContext(UserContext);
+    const { setUser } = useContext(UserContext);
     const [registerEmail, setRegisterEmail] = useState('');
     const [registerPassword, setRegisterPassword] = useState('');    
     const [confirmPassword, setConfirmPassword] = useState('');    
@@ -21,6 +21,7 @@ export function SignIn(props) {
     const register = async () => {
         if (registerPassword === confirmPassword) {
         try {
+            // eslint-disable-next-line
             const userCreate = await createUserWithEmailAndPassword(
                 auth, registerEmail, registerPassword
             );            

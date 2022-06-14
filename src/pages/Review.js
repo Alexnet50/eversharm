@@ -1,11 +1,11 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useState, useContext } from 'react';
 import { doc, updateDoc } from "firebase/firestore";
 import {db, storage} from "../firebase-config";
-import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import { ref, deleteObject } from "firebase/storage";
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Box, Button, Typography, Grid, Card, Collapse, IconButton, 
-    CardMedia, CardContent, CardActions } from "@mui/material";
+import { Box, Button, Typography, Card, Collapse, IconButton, 
+     CardContent, CardActions } from "@mui/material";
 import ColoredNumber from './ColoredNumber';
 import { UserContext } from '../App';
 import Slider from 'react-slick';
@@ -25,8 +25,7 @@ let key = 0;
 export default function Review(props) {
     const [expanded, setExpanded] = useState(false);
     const {user, setUser} = useContext(UserContext); 
-    const [hotel, setHotel] = useState();        
-
+    
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
@@ -40,7 +39,7 @@ export default function Review(props) {
                                 props.review.myImageList.map((url) => {
                                     key++;
                                     return (
-                                        <img src={url} key={key} />
+                                        <img src={url} key={key} alt={"Review"}/>
                                     )                                            
                                 })
                             }
@@ -138,7 +137,7 @@ export default function Review(props) {
                                     key++;
                                     return (
                                         <img src={url} key={key} style={{ margin: 2, height: 150 }}
-                                            onClick={() => imageClickHandler()}
+                                            onClick={() => imageClickHandler()} alt={"Review"}
                                         />
                                     )                                            
                                 })
