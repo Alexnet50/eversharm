@@ -57,6 +57,11 @@
     ]
   },
   "browser": {
-    "http": false
+    "http": false,
+    "https":false,
+    "net": false,
+    "path": false,
+    "stream": false,
+    "tls": false
   }
 }
