@@ -78,16 +78,14 @@ export default function Home() {
                     // spacing={1}
                 >
                     <Grid item className={'slider'} xs={12} display={{ xs: "none", sm: "block" }}>                        
-                        {/* <Container sx={{ ml: 'auto', mr: 'auto', maxWidth: '700px' }}   > */}
+                        {/* <Container    > */}
                             <Slider                                 
                                 fade={true}
                                 arrows={false}                         
                                 rows={1}                                
                                 autoplay={true}
-                                autoplaySpeed={6000}  
-                                                                                             
+                                autoplaySpeed={6000}                                                                                             
                             >
-
                                 <div                                               
                                     style={{ position: 'relative'}}                                    
                                 >   
@@ -101,8 +99,7 @@ export default function Home() {
                                     <img src={'/images/slide1.jpg'} key={1} alt={"Sharm El Sheikh"} height={'500px'} />
                                 </div>
 
-                                <div  
-                                    // sx={{ mr: coef }}                  
+                                <div                                                 
                                     style={{ position: 'relative'}}
                                      
                                 >
@@ -116,13 +113,12 @@ export default function Home() {
                                     <img src={'/images/slide2.jpg'} key={2} alt={"Sharm El Sheikh"} height={'500px'} />                                   
                                 </div>
 
-                                <div  
-                                    // sx={{ mr: coef }}                  
+                                <div                                                       
                                     style={{ position: 'relative' }}
                                     
                                 >
                                     <Typography variant="h3" sx={{ mt: 3 }}
-                                        style={{ position: 'absolute', left: '250px' }} 
+                                        style={{ position: 'absolute', left: '280px' }} 
                                         color="rgba(255, 255, 255, 1)" fontFamily={'Merriweather'} fontWeight={300}
                                     >
                                         Discower treasures of misterious Egypt
@@ -152,13 +148,13 @@ export default function Home() {
                     >
                         <ScrollAnimation 
                             animateIn="animate__bounceInRight" 
-                            animateOnce                            
+                            animateOnce                             
+                            animatePreScroll                                                                             
                         >
                         <Paper sx={{ ml: 'auto', mr: 'auto', maxWidth: '550px', 
                             // position: 'absolute', left: '50%', transform: 'translate(-50%, 0)',
                             p: 1, display: "flex", flexDirection: "row", alignItems: "center", flexWrap: "wrap"
-                        }}
-                             
+                        }}                             
                             style={{ backgroundColor: 'rgba(235, 247, 255, 1)', borderRadius: '20px' }}
                             elevation={3}
                         >
