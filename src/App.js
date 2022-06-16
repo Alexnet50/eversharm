@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useMemo, createContext} from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
-import { Container, Typography } from '@mui/material';
+import { Container, Typography, Box } from '@mui/material';
 import Home from "./pages/Home";
 import CreateReview from "./pages/CreateReview";
 import Header from "./pages/Header";
@@ -12,6 +12,8 @@ import NewModal from "./pages/Modal";
 import { auth } from "./firebase-config";
 import Background from "./pages/Background";
 import Footer from "./pages/Footer";
+import { css } from "@emotion/react";
+import PuffLoader from "react-spinners/PuffLoader";
 
 
 export const UserContext = createContext({
@@ -49,8 +51,13 @@ function App() {
   
 
     if(user.pending){
-        return <Typography variant='h4' color="text.secondary" fontWeight="bold" sx={{ ml: 10, mt: 5 }} >Loading...</Typography>
-      }
+        return (
+            <Box sx={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                {/* <Typography variant='h4' color="text.secondary" fontWeight="bold" sx={{ ml: 10, mt: 5 }} >Loading...</Typography> */}
+                <PuffLoader color={'blue'} size={300} />  
+            </Box>  
+        )
+    }
 
     return (
         <UserContext.Provider value={value}>

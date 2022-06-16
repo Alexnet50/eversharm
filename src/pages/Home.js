@@ -33,8 +33,7 @@ export default function Home() {
     const getPosts = async() => {                
         const data = await getDocs(postsCollectionRef);
         const postsArray = data.docs.map((doc) => ({...doc.data(), id: doc.id}))
-        setPosts(postsArray); 
-        console.log(postsArray)            
+        setPosts(postsArray);                  
     };
 
     const sortHandler = (event) => {        
@@ -65,8 +64,7 @@ export default function Home() {
 
     useEffect(() => {         
         setUser((prev) => ({...prev, currentHotel: null})); 
-        getPosts();
-        console.log(user.currentUser)          
+        getPosts();                
     }, []);
     
     return (

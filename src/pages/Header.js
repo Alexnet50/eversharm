@@ -134,7 +134,12 @@ export default function Header() {
                 sx={{ mb: 1, mt: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}
             >               
                     <Container maxWidth="lg">
-                        <Toolbar>
+                        <Toolbar sx={{ ml: 0, mr: 0 }} >
+                            <Box                                                
+                                style={{ width: '32px', height: '32px', 
+                                backgroundImage: 'url(/images/logo.png)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat' }}
+                            ></Box>
+
                             <Typography
                                 variant="h5"
                                 noWrap
