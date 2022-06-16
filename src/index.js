@@ -2,8 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-const express = require('express')
-const path = require('path')
+import express from 'express';
+import path from 'path';
+// const express = require('express')
+// const path = require('path')
 const PORT = process.env.PORT || 3000
 
 express()
