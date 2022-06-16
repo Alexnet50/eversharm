@@ -54,7 +54,7 @@ function App() {
         return (
             <Box sx={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 {/* <Typography variant='h4' color="text.secondary" fontWeight="bold" sx={{ ml: 10, mt: 5 }} >Loading...</Typography> */}
-                <PuffLoader color={'blue'} size={300} />  
+                <PuffLoader color={'#00AEFF'} size={300} />  
             </Box>  
         )
     }

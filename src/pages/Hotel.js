@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
 import {db} from "../firebase-config";
 import { UserContext } from '../App';
-import { Box, Button, Typography, Grid, Paper } from "@mui/material";
+import { Box, Button, Typography, Grid, Paper, Container } from "@mui/material";
 import ColoredNumber from './ColoredNumber';
 import Stars from './Stars';
 import Review from './Review';
@@ -16,6 +16,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 
 let key = 0; 
+let mode;
 
 export default function Hotel(props) {
     const {user, setUser} = useContext(UserContext);      
@@ -23,7 +24,8 @@ export default function Hotel(props) {
     const [location, setLocation] = useState(0);
     const [food, setFood] = useState(0);
     const [cleanliness, setCleanliness] = useState(0);
-    const [service, setService] = useState(0);    
+    const [service, setService] = useState(0);  
+    const [mode, setMode] = useState(false);  
 
     const navigate = useNavigate();
     const hotelsCollectionRef = collection(db, "hotels");
@@ -61,6 +63,10 @@ export default function Hotel(props) {
         getHotels();
         // eslint-disable-next-line        
     }, []); 
+
+    useEffect(() => {
+        window.screen.availWidth > 600 ? setMode(true) : setMode(false)
+    }, [window.screen.availWidth])
 
 
     const addReviewHandler = () => {
@@ -125,33 +131,32 @@ export default function Hotel(props) {
                                 >
                                     Prev
                                 </ArrowBackIosNewIcon>
-                                
-                                <Box sx={{ maxWidth: '95%' }}>
+                               
+                                <Box sx={{ width: '95%' }}>                                    
                                     <Slider 
                                         ref={slider}
                                         arrows={false}                            
-                                        centerMode={true} variableWidth={true}
+                                        centerMode={mode}                                       
+                                        variableWidth={true}
                                         rows={1}
-                                        adaptiveHeight={true}                                                                    
+                                        adaptiveHeight={true}                                                                                                      
                                     >
                                         {hotel && hotel.imageList.map((url) => {
                                             key++;                                            
-                                            return (                                    
+                                            return (                                                                                   
                                                 <img src={url} key={key} alt={hotel.hotelName}
-                                                    height={'350px'}
-                                                    sx={{ m: 1 }}
-                                                    />                                                                               
+                                                    height={'350px'}                                             
+                                                />                                                                                                                               
                                             )                                                      
                                         })} 
                                         
-                                    </Slider> 
+                                    </Slider>                                   
                                 </Box>
                                 <ArrowForwardIosIcon 
                                     onClick={() => slider?.current?.slickPrev()} color='primary'
                                 >
                                     Next
-                                </ArrowForwardIosIcon> 
-                                
+                                </ArrowForwardIosIcon>                                
                             </Grid>                              
                                                                    
                             <Grid item className='ratings' xs={12} sm={7} md={3}
