@@ -119,7 +119,7 @@ export default function Hotel(props) {
 
             {hotel &&                              
                 <Grid container spacing={3}>
-                    <Grid item className='main'                                   
+                    <Grid item className='page'                                   
                         xs={12} lg={9} >
                         <Grid container className='main' spacing={3}>           
                             <Grid item className='slider'                                   
@@ -127,6 +127,7 @@ export default function Hotel(props) {
                                 sx={{ p: 2, display: 'flex', flexDirection: 'row', alignItems: 'center' }}
                             >                           
                                 <ArrowBackIosNewIcon 
+                                    sx={{ display: { xs: 'none', sm: 'block' } }}
                                     onClick={() => slider?.current?.slickNext()} color='primary' 
                                 >
                                     Prev
@@ -153,6 +154,7 @@ export default function Hotel(props) {
                                     </Slider>                                   
                                 </Box>
                                 <ArrowForwardIosIcon 
+                                    sx={{ display: { xs: 'none', sm: 'block' } }}
                                     onClick={() => slider?.current?.slickPrev()} color='primary'
                                 >
                                     Next

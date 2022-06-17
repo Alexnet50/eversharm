@@ -172,21 +172,19 @@ export default function Header() {
                                 
                                 <Menu
                                     id="menu-appbar"
-                                    anchorEl={anchorElNav}
-                                    // autoFocusItem='true'
+                                    anchorEl={anchorElNav}                                    
                                     anchorOrigin={{
                                         vertical: 'bottom',
                                         horizontal: 'left',
+                                    }}                                       
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'left',
                                     }}
-                                        keepMounted
-                                        transformOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'left',
-                                    }}
-                                        open={Boolean(anchorElNav)}
-                                        
-                                        sx={{
-                                            display: { xs: 'block', md: 'none' },
+                                    open={Boolean(anchorElNav)}
+                                    onClose={handleCloseNavMenu}    
+                                    sx={{
+                                        display: { xs: 'block', md: 'none' },
                                     }}
                                 >
                                     
@@ -195,12 +193,11 @@ export default function Header() {
                                             freeSolo
                                             id="searchInput"                                
                                             sx={{ minWidth: 250 }}                                
-                                            options={hotels && hotels.map((hotel) => hotel.hotelName)}
-                                            // onClick={(event) => setAnchorElNav(event.currentTarget)}
+                                            options={hotels && hotels.map((hotel) => hotel.hotelName)}                                            
+                                            onClick={handleOpenNavMenu}
                                             onClose={(event) => setAnchorElNav(null)}
                                             onChange={(event, newInputValue) => {                                    
-                                                handleSearch(newInputValue);
-                                                // setSearchValue(newInputValue);
+                                                handleSearch(newInputValue);                                                
                                             }}
                                             renderInput={(params) => (
                                             <TextField
@@ -402,7 +399,6 @@ export default function Header() {
                                         </Link>                          
                                     </>       
                                 }
-
                                 
                                 {user.currentUser &&                                                                                                       
                                     <Button 
@@ -414,16 +410,13 @@ export default function Header() {
                                 }
                             </Box> 
 
-                            <Autocomplete
-                                // key={user.currentHotel}
-                                // style={{ display={ display: { xs: 'flex', md: 'none' } } }}
+                            <Autocomplete                                
                                 freeSolo
                                 id="searchInput"                                
                                 sx={{ minWidth: 250, display: { xs: 'none', sm: 'block' } }}                                
                                 options={hotels && hotels.map((hotel) => hotel.hotelName)}
                                 onChange={(event, newInputValue) => {                                    
-                                    handleSearch(newInputValue);
-                                    // setSearchValue(newInputValue);
+                                    handleSearch(newInputValue);                                    
                                   }}
                                 renderInput={(params) => (
                                 <TextField
@@ -437,9 +430,7 @@ export default function Header() {
                                     }}
                                 />
                                 )}
-                            />               
-
-                            
+                            />                              
                             
                             {user.currentUser && 
                                 <Box edge="end" sx={{ textAlign: 'center', display: { xs: 'none', lg: 'block' } }}>
@@ -453,8 +444,8 @@ export default function Header() {
                                             textDecoration: 'none',
                                         }}
                                     >
-                                        You are logged as 
-                                        <br/>
+                                        {/* You are logged as 
+                                        <br/> */}
                                         {user.currentUser.email}                                        
                                     </Typography>
                                 </Box>

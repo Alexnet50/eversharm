@@ -1,15 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {collection, getDocs, doc, deleteDoc } from "firebase/firestore";
-import { db, storage } from "../firebase-config";
+import { db } from "../firebase-config";
 import { UserContext } from '../App';
-import { Box, Button, Typography, Paper, Grid, Card, Checkbox,
-    CardMedia, CardActionArea,
-   FormControl, InputLabel, Select, MenuItem, FormControlLabel, Container
-   } from "@mui/material";
+import { Box, Button, Typography, Paper, Grid, Checkbox,   
+        FormControl, InputLabel, Select, MenuItem, FormControlLabel
+    } from "@mui/material";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { blue } from '@mui/material/colors';
 import HotelsList from './HotelsList';
 import ScrollAnimation from 'react-animate-on-scroll';
 import "animate.css/animate.min.css";
@@ -71,88 +69,96 @@ export default function Home() {
         <Grid container 
             spacing={1}
         >            
-            <Grid item className={'mainBlock'} xs={12} md={9} 
-                // sx={{ display: 'flex', flexDirection: 'column'}}
-            >
-                <Grid container className={'mainBlock'} 
-                    // spacing={1}
-                >
-                    <Grid item className={'slider'} xs={12} display={{ xs: "none", sm: "block" }}>                        
-                        {/* <Container    > */}
-                            <Slider                                 
-                                fade={true}
-                                arrows={false}                         
-                                rows={1}                                
-                                autoplay={true}
-                                autoplaySpeed={6000}                                                                                             
+            <Grid item className={'mainBlock'} xs={12} md={9}>
+                <Grid container className={'mainBlock'}>
+                    <Grid item className={'slider'} xs={12}>                      
+                        <Slider                                 
+                            fade={true}
+                            arrows={false}                         
+                            rows={1}                                
+                            autoplay={true}
+                            autoplaySpeed={6000}                                                                                             
+                        >
+                            <div                                               
+                                style={{ position: 'relative'}}                                    
+                            >   
+                                <Typography                                          
+                                    sx={{  mt: 2, mr: 5, fontSize: { xs: 'h5.fontSize', sm: 'h3.fontSize' } }} 
+                                    style={{ position: 'absolute', top: '-10px', left: '30px'}}
+                                    color="rgba(255, 255, 255, 1)" fontFamily={'Merriweather'} fontWeight={300}
+                                >
+                                    Open up a breathtaking world of Sharm El Sheikh
+                                </Typography>
+                                <Box component="img" key={1} 
+                                    sx={{ content: 'url(/images/slide1.jpg)', height: { xs: 300, sm: 500 } }} 
+                                    alt={"Sharm El Sheikh"} 
+                                />
+                                
+                            </div>
+
+                            <div                                                 
+                                style={{ position: 'relative'}}
+                                    
                             >
-                                <div                                               
-                                    style={{ position: 'relative'}}                                    
-                                >   
-                                    <Typography variant="h3" sx={{  mt: 2, mr: 5 }} 
-                                        style={{ position: 'absolute', left: '30px'}}
-                                        color="rgba(255, 255, 255, 1)" fontFamily={'Merriweather'} fontWeight={300}
-                                    >
-                                        Open up a breathtaking world of Sharm El Sheikh
-                                    </Typography>
-                                    
-                                    <img src={'/images/slide1.jpg'} key={1} alt={"Sharm El Sheikh"} height={'500px'} />
-                                </div>
-
-                                <div                                                 
-                                    style={{ position: 'relative'}}
-                                     
+                                <Typography  sx={{ ml: 'auto', mr: 'auto', fontSize: { xs: 'h5.fontSize', sm: 'h3.fontSize'} }}
+                                    style={{ position: 'absolute', bottom: '50px', left: '30px' }} 
+                                    color="rgba(255, 255, 255, 1)" fontFamily={'Merriweather'} fontWeight={300}
                                 >
-                                    <Typography variant="h3" sx={{ ml: 'auto', mr: 'auto' }}
-                                        style={{ position: 'absolute', bottom: '50px', left: '30px' }} 
-                                        color="rgba(255, 255, 255, 1)" fontFamily={'Merriweather'} fontWeight={300}
-                                    >
-                                        Find your own paradise under palmtrees
-                                    </Typography>
-                                    
-                                    <img src={'/images/slide2.jpg'} key={2} alt={"Sharm El Sheikh"} height={'500px'} />                                   
-                                </div>
+                                    Find your own paradise under palmtrees
+                                </Typography>
+                                <Box component="img" key={2} 
+                                    sx={{ content: 'url(/images/slide2.jpg)', height: { xs: 300, sm: 500 } }} 
+                                    alt={"Sharm El Sheikh"} 
+                                />
+                                
+                            </div>
 
-                                <div                                                       
-                                    style={{ position: 'relative' }}
-                                    
+                            <div                                                       
+                                style={{ position: 'relative' }}
+                                
+                            >
+                                <Typography  sx={{ mt: 3, fontSize: { xs: 'h5.fontSize', sm: 'h3.fontSize' } }}
+                                    style={{ position: 'absolute', left: '30px' }} 
+                                    color="rgba(255, 255, 255, 1)" fontFamily={'Merriweather'} fontWeight={300}
                                 >
-                                    <Typography variant="h3" sx={{ mt: 3 }}
-                                        style={{ position: 'absolute', left: '280px' }} 
-                                        color="rgba(255, 255, 255, 1)" fontFamily={'Merriweather'} fontWeight={300}
-                                    >
-                                        Discower treasures of misterious Egypt
-                                    </Typography>
-                                    
-                                    <img src={'/images/slide3.jpg'} key={3} alt={"Sharm El Sheikh"} height={'500px'} />                                    
-                                </div>
+                                    Discower treasures of misterious Egypt
+                                </Typography>
+                                
+                                <Box component="img" key={3} 
+                                    sx={{ content: 'url(/images/slide3.jpg)', height: { xs: 300, sm: 500 } }} 
+                                    alt={"Sharm El Sheikh"} 
+                                />
+                                
+                            </div>
 
-                                <div                                                 
-                                    style={{ position: 'relative' }}                                     
+                            <div                                                 
+                                style={{ position: 'relative' }}                                     
+                            >
+                                <Typography  sx={{ mt: 3, mr: 3, fontSize: { xs: 'h5.fontSize', sm: 'h3.fontSize' } }}
+                                    style={{ position: 'absolute', left: '30px' }} 
+                                    color="rgba(255, 255, 255, 1)" fontFamily={'Merriweather'} fontWeight={300} 
                                 >
-                                    <Typography variant="h3" sx={{ mt: 3, mr: 3 }}
-                                        style={{ position: 'absolute', left: '30px' }} 
-                                        color="rgba(255, 255, 255, 1)" fontFamily={'Merriweather'} fontWeight={300} 
-                                    >
-                                        Dive into warm waters of the Red sea
-                                    </Typography>
-                                    
-                                    <img src={'/images/slide4.jpg'} key={4} alt={"Sharm El Sheikh"} height={'500px'} />                                    
-                                </div>                          
-                            </Slider> 
-                        {/* </Container> */}
+                                    Dive into warm waters of the Red sea
+                                </Typography>
+                                <Box component="img" key={4} 
+                                    sx={{ content: 'url(/images/slide4.jpg)', height: { xs: 300, sm: 500 } }} 
+                                    alt={"Sharm El Sheikh"} 
+                                />
+                                
+                            </div>                          
+                        </Slider>                        
                     </Grid>
 
                     
-                    <Grid item className={'sortingPanel'} xs={12} style={{ zIndex: 999 }} marginTop={{ xs: '0', sm: '-40px'}}                   
+                    <Grid item className={'sortingPanel'} xs={12} sx={{ order: { xs: 2, lg: 1 } }}
+                    style={{ zIndex: 999 }} marginTop={{ xs: '0', sm: '-40px'}}                   
                     >
                         <ScrollAnimation 
                             animateIn="animate__bounceInRight" 
                             animateOnce                             
                             animatePreScroll                                                                             
                         >
-                        <Paper sx={{ ml: 'auto', mr: 'auto', maxWidth: '550px', 
-                            // position: 'absolute', left: '50%', transform: 'translate(-50%, 0)',
+                        <Paper sx={{ ml: 'auto', mr: 'auto', maxWidth: '550px',                             
                             p: 1, display: "flex", flexDirection: "row", alignItems: "center", flexWrap: "wrap"
                         }}                             
                             style={{ backgroundColor: 'rgba(235, 247, 255, 1)', borderRadius: '20px' }}
@@ -208,12 +214,12 @@ export default function Home() {
                     
 
                     <Grid item className={'hotelsList'} xs={12} lg={5} 
-                        sx={{ display: 'flex', flexDirection: 'column', order: { xs: 2, lg: 1 }}}>
+                        sx={{ display: 'flex', flexDirection: 'column', order: { xs: 3, lg: 2 } }}>
                         <HotelsList sort={sort} /> 
                     </Grid>
 
                     <Grid item className={'posts'} xs={12} lg={7} 
-                        sx={{ mt: 1, display: 'flex', flexDirection: 'column', order: { xs: 1, lg: 2 }}}>
+                        sx={{ mt: 1, display: 'flex', flexDirection: 'column', order: { xs: 1, lg: 3 } }}>
                         {posts[0] && 
                             <Paper sx={{ p: 2, m: 2 }} elevation={2}>                                
                                 <Box                                     
