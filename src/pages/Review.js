@@ -33,15 +33,15 @@ export default function Review(props) {
     const imageClickHandler = () => {  
         setUser((prev) => ({ ...prev, 
             modalContent: 
-                <Box sx={{ height: 600, width: 800 }}>
+                <Box sx={{ height: { xs: 400, sm: 600 }, width: { xs: 533, sm: 800 } }}>
                     <Slider>
                         {props.review.myImageList && 
-                                props.review.myImageList.map((url) => {
-                                    key++;
-                                    return (
-                                        <img src={url} key={key} alt={"Review"}/>
-                                    )                                            
-                                })
+                            props.review.myImageList.map((url) => {
+                                key++;
+                                return (
+                                    <img src={url} key={key} alt={"Review"}/>
+                                )                                            
+                            })
                             }
                     </Slider>
                 </Box>,
